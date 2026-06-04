@@ -1,26 +1,79 @@
 @import "tailwindcss";
 
-:root {
-  --background: #ffffff;
-  --foreground: #171717;
-}
+@custom-variant dark (&:where(.dark, .dark *));
 
 @theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
+  --breakpoint-xs: 480px;
+  --breakpoint-sm: 640px;
+  --breakpoint-md: 768px;
+  --breakpoint-lg: 1024px;
+  --breakpoint-2xl: 1280px;
+  --breakpoint-xl: 1280px;
+  --font-Dana-DemiBold: "DemiBold";
+  --font-Dana-Medium: "Medium";
+  --font-Dana-Regular: "Regular";
+  --font-Morabba-Bold: "Morabba-Bold";
+  --font-Morabba-Medium: "Morabba-Medium";
+  --font-Morabba-Light: "Morabba-Light";
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
+@layer components {
+  .container {
+    width: 100%;
+    margin-inline: auto;
+    padding-left: 100px;
+    padding-right: 100px;
   }
 }
 
+@layer base {
+  @font-face {
+    font-family: "DemiBold";
+    src: url("/public/fontsDana/woff2/DanaFaNum-DemiBold.woff2") format(truetype);
+  }
+
+  @font-face {
+    font-family: "Medium";
+    src: url("/public/fonts/Dana/woff2/DanaFaNum-Medium.woff2") format(truetype);
+  }
+
+  @font-face {
+    font-family: "Regular";
+    src: url("/public/fonts/Dana/woff2/DanaFaNum-Regular.woff2") format(truetype);
+  }
+
+  @font-face {
+    font-family: "Morabba-Bold";
+    src: url("/public/fonts/Morabba/woff2/Morabba-Bold.woff2") format(truetype);
+  }
+
+  @font-face {
+    font-family: "Morabba-Medium";
+    src: url("/public/fonts/Morabba/woff2/Morabba-Medium.woff2") format(truetype);
+  }
+
+  @font-face {
+    font-family: "Morabba-Light";
+    src: url("/public/fonts/Dana/woff2/Morabba-Light.woff2") format(truetype);
+  }
+}
+
+@utility bg-hero-desctop {
+  background-image: linear-gradient(to right, rgba(17, 17, 17, .5), rgba(17, 17, 17, .5)),
+    url('/img/desctop-hero.jpeg');
+  background-position: right;
+  background-repeat: no-repeat;
+  background-size: cover;
+}
+
+@utility bg-hero-phone {
+  background-image: linear-gradient(to right, rgba(17, 17, 17, .5), rgba(17, 17, 17, .5)),
+    url('/img/phone-hero.jpeg');
+  background-position: right;
+  background-repeat: no-repeat;
+  background-size: cover;
+}
+
 body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+  font-family: "Dana-Regular";
 }

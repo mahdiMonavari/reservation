@@ -1,8 +1,13 @@
 import React from 'react'
 
+
 function page() {
   return (
-    <div>page</div>
+    <>
+    <div className="h-screen  bg-hero-phone xl:bg-hero-desctop"></div>
+    <div className='container'>
+    </div>
+    </>
   )
 }
 

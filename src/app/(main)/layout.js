@@ -1,10 +1,17 @@
+import Navbar from "@/components/modules/navbar/navbar";
 import "@/styles/globals.css"
-export default function RootLayout({ children }) {
+import { cookies } from "next/headers";
+export default async function RootLayout({ children }) {
+  const cookiesStore = await cookies()
+  const theme = cookiesStore.get("theme")?.value
   return (
     <html
       lang="fa" dir="rtl"
+      className={theme==="dark"?"dark":""}
     >
-      <body className="min-h-full flex flex-col">{children}</body>
+      <body className="min-h-full flex flex-col transition-colors duration-300">
+        <Navbar theme={theme}/>
+        {children}</body>
     </html>
   );
 }

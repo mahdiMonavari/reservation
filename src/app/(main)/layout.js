@@ -1,5 +1,6 @@
 import Navbar from "@/components/modules/navbar/navbar";
 import "@/styles/globals.css"
+import AOSInit from "@/utiles/AOS/initAos";
 import { cookies } from "next/headers";
 export default async function RootLayout({ children }) {
   const cookiesStore = await cookies()
@@ -11,7 +12,9 @@ export default async function RootLayout({ children }) {
     >
       <body className="min-h-full flex flex-col transition-colors duration-300">
         <Navbar theme={theme}/>
-        {children}</body>
+        {children}
+        <AOSInit/>
+        </body>
     </html>
   );
 }

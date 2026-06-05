@@ -1,9 +1,8 @@
 "use client"
 import clsx from 'clsx'
-import React, { useEffect, useState } from 'react'
 import { FaChevronLeft } from "react-icons/fa";
 
-function Abilite({title , description ,id}) {
+function Abilite({title , description}) {
 
   return (
     <>

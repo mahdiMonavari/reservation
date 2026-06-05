@@ -10,8 +10,8 @@ import TitleHeader from '@/components/modules/titleHeader/TitleHeader';
 export default function Abilities() {
   return (
     <>      
-    <TitleHeader title="خدمات برتری که ارائه میدهیم"/>      
-      <div className="w-full py-10">
+    <TitleHeader data-aos="fade-up" title="خدمات برتری که ارائه میدهیم"/>
+      <div className="w-full py-10" data-aos="fade-up">
         <Swiper
           spaceBetween={30}    
           allowTouchMove={true}

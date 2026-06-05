@@ -1,11 +1,14 @@
 import TitleHeader from '@/components/modules/titleHeader/TitleHeader'
-import React from 'react'
+import Link from 'next/link'
+import { FaChevronLeft } from "react-icons/fa";
+
 
 function ReservationRoadMap() {
   return (
-    <div>
+    <>    
+        <div>
   <TitleHeader title={"نحوه ثبت نوبت"} />
-  <div className="flex justify-center">
+  <div className="flex justify-center relative">    
     <div className="mt-20">
       <div
         className="xl:w-180 xl:h-60 border-b-2 rounded-br-4xl border-dashed relative border-r-2 border-e-lime-950
@@ -91,10 +94,22 @@ function ReservationRoadMap() {
             </div>
         </div>
       </div>
-    </div>
+    </div>    
   </div>
-</div>
-
+  <div className='mt-10 text-center'>
+  <Link href={"/reserve"}>
+        <span className='text-emerald-600 text-center text-3xl font-Morabba-Bold mb-3 dark:text-emerald-300
+        inline-flex items-center gap-3 justify-center group relative'>
+            رزرو نوبت
+            <span className='text-2xl text-emerald-600 dark:text-emerald-300'>
+                <FaChevronLeft/>
+            </span>
+            <span className='w-0 h-0.5 dark:bg-emerald-300 bg-emerald-600 group-hover:w-full rounded-full transition-all duration-200
+            absolute -bottom-1 right-0 origin-right'></span>
+        </span>
+    </Link>
+    </div>
+</div></>
   )
 }
 

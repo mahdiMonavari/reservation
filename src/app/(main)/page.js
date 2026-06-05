@@ -1,3 +1,4 @@
+import CommentSection from "@/components/templates/index/CommentSection/CommentSection"
 import Abilities from "@/components/templates/index/abilities/Abilities"
 import Hero from "@/components/templates/index/hero/Hero"
 import ReservationRoadMap from "@/components/templates/index/reservationRoadMap/ReservationRoadMap"
@@ -13,6 +14,7 @@ async function page() {
       <div className="container">
         <Abilities/>
         <ReservationRoadMap/>
+        <CommentSection/>
       </div>        
     </div>    
     </>

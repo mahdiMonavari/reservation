@@ -15,19 +15,30 @@
   --font-Morabba-Bold: "Morabba-Bold";
   --font-Morabba-Medium: "Morabba-Medium";
   --font-Morabba-Light: "Morabba-Light";
+  --font-shabnam: "shabnam";
+  --font-shabnam-bold: "shabnam-bold";
+  --font-shabnam-medium: "shabnam-medium";
+  --font-shabnam-thin: "shabnam-thin";
+
 }
 
 @layer components {
   .container {
     width: 100%;
     margin-inline: auto;
-
+    padding-inline: 12px
   }
-}
 
-@layer base {
   * {
     @apply transition-colors duration-500;
+  }
+
+  .swiper-pagination {
+    bottom: 0;
+  }
+
+  .mySwiper {
+    padding-bottom: 40px !important;
   }
 }
 
@@ -61,10 +72,30 @@
     font-family: "Morabba-Light";
     src: url("/fonts/Dana/woff2/Morabba-Light.woff2") format(truetype);
   }
+
+  @font-face {
+    font-family: "shabnam";
+    src: url("/fonts/shabnam/Shabnam.woff2") format(truetype);
+  }
+
+  @font-face {
+    font-family: "shabnam-bold";
+    src: url("/fonts/shabnam/Shabnam-Bold.woff2") format(truetype);
+  }
+
+  @font-face {
+    font-family: "shabnam-medium";
+    src: url("/fonts/shabnam/Shabnam-Medium.woff2") format(truetype);
+  }
+
+  @font-face {
+    font-family: "shabnam-thin";
+    src: url("/fonts/shabnam/Shabnam-Thin.woff2") format(truetype);
+  }
 }
 
 @utility bg-hero-desctop {
-  background-image: linear-gradient(to right, rgba(17, 17, 17, .5), rgba(17, 17, 17, .5)),
+  background-image: linear-gradient(to right, rgba(17, 17, 17, .35), rgba(17, 17, 17, .35)),
     url('/img/desctop-hero.jpeg');
   background-position: right;
   background-repeat: no-repeat;

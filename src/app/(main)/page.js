@@ -10,7 +10,7 @@ async function page() {
       <Hero/>
       </div>
     </div>
-    <div className="space-y-20 bg-zinc-100 dark:bg-zinc-800 dark:text-white mb-1000 pt-20">
+    <div className="space-y-20 bg-zinc-100 dark:bg-zinc-800 dark:text-white pt-20">
       <div className="container">
         <Abilities/>
         <ReservationRoadMap/>

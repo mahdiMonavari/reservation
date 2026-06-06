@@ -1,8 +1,16 @@
-import React from 'react'
+
+import MembershipNewsletter from "./MembershipNewsletter";
 
 function Footer() {
+        
   return (
-    <div>Footer</div>
+    <div  className='container dark:text-gray-100 flex items-start justify-between py-5'>
+        <ul>
+            <li></li>
+            <li></li>
+        </ul>
+        <MembershipNewsletter/>
+    </div>
   )
 }
 

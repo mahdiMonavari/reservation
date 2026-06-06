@@ -1,3 +1,4 @@
+import Footer from "@/components/modules/footer/Footer";
 import Navbar from "@/components/modules/navbar/navbar";
 import "@/styles/globals.css"
 import AOSInit from "@/utiles/AOS/initAos";
@@ -13,6 +14,7 @@ export default async function RootLayout({ children }) {
       <body className="min-h-full flex flex-col transition-colors duration-300">
         <Navbar theme={theme}/>
         {children}
+        <Footer/>
         <AOSInit/>
         </body>
     </html>

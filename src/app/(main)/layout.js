@@ -14,7 +14,7 @@ export default async function RootLayout({ children }) {
       <body className="min-h-full flex flex-col transition-colors duration-300">
         <Navbar theme={theme}/>
         {children}
-        <div className="bg-teal-900">
+        <div className="dark:bg-teal-900 bg-emerald-400">
             <Footer/>
         </div>
         <AOSInit/>

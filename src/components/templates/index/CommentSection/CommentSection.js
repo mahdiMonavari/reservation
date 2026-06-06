@@ -3,7 +3,7 @@ import CommentSlide from '../commentSlide/CommentSlide'
 
 function CommentSection() {
   return (
-    <div className='flex items-center justify-center mt-20 gap-x-20 pb-10'>
+    <div className='flex items-center justify-center mt-20 gap-x-20 pb-20'>
         <div className='relative' data-aos="fade-left">
             <div className='w-120 h-30 relative'>
                 <div className='absolute h-full w-full dark:bg-zinc-600 bg-gray-300 rounded-sm -rotate-12 z-4'></div>

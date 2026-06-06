@@ -1,5 +1,7 @@
 "use client"
 import clsx from 'clsx'
+import Link from 'next/link'
+import { FaUserEdit } from "react-icons/fa";
 import React, { useState } from 'react'
 
 function LoginForm() {
@@ -50,6 +52,14 @@ function LoginForm() {
           >
             ورود
           </button>
+          <div className='mt-5 text-md text-emerald-900 dark:text-emerald-700'>
+              <Link href={"/register"}>
+                <span className='flex items-center gap-2 justify-center'>
+                  رفتن به صفحه ثبت نام
+                  <FaUserEdit />                  
+                </span>
+              </Link>
+          </div>
     </>
   )
 }

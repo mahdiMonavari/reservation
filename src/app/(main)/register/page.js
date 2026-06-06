@@ -1,6 +1,8 @@
 "use client"
 import RegisterForm from '@/components/templates/register/RegisterForm';
 import VerifyNumber from '@/components/templates/register/VerifyNumber';
+import Link from 'next/link';
+import { IoIosLogIn } from "react-icons/io";
 import{ useState } from 'react';
 
 function Register() {  
@@ -20,7 +22,15 @@ function Register() {
             setPhoneNumber={setPhoneNumber}/>
           :<RegisterForm phoneNumber={phoneNumber}/>
         }        
+        <div className='mt-5 text-md text-center text-emerald-900 dark:text-emerald-700'>
+              <Link href={"/login"}>
+                <span className='flex items-center justify-center gap-2'>
+                  رفتن به صفحه ورود
+                <IoIosLogIn />  
+                </span>                
+              </Link>
       </div>
+      </div>      
     </div>
   );
 }

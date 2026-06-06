@@ -15,7 +15,7 @@ async function page() {
         <Abilities/>
         <ReservationRoadMap/>
         <CommentSection/>
-      </div>        
+      </div>              
     </div>    
     </>
   )

@@ -24,6 +24,7 @@ export default function Abilities() {
           autoplay={{
             delay: 5000, 
             disableOnInteraction: false,
+            pauseOnMouseEnter:true,
           }}
           breakpoints={{
             320: {

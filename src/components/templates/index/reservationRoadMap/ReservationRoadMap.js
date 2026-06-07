@@ -52,7 +52,7 @@ function ReservationRoadMap() {
   ];
 
   return (
-    <div className='flex justify-center'>
+    <div className='flex justify-center mb-20'>
       <div>
         <TitleHeader title={"نحوه ثبت نوبت"} />
         <div className="flex justify-center relative px-10 sm:px-6">
@@ -123,7 +123,7 @@ function ReservationRoadMap() {
           </div>
         </div>
 
-        <div className="mt-10 text-center">
+        <div className="mt-5 text-center">
           <Link href={"/reserve"}>
             <span className="text-emerald-600 text-center text-2xl sm:text-3xl font-Morabba-Bold mb-3 dark:text-emerald-300
               inline-flex items-center gap-3 justify-center group relative">

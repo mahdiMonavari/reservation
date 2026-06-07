@@ -1,37 +1,41 @@
 "use client"
 import { offerServices } from "@/utiles/const"
-import clsx from "clsx"
-import { useEffect, useState } from "react"
+import { useEffect, useState, useRef } from "react"
 
 function Offerservices() {
-    const [indexService , setIndexService] = useState(0)
-    const [isRotation , setIsRotation] = useState(false)
-    useEffect(()=>{
-        const timerShow = setTimeout(()=>{
-            setIsRotation(true)    
-            setTimeout(()=>{
-                setIsRotation(false)
-                if(indexService < offerServices.length-1)
-                {
-                    setIndexService(indexService+1)
-                }else{
-                    setIndexService(0)
-                }
-            },300)
-        },3000)    
-        return ()=>{
-            clearTimeout(timerShow)
-        }
-    },[indexService])
+  const [index, setIndex]= useState(0)
+  const [phase, setPhase]= useState('visible') // 'visible' | 'exit' | 'enter'
+  const timerRef= useRef(null)
+
+  useEffect(() => {
+    timerRef.current = setTimeout(() => {
+      setPhase('exit')
+      setTimeout(() => {
+        setIndex(prev => (prev + 1) % offerServices.length)
+        setPhase('enter')
+
+        // brief enter frame, then settle
+        setTimeout(() => setPhase('visible'), 320)
+      }, 300)
+    }, 3000)
+
+    return () => clearTimeout(timerRef.current)
+  }, [index])
+
+  const styles = {
+    visible: 'opacity-100 translate-y-0  rotate-0   skew-x-0',
+    exit:    'opacity-0  translate-y-3   -rotate-6  skew-x-3',
+    enter:   'opacity-0  -translate-y-3  rotate-3   -skew-x-2',
+  }
+
   return (
-    <>
-        <span className={clsx(`block text-yellow-200 origin-bottom-right transition-transform duration-300`,
-        isRotation ? "-rotate-100" :"rotate-0")}>
-            {
-                offerServices[indexService].title
-            }
-        </span>
-    </>
+    <span
+      className={`block text-yellow-200 origin-bottom-right
+        transition-all duration-300 ease-in-out
+        ${styles[phase]}`}
+    >
+      {offerServices[index].title}
+    </span>
   )
 }
 

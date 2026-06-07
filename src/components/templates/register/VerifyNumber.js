@@ -1,57 +1,147 @@
-import React, { useState } from 'react'
+"use client"
+import { useState, useEffect, useRef } from 'react'
+import { FiPhone, FiLock, FiEdit2 } from 'react-icons/fi'
+import clsx from 'clsx'
 
-function VerifyNumber({phoneNumber, setPhoneNumber , setIsPhoneVerified}) {
-    const [isCodeSent, setIsCodeSent] = useState(false)
+const RESEND_SECONDS = 90
+
+const inputBase = `w-full rounded-xl py-3 pr-10 pl-4 text-base
+  bg-emerald-50 dark:bg-white/5
+  border border-emerald-200 dark:border-white/10
+  text-emerald-900 dark:text-white
+  placeholder:text-emerald-400/60 dark:placeholder:text-white/25
+  focus:outline-none focus:border-emerald-400 dark:focus:border-emerald-400/60
+  focus:bg-white dark:focus:bg-white/10
+  transition-all duration-200 text-right`
+
+function VerifyNumber({ phoneNumber, setPhoneNumber, setIsPhoneVerified }) {
+  const [codeSent, setCodeSent]   = useState(false)
+  const [otp, setOtp]             = useState("")
+  const [countdown, setCountdown] = useState(RESEND_SECONDS)
+  const timerRef                  = useRef(null)
+
+  const startTimer = () => {
+    setCountdown(RESEND_SECONDS)
+    clearInterval(timerRef.current)
+    timerRef.current = setInterval(() => {
+      setCountdown(p => {
+        if (p <= 1) { clearInterval(timerRef.current); return 0 }
+        return p - 1
+      })
+    }, 1000)
+  }
+
+  useEffect(() => () => clearInterval(timerRef.current), [])
+
+  const handleSend = () => {
+    if (phoneNumber.length < 11) return
+    setCodeSent(true)
+    startTimer()
+  }
+
+  const handleEdit = () => {
+    setCodeSent(false)
+    setOtp("")
+    clearInterval(timerRef.current)
+  }
+
+  const handleResend = () => {
+    setOtp("")
+    startTimer()
+  }
+
+  const fmt = (s) =>
+    `${String(Math.floor(s / 60)).padStart(2, '0')}:${String(s % 60).padStart(2, '0')}`
+
   return (
-    <>
-    {
-        !isCodeSent ?     <div className='space-y-6'>
-          <div className='relative'>
-            <input
-              value={phoneNumber}
-              onChange={(e) => setPhoneNumber(e.target.value)}
-              type="text"
-              inputMode='numeric'
-              maxLength={11}
-              placeholder='شماره تماس'
-              className='w-full border-b-2 border-emerald-700 dark:border-emerald-900 py-3 px-1 text-lg text-gray-900
-               dark:text-white focus:outline-none focus:ring-0 focus:border-emerald-200 dark:focus:border-emerald-400               
-                bg-transparent placeholder:text-2xl placeholder:text-emerald-700 placeholder:dark:text-emerald-900
-                focus:placeholder:opacity-0 placeholder:transition-all placeholder:duration-300 placeholder:opacity-90
-                placeholder:animate-bounce placeholder:[animation-duration:2s] placeholder:font-Morabba-Medium'
-            />  
-          </div>
-          <button
-            type='submit'
-            className='w-full bg-emerald-600 hover:bg-emerald-700 dark:bg-emerald-500 dark:hover:bg-emerald-600 text-white font-semibold py-3 px-4 rounded-lg transition duration-300 ease-in-out shadow-md hover:shadow-lg'
-          >
-            ارسال کد
+    <div className="space-y-4">
+
+      {/* شماره تلفن */}
+      <div className="relative">
+        <span className="absolute right-3 top-1/2 -translate-y-1/2
+          text-emerald-400 dark:text-emerald-400/60 pointer-events-none">
+          <FiPhone size={17} />
+        </span>
+        <input
+          value={phoneNumber}
+          onChange={e => setPhoneNumber(e.target.value)}
+          disabled={codeSent}
+          type="text" inputMode="numeric" maxLength={11}
+          placeholder="شماره تماس"
+          className={clsx(inputBase, codeSent && 'opacity-60 cursor-not-allowed')}
+          dir="rtl"
+        />
+        {codeSent && (
+          <button type="button" onClick={handleEdit}
+            className="absolute left-3 top-1/2 -translate-y-1/2
+              flex items-center gap-1 text-xs font-Morabba-Bold
+              text-emerald-600 dark:text-emerald-400
+              bg-emerald-100 dark:bg-emerald-500/20
+              px-2 py-1 rounded-lg
+              hover:bg-emerald-200 dark:hover:bg-emerald-500/30
+              transition-colors duration-150">
+            <FiEdit2 size={11} />
+            ویرایش
           </button>
-        </div>:<div>
-<div className='relative'>
-            <input
-              value={phoneNumber}
-              onChange={(e) => setPhoneNumber(e.target.value)}
-              type="text"
-              inputMode='numeric'
-              maxLength={11}
-              placeholder='کد دریافتی را وارد کنید'
-              className='w-full border-b-2 border-emerald-700 dark:border-emerald-900 py-3 px-1 text-lg text-gray-900
-               dark:text-white focus:outline-none focus:ring-0 focus:border-emerald-200 dark:focus:border-emerald-400               
-                bg-transparent placeholder:text-2xl placeholder:text-emerald-700 placeholder:dark:text-emerald-900
-                focus:placeholder:opacity-0 placeholder:transition-all placeholder:duration-300 placeholder:opacity-90
-                placeholder:animate-bounce placeholder:[animation-duration:2s] placeholder:font-Morabba-Medium'
-            />  
-          </div>
-          <button
-            type='submit'
-            className='w-full bg-emerald-600 hover:bg-emerald-700 dark:bg-emerald-500 dark:hover:bg-emerald-600 text-white font-semibold py-3 px-4 rounded-lg transition duration-300 ease-in-out shadow-md hover:shadow-lg'
-          >
-            اعتبار سنجی
-          </button>
+        )}
+      </div>
+
+      {/* OTP */}
+      <div className={clsx(
+        'transition-all duration-400 overflow-hidden',
+        codeSent ? 'max-h-24 opacity-100' : 'max-h-0 opacity-0'
+      )}>
+        <div className="relative">
+          <span className="absolute right-3 top-1/2 -translate-y-1/2
+            text-emerald-400 dark:text-emerald-400/60 pointer-events-none">
+            <FiLock size={17} />
+          </span>
+          <input
+            value={otp}
+            onChange={e => setOtp(e.target.value)}
+            type="text" inputMode="numeric" maxLength={6}
+            placeholder="کد دریافتی"
+            className={inputBase} dir="ltr"
+          />
         </div>
-    }
-    </>
+      </div>
+
+      {/* تایمر */}
+      {codeSent && (
+        <div className="text-center text-sm">
+          {countdown > 0 ? (
+            <span className="text-emerald-500/60 dark:text-emerald-300/50">
+              ارسال مجدد تا{' '}
+              <span className="text-emerald-600 dark:text-emerald-300 font-Morabba-Bold tabular-nums">
+                {fmt(countdown)}
+              </span>
+            </span>
+          ) : (
+            <button type="button" onClick={handleResend}
+              className="text-emerald-600 dark:text-emerald-400
+                hover:text-emerald-700 dark:hover:text-emerald-300
+                underline underline-offset-2 transition-colors">
+              ارسال مجدد کد
+            </button>
+          )}
+        </div>
+      )}
+
+      {/* دکمه اصلی */}
+      <button type="button"
+        onClick={codeSent ? () => setIsPhoneVerified(true) : handleSend}
+        className="relative w-full py-3 rounded-xl font-Morabba-Bold text-base
+          bg-emerald-500 hover:bg-emerald-600 text-white overflow-hidden
+          transition-all duration-200
+          hover:shadow-md hover:shadow-emerald-500/20
+          active:scale-[0.98] group">
+        <span className="relative z-10">{codeSent ? 'تأیید شماره' : 'ارسال کد'}</span>
+        <span className="absolute inset-0 bg-gradient-to-l
+          from-white/0 via-white/10 to-white/0
+          translate-x-full group-hover:translate-x-[-200%]
+          transition-transform duration-700" />
+      </button>
+    </div>
   )
 }
 

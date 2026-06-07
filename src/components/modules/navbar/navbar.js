@@ -1,48 +1,75 @@
 import React from 'react'
 import ThemeCta from './ThemeCta';
 import Link from 'next/link';
+import MobileMenu from './MobileMenu';
 
-function Navbar({theme}) {
+const navLinks = [
+  { href: '/',            label: 'خانه' },
+  { href: '/about',       label: 'درباره ما' },
+  { href: '/contact-us',  label: 'ارتباط با ما' },
+  { href: '/doctors',     label: 'دکترها' },
+  { href: '/reservation', label: 'رزرو نوبت' },
+];
+
+function Navbar({ theme }) {
   return (
-    <div className="fixed top-5 px-8 py-4 bg-green-100/50 dark:bg-teal-800/70 hidden backdrop-blur-sm
-     rounded-full sm:w-154 md:w-186 lg:w-250 xl:w-314 w-[90%]  left-1/2 -translate-x-1/2 sm:flex border-l-2 border-green-300 border-r-2
-    items-center justify-between z-50 overflow-hidden dark:text-gray-100">
-      {/* <span className='w-25 h-px bg-green-300 absolute top-0 right-3 rounded-3xl'></span> */}
-    <ul className="flex items-center gap-x-6 text-green-800/80 font-Morabba-Bold  *:cursor-pointer text-xl">
-        <li className='text-green-800/80  hover:text-green-800 transition-all dark:text-gray-100 dark:hover:text-teal-500 duration-300'>
-          <Link href={"/"}>خانه</Link>
-          </li>
-        <li className='text-green-800/80  hover:text-green-800 transition-all dark:text-gray-100 dark:hover:text-teal-500 duration-300'>
-          <Link href={"/about"}>درباره ما</Link>
-          </li>
-        <li className='text-green-800/80  hover:text-green-800 transition-all dark:text-gray-100 dark:hover:text-teal-500 duration-300'>
-          <Link href={"/contact-ue"}>ارتباط با ما</Link>
-          </li>
-        <li className='text-green-800/80  hover:text-green-800 transition-all dark:text-gray-100 dark:hover:text-teal-500 duration-300'>
-          <Link href={"/doctors"}>دکترها</Link>
-          </li>
-        <li className='text-green-800/80  hover:text-green-800 transition-all dark:text-gray-100 dark:hover:text-teal-500 duration-300'>
-          <Link href={"/reservation"}>رزرو نوبت</Link>
-          </li>
-    </ul>
-     <ul className="flex items-center gap-x-4 text-green-800/80 font-Morabba-Bold  *:cursor-pointer text-xl
-     dark:text-teal-950">        
-        <li className='dark:hover:text-teal-500
-        hover:text-green-800 transition-all duration-300 group'>
-          <Link href="/login" className='flex items-center gap-2'>
-            <span>
-                ورود
-            </span>
-            <span className='h-9 rounded-full w-0.5 bg-green-800/80 dark:bg-teal-950
-            group-hover:bg-green-800 transition-all duration-300 dark:group-hover:bg-teal-500'></span>
-            <span>
-                ثبت نام
-            </span>
+    <>
+      {/* ─── Desktop navbar ─── */}
+      <nav
+        className="fixed top-4 left-1/2 -translate-x-1/2 z-50
+          hidden sm:flex items-center justify-between
+          px-6 py-3
+          w-[92%] max-w-xs sm:max-w-2xl md:max-w-4xl lg:max-w-6xl xl:max-w-7xl
+          bg-green-50/60 dark:bg-teal-900/60
+          backdrop-blur-md
+          rounded-2xl
+          border border-green-200/60 dark:border-teal-700/50
+          shadow-lg shadow-green-900/5 dark:shadow-teal-950/30
+          transition-colors duration-300"
+      >
+        {/* Nav links */}
+        <ul className="flex items-center gap-x-1 font-Morabba-Bold text-sm md:text-lg">
+          {navLinks.map(({ href, label }) => (
+            <li key={href}>
+              <Link
+                href={href}
+                className="relative px-3 py-1.5 rounded-lg
+                  text-green-800/80 dark:text-gray-200
+                  hover:text-green-900 dark:hover:text-teal-400
+                  hover:bg-green-100/60 dark:hover:bg-teal-800/40
+                  transition-all duration-200 inline-block"
+              >
+                {label}
+              </Link>
+            </li>
+          ))}
+        </ul>
+
+        {/* Auth + theme */}
+        <ul className="flex items-center gap-x-3 font-Morabba-Bold text-sm md:text-lg">
+          <li>
+            <Link
+              href="/login"
+              className="flex items-center gap-2 text-green-800/80 dark:text-gray-200
+                hover:text-green-900 dark:hover:text-teal-400 transition-all duration-200 group"
+            >
+              <span>ورود</span>
+              <span
+                className="h-5 w-px rounded-full bg-green-400/60 dark:bg-teal-600
+                group-hover:bg-green-600 dark:group-hover:bg-teal-400 transition-colors duration-200"
+              />
+              <span>ثبت نام</span>
             </Link>
-        </li>
-        <ThemeCta prevTheme={theme}/>
-      </ul>
-    </div>
+          </li>
+          <li>
+            <ThemeCta prevTheme={theme} />
+          </li>
+        </ul>
+      </nav>
+
+      {/* ─── Mobile navbar ─── */}
+      <MobileMenu theme={theme} navLinks={navLinks} />
+    </>
   )
 }
 

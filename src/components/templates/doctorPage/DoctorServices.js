@@ -1,4 +1,5 @@
 import React from 'react'
+import DoctorService from './DoctorService'
 
 function DoctorServices() {
   return (
@@ -11,13 +12,7 @@ function DoctorServices() {
                 { title: "زایمان طبیعی و سزارین", desc: "مشاوره تخصصی و انجام زایمان در بهترین بیمارستان‌های تهران" },
                 { title: "درمان عفونت‌های زنان", desc: "تشخیص و درمان سریع انواع عفونت‌ها با روش‌های نوین" }
             ].map((service, index) => (
-                <div key={index} className="p-6 rounded-3xl border border-emerald-100 bg-white/50 backdrop-blur-sm transition-all hover:shadow-lg dark:border-emerald-900/50 dark:bg-slate-900/40">
-                    <div className="w-12 h-12 rounded-2xl bg-emerald-100 dark:bg-emerald-900/50 flex items-center text-2xl justify-center mb-4 text-emerald-600 dark:text-emerald-400 font-bold">
-                        {new Intl.NumberFormat("fa-IR").format(index+1)}
-                    </div>
-                    <h3 className="text-xl font-semibold text-emerald-900 dark:text-emerald-50 mb-2">{service.title}</h3>
-                    <p className="text-sm text-emerald-950/70 dark:text-emerald-50/70 leading-relaxed">{service.desc}</p>
-                </div>
+             <DoctorService key={index}  service={service}  index={index}/>
             ))}
         </div>
     </section>

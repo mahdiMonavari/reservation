@@ -1,53 +1,44 @@
-
 import Link from "next/link";
 import MembershipNewsletter from "./MembershipNewsletter";
 
 function Footer() {
-        
+  const links = ["خانه", "درباره ما", "ارتباط با ما", "دکترها", "رزرو نوبت"];
+  
   return (
-    <div  className='container dark:text-gray-100 flex items-start justify-between py-5'>
-        <ul className="space-y-2 text-xl dark:text-gray-100 text-zinc-900 pr-10">
-            <li className="relative pr-2">
-                <Link href={""}>خانه</Link>
-                <span className="absolute top-1/2 -translate-y-1/2 w-3 h-0.5 dark:bg-gray-100 bg-zinc-700 -right-3"></span>
+    <footer className="border-t border-emerald-100 dark:border-emerald-900/50 bg-white dark:bg-emerald-950/20 backdrop-blur-lg">
+      <div className="container py-12 grid grid-cols-1 md:grid-cols-3 gap-10">
+        
+        {/* لینک‌های دسترسی */}
+        <ul className="space-y-4">
+          {links.map((link) => (
+            <li key={link} className="group">
+              <Link href="#" className="text-emerald-900 dark:text-emerald-50 transition-all group-hover:text-emerald-600 flex items-center gap-2">
+                <span className="w-1.5 h-1.5 rounded-full bg-emerald-500 opacity-0 group-hover:opacity-100 transition-opacity" />
+                {link}
+              </Link>
             </li>
-            <li className="relative pr-2">
-                <Link href={""}>درباره ما</Link>
-                <span className="absolute top-1/2 -translate-y-1/2 w-3 h-0.5 dark:bg-gray-100 bg-zinc-700 -right-3"></span>
-            </li>
-            <li className="relative pr-2">
-                <Link href={""}>ارتباط با ما</Link>
-                <span className="absolute top-1/2 -translate-y-1/2 w-3 h-0.5 dark:bg-gray-100 bg-zinc-700 -right-3"></span>
-            </li>
-            <li className="relative pr-2">
-                <Link href={""}>دکترها</Link>
-                <span className="absolute top-1/2 -translate-y-1/2 w-3 h-0.5 dark:bg-gray-100 bg-zinc-700 -right-3"></span>
-            </li>
-            <li className="relative pr-2">
-                <Link href={""}>رزرونوبت</Link>
-                <span className="absolute top-1/2 -translate-y-1/2 w-3 h-0.5 dark:bg-gray-100 bg-zinc-700 -right-3"></span>
-            </li>
+          ))}
         </ul>
-        <div className="dark:text-gray-100 text-zinc-900">
-            <div className="mb-4">
-                <h2 className="text-2xl mb-2">آدرس :</h2>
-                <p>
-                    دولت آباد خیابان طالقانی پست اداره پست 
-                </p>            
-            </div>
-            <div className="mb-4">
-                <h2 className="text-2xl mb-2">شماره تماس :</h2>
-                <p>
-                    09131050649
-                </p>            
-            </div>
+
+        {/* اطلاعات تماس */}
+        <div className="text-emerald-900 dark:text-emerald-100 space-y-6">
+          <div>
+            <h2 className="font-shabnam-bold mb-2">آدرس دفتر</h2>
+            <p className="text-sm opacity-80 leading-relaxed">دولت آباد، خیابان طالقانی، ساختمان پزشکان، پلاک ۱۲</p>            
+          </div>
+          <div>
+            <h2 className="font-shabnam-bold mb-2">شماره تماس</h2>
+            <p className="text-emerald-600 font-mono text-lg">۰۹۱۳-۱۰۵-۰۶۴۹</p>            
+          </div>
         </div>
+
+        {/* خبرنامه */}
         <div>
-            <h3 className="text-2xl mb-3 dark:text-gray-100 text-zinc-900">عضویت در خبرنامه</h3>
-            <MembershipNewsletter/>
+            <h3 className="text-xl font-bold mb-4 text-emerald-900 dark:text-emerald-50">عضویت در خبرنامه</h3>
+            <MembershipNewsletter />
         </div>        
-    </div>
+      </div>
+    </footer>
   )
 }
-
-export default Footer
+export default Footer;

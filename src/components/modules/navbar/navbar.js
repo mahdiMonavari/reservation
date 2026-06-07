@@ -1,5 +1,6 @@
 import React from 'react'
 import ThemeCta from './ThemeCta';
+import Link from 'next/link';
 
 function Navbar({theme}) {
   return (
@@ -8,16 +9,27 @@ function Navbar({theme}) {
     items-center justify-between z-50 overflow-hidden dark:text-gray-100">
       {/* <span className='w-25 h-px bg-green-300 absolute top-0 right-3 rounded-3xl'></span> */}
     <ul className="flex items-center gap-x-6 text-green-800/80 font-Morabba-Bold  *:cursor-pointer text-xl">
-        <li className='text-green-800/80  hover:text-green-800 transition-all dark:text-gray-100 dark:hover:text-teal-500 duration-300'>خانه</li>
-        <li className='text-green-800/80  hover:text-green-800 transition-all dark:text-gray-100 dark:hover:text-teal-500 duration-300'>درباره ما</li>
-        <li className='text-green-800/80  hover:text-green-800 transition-all dark:text-gray-100 dark:hover:text-teal-500 duration-300'>ارتباط با ما</li>
-        <li className='text-green-800/80  hover:text-green-800 transition-all dark:text-gray-100 dark:hover:text-teal-500 duration-300'>دکترها</li>
-        <li className='text-green-800/80  hover:text-green-800 transition-all dark:text-gray-100 dark:hover:text-teal-500 duration-300'>رزرو نوبت</li>
+        <li className='text-green-800/80  hover:text-green-800 transition-all dark:text-gray-100 dark:hover:text-teal-500 duration-300'>
+          <Link href={"/"}>خانه</Link>
+          </li>
+        <li className='text-green-800/80  hover:text-green-800 transition-all dark:text-gray-100 dark:hover:text-teal-500 duration-300'>
+          <Link href={"/about"}>درباره ما</Link>
+          </li>
+        <li className='text-green-800/80  hover:text-green-800 transition-all dark:text-gray-100 dark:hover:text-teal-500 duration-300'>
+          <Link href={"/contact-ue"}>ارتباط با ما</Link>
+          </li>
+        <li className='text-green-800/80  hover:text-green-800 transition-all dark:text-gray-100 dark:hover:text-teal-500 duration-300'>
+          <Link href={"/doctors"}>دکترها</Link>
+          </li>
+        <li className='text-green-800/80  hover:text-green-800 transition-all dark:text-gray-100 dark:hover:text-teal-500 duration-300'>
+          <Link href={"/reservation"}>رزرو نوبت</Link>
+          </li>
     </ul>
      <ul className="flex items-center gap-x-4 text-green-800/80 font-Morabba-Bold  *:cursor-pointer text-xl
      dark:text-teal-950">        
-        <li className='flex items-center gap-2 dark:hover:text-teal-500
+        <li className='dark:hover:text-teal-500
         hover:text-green-800 transition-all duration-300 group'>
+          <Link href="/login" className='flex items-center gap-2'>
             <span>
                 ورود
             </span>
@@ -26,6 +38,7 @@ function Navbar({theme}) {
             <span>
                 ثبت نام
             </span>
+            </Link>
         </li>
         <ThemeCta prevTheme={theme}/>
       </ul>

@@ -2,7 +2,7 @@ import Reservation from "@/components/templates/resarvation/Reservation"
 
 function page() {
   return (
-    <div className='h-screen bg-gray-100 dark:bg-zinc-700'>
+    <div className='min-h-screen bg-gray-100 dark:bg-zinc-700'>
         <Reservation/>        
     </div>
   )

@@ -2,7 +2,7 @@ import DoctorCard from "./DoctorCard"
 import DoctorComment from "./DoctorComment"
 import DoctorServices from "./DoctorServices"
 function DoctorPage() {
-  return (
+  return (    
     <div className='container my-20'>
         <DoctorCard/>
         <DoctorServices/>

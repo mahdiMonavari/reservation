@@ -2,6 +2,7 @@ import React from 'react'
 import ThemeCta from './ThemeCta';
 import Link from 'next/link';
 import MobileMenu from './MobileMenu';
+import NavbarResarvationLink from "./NavbarReservationLink"
 
 const navLinks = [
   { href: '/',            label: 'خانه' },
@@ -30,6 +31,7 @@ function Navbar({ theme }) {
         {/* Nav links */}
         <ul className="flex items-center gap-x-1 font-Morabba-Bold text-sm md:text-lg">
           {navLinks.map(({ href, label }) => (
+            href !== "/reservation" ?
             <li key={href}>
               <Link
                 href={href}
@@ -41,7 +43,7 @@ function Navbar({ theme }) {
               >
                 {label}
               </Link>
-            </li>
+            </li> : <NavbarResarvationLink key={href}/>
           ))}
         </ul>
 

@@ -1,4 +1,5 @@
 import Image from 'next/image'
+import ReservationButton from './ReservationButton'
 
 function DoctorDard() {
   return (
@@ -65,9 +66,7 @@ function DoctorDard() {
 
             {/* CTA */}
             <div className='flex flex-col sm:flex-row gap-3 pt-2'>
-              <button className='rounded-2xl bg-emerald-600 cursor-pointer px-5 py-3 font-semibold text-white shadow-md shadow-emerald-600/20 transition-colors duration-300'>
-                رزرو نوبت
-              </button>
+              <ReservationButton/>
             </div>
           </div>
         </div>

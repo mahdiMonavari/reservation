@@ -23,7 +23,8 @@
     "react-intersection-observer": "^10.0.3",
     "react-spinner": "^0.2.7",
     "swiper": "^12.2.0",
-    "zod": "^4.4.3"
+    "zod": "^4.4.3",
+    "zustand": "^5.0.14"
   },
   "devDependencies": {
     "@tailwindcss/postcss": "^4",

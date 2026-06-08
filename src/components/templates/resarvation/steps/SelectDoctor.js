@@ -10,7 +10,7 @@ const DOCTORS = [
     specialty:  'متخصص زنان و زایمان',
     experience: '۱۵ سال سابقه',
     rating:     '۴.۹',
-    src:        '/doctors/doctor-1.jpg',
+    src:        '/img/doctor-hero.jpg',
   },
   {
     id: 2,
@@ -18,7 +18,7 @@ const DOCTORS = [
     specialty:  'فوق تخصص جنین‌شناسی',
     experience: '۱۲ سال سابقه',
     rating:     '۴.۸',
-    src:        '/doctors/doctor-2.jpg',
+    src:        '/img/doctor-hero.jpg',
   },
   {
     id: 3,
@@ -26,7 +26,7 @@ const DOCTORS = [
     specialty:  'متخصص زنان و نازایی',
     experience: '۱۰ سال سابقه',
     rating:     '۴.۷',
-    src:        '/doctors/doctor-3.jpg',
+    src:        '/img/doctor-hero.jpg',
   },
   {
     id: 4,
@@ -34,7 +34,7 @@ const DOCTORS = [
     specialty:  'متخصص سونوگرافی مامایی',
     experience: '۸ سال سابقه',
     rating:     '۴.۸',
-    src:        '/doctors/doctor-4.jpg',
+    src:        '/img/doctor-hero.jpg',
   },
 ]
 
@@ -78,8 +78,8 @@ function SelectDoctor() {
                 <Image
                   src={doctor.src}
                   alt={doctor.name}
-                  fill
                   className="object-cover"
+                  fill
                 />
               </div>
 

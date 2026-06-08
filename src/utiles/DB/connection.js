@@ -10,3 +10,5 @@ const connectionToDB=async()=>{
         console.log("has error for DB connection");
     }
 }
+
+export default connectionToDB

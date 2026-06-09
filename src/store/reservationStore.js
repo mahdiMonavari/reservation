@@ -15,6 +15,7 @@ const useReservationStore = create((set) => ({
   setServices: (services) => set({ selectedServices: services }),
   setDate:     (date)     => set({ selectedDate: date }),
   setTime:     (time)     => set({ selectedTime: time }),
+  setStep : (step)=>set({step}),
 
   reset: () => set({
     step: 1,

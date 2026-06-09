@@ -51,6 +51,7 @@ function RegisterForm({ phoneNumber }) {
       ))}
 
       <button type="button"
+        onClick={createUserHandler}
         className="relative w-full py-3 rounded-xl font-Morabba-Bold text-base
           bg-emerald-500 hover:bg-emerald-600 text-white overflow-hidden
           transition-all duration-200

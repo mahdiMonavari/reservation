@@ -2,6 +2,7 @@
 import { useState, useEffect, useRef } from 'react'
 import { FiPhone, FiLock, FiEdit2 } from 'react-icons/fi'
 import clsx from 'clsx'
+import { json } from 'zod'
 
 const RESEND_SECONDS = 90
 
@@ -15,10 +16,10 @@ const inputBase = `w-full rounded-xl py-3 pr-10 pl-4 text-base
   transition-all duration-200 text-right`
 
 function VerifyNumber({ phoneNumber, setPhoneNumber, setIsPhoneVerified }) {
-  const [codeSent, setCodeSent]   = useState(false)
-  const [otp, setOtp]             = useState("")
+  const [codeSent, setCodeSent] = useState(false)
+  const [otp, setOtp] = useState("")
   const [countdown, setCountdown] = useState(RESEND_SECONDS)
-  const timerRef                  = useRef(null)
+  const timerRef = useRef(null)
 
   const startTimer = () => {
     setCountdown(RESEND_SECONDS)
@@ -33,10 +34,19 @@ function VerifyNumber({ phoneNumber, setPhoneNumber, setIsPhoneVerified }) {
 
   useEffect(() => () => clearInterval(timerRef.current), [])
 
-  const handleSend = () => {
+  const handleSend = async() => {
     if (phoneNumber.length < 11) return
-    setCodeSent(true)
-    startTimer()
+    const res = await fetch("/api/otp/send",{
+      method:"POST",
+      headers:{
+        "Content-type" : "applicarion/json"
+      },
+      body : JSON.stringify({phone:phoneNumber})
+    })
+    if(res.status === 200){
+      setCodeSent(true)
+      startTimer()
+    }    
   }
 
   const handleEdit = () => {
@@ -45,8 +55,30 @@ function VerifyNumber({ phoneNumber, setPhoneNumber, setIsPhoneVerified }) {
     clearInterval(timerRef.current)
   }
 
+  const handleVrifyUserEnterCode =async()=>{
+    const res = await fetch("/api/otp/verify",{
+      method:"POST",
+      headers:{
+        "Content-type" : "applicarion/json"
+      },
+      body:JSON.stringify({
+        phone:phoneNumber,
+        otp
+      })
+    })
+    if(res.status === 200){
+      setIsPhoneVerified(true)
+    }    
+    else if(res.status === 400){
+      alert("کد معتبر نمیباشد")
+    }else{
+      alert("کد منقضی شده است")
+    }
+  }
+
   const handleResend = () => {
     setOtp("")
+    handleSend()
     startTimer()
   }
 
@@ -55,8 +87,6 @@ function VerifyNumber({ phoneNumber, setPhoneNumber, setIsPhoneVerified }) {
 
   return (
     <div className="space-y-4">
-
-      {/* شماره تلفن */}
       <div className="relative">
         <span className="absolute right-3 top-1/2 -translate-y-1/2
           text-emerald-400 dark:text-emerald-400/60 pointer-events-none">
@@ -86,7 +116,6 @@ function VerifyNumber({ phoneNumber, setPhoneNumber, setIsPhoneVerified }) {
         )}
       </div>
 
-      {/* OTP */}
       <div className={clsx(
         'transition-all duration-400 overflow-hidden',
         codeSent ? 'max-h-24 opacity-100' : 'max-h-0 opacity-0'
@@ -106,7 +135,6 @@ function VerifyNumber({ phoneNumber, setPhoneNumber, setIsPhoneVerified }) {
         </div>
       </div>
 
-      {/* تایمر */}
       {codeSent && (
         <div className="text-center text-sm">
           {countdown > 0 ? (
@@ -127,9 +155,8 @@ function VerifyNumber({ phoneNumber, setPhoneNumber, setIsPhoneVerified }) {
         </div>
       )}
 
-      {/* دکمه اصلی */}
       <button type="button"
-        onClick={codeSent ? () => setIsPhoneVerified(true) : handleSend}
+        onClick={()=> codeSent ? handleVrifyUserEnterCode() : handleSend()}
         className="relative w-full py-3 rounded-xl font-Morabba-Bold text-base
           bg-emerald-500 hover:bg-emerald-600 text-white overflow-hidden
           transition-all duration-200

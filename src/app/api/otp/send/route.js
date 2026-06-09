@@ -1,6 +1,6 @@
 import connectionToDB from "@/utiles/DB/connection"
-import { sendOtpValidator } from "../../../../validators/backend/optValidator"
-import otpModel from "../../../../model/opt";
+import { sendOtpValidator } from "../../../../../validators/backend/otpValidator"
+import otpModel from "../../../../../model/otp";
 
 export async function POST(req){
     const API_KEY = "pQG2pGhmXjSpfAH33mBArltQcAS4cT7QSMyE1exDRtbeJvMu52";
@@ -9,7 +9,6 @@ export async function POST(req){
     try{
     const {phone} = await req.json()
     const isValidPhoneNumber = sendOtpValidator({phone})
-    console.log(isValidPhoneNumber);
     if(isValidPhoneNumber === true){
         const verificationCode = Math.floor(Math.random() * 90000) + 10000;
           const requestBody = {
@@ -49,5 +48,6 @@ export async function POST(req){
     }
     catch(err){
         console.log(err);
+        return Response.json("enternal error")
     }
 }

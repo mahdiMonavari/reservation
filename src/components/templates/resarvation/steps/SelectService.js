@@ -48,11 +48,11 @@ const totalDuration = selectedServices.reduce((sum, s) => {
   return (
     <div>
       <div className="text-right mb-5">
-        <h2 className="text-base font-Morabba-Bold
+        <h2 className="text-xl mt-3 md:text-2xl font-Morabba-Bold
           text-emerald-900 dark:text-white">
           خدمات مورد نظر خود را انتخاب کنید
         </h2>
-        <p className="text-xs mt-1 text-emerald-600 dark:text-emerald-400">
+        <p className="text-sm mt-1 text-emerald-600 dark:text-emerald-400">
           می‌توانید چند خدمت را همزمان انتخاب کنید
         </p>
       </div>
@@ -67,7 +67,7 @@ const totalDuration = selectedServices.reduce((sum, s) => {
               type="button"
               onClick={() => toggle(service)}
               className={`relative w-full text-right rounded-2xl px-4 py-3.5
-                flex items-center gap-3
+                flex items-start gap-3
                 border transition-all duration-200 group
                 ${selected
                   ? 'bg-emerald-50 border-emerald-400 dark:bg-emerald-500/15 dark:border-emerald-400'
@@ -93,13 +93,13 @@ const totalDuration = selectedServices.reduce((sum, s) => {
                   }`}>
                   {service.name}
                 </p>
-                <div className="flex items-center justify-end gap-3 mt-1">
-                  <span className="flex items-center gap-1 text-[11px]
-                    text-emerald-500/70 dark:text-emerald-400/60">
+                <div className="flex items-center justify-end gap-3 mt-5">
+                  <span className="flex items-center gap-1 text-xs
+                    text-emerald-500 dark:text-emerald-400/60">
                     <FiClock size={10} />
                     {service.duration}
                   </span>
-                  <span className="flex items-center gap-1 text-[11px]
+                  <span className="flex items-center gap-1 text-sm
                     text-emerald-600 dark:text-emerald-400 font-Morabba-Bold">
                     <FiDollarSign size={10} />
                     {service.price} تومان
@@ -112,11 +112,11 @@ const totalDuration = selectedServices.reduce((sum, s) => {
       </div>
 
       {/* خلاصه انتخاب‌ها */}
-      <div className={`transition-all duration-300 overflow-hidden rounded-2xl
-        ${selectedServices.length > 0 ? 'max-h-40 opacity-100' : 'max-h-0 opacity-0'}`}>
+      <div className={`transition-all duration-1000 rounded-2xl overflow-hidden
+        ${selectedServices.length > 0 ? 'md:max-h-30 opacity-100' : 'max-h-0 opacity-0'}`}>
         <div className="bg-emerald-500/10 dark:bg-emerald-500/10
           border border-emerald-300/50 dark:border-emerald-400/20
-          rounded-2xl px-5 py-3.5">
+          rounded-2xl px-5 py-3">
           <div className="flex items-center justify-between">
 
             {/* تعداد و زمان کل */}
@@ -134,7 +134,7 @@ const totalDuration = selectedServices.reduce((sum, s) => {
 
             {/* قیمت کل */}
             <div className="text-right">
-              <p className="text-[10px] text-emerald-500/70 dark:text-emerald-400/60 mb-0.5">
+              <p className="text-[10px] text-emerald-500 dark:text-emerald-400/60 mb-0.5">
                 جمع کل
               </p>
               <p className="text-sm font-Morabba-Bold

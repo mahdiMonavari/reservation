@@ -45,11 +45,11 @@ function SelectDoctor() {
   return (
     <div>
       <div className="text-right mb-5">
-        <h2 className="text-base font-Morabba-Bold
+        <h2 className="text-2xl font-Morabba-Bold
           text-emerald-900 dark:text-white">
           دکتر مورد نظر خود را انتخاب کنید
         </h2>
-        <p className="text-xs mt-1 text-emerald-600/60 dark:text-emerald-300/50">
+        <p className="text-sm mt-1 text-emerald-600 dark:text-emerald-300/50">
           با کلیک روی هر کارت، دکتر انتخاب می‌شود
         </p>
       </div>
@@ -85,19 +85,19 @@ function SelectDoctor() {
 
               {/* اطلاعات */}
               <div className="flex-1 min-w-0">
-                <p className="text-sm font-Morabba-Bold truncate
+                <p className="text-lg font-Morabba-Bold truncate
                   text-emerald-900 dark:text-white">
                   {doctor.name}
                 </p>
-                <p className="text-xs mt-0.5 truncate
-                  text-emerald-600/70 dark:text-emerald-300/60">
+                <p className="text-sm mt-0.5 truncate
+                  text-emerald-600 dark:text-emerald-300/60">
                   {doctor.specialty}
                 </p>
-                <div className="flex items-center justify-end gap-3 mt-1.5">
-                  <span className="text-[11px] text-emerald-500/70 dark:text-emerald-400/50">
+                <div className="flex items-center justify-between mt-5 gap-3">
+                  <span className="text-sm text-emerald-500 dark:text-emerald-400/50">
                     {doctor.experience}
                   </span>
-                  <span className="flex items-center gap-1 text-[11px]
+                  <span className="flex items-center gap-1 text-sm
                     text-amber-500 dark:text-amber-400">
                     ★ {doctor.rating}
                   </span>

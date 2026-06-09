@@ -38,7 +38,7 @@ function Reservation() {
 
   return (
     <div className="relative min-h-screen flex items-start justify-center
-      bg-gradient-to-br from-emerald-50 via-teal-50 to-green-100
+      bg-gradient-to-br bg-gray-100
       dark:from-emerald-950 dark:via-teal-900 dark:to-emerald-950
       px-4 pt-24 pb-12 overflow-hidden">
 
@@ -59,7 +59,7 @@ function Reservation() {
           bg-transparent dark:bg-emerald-500/15 blur-xl" />
 
         <div className="relative backdrop-blur-xl rounded-3xl overflow-hidden
-          bg-white/70 border border-emerald-200/60
+          bg-white/70 border-4 border-emerald-200/60
           dark:bg-white/5 dark:border-white/10
           shadow-sm dark:shadow-2xl dark:shadow-emerald-950/50">
 
@@ -81,7 +81,7 @@ function Reservation() {
                   text-emerald-800 dark:text-emerald-100">
                   رزرو نوبت
                 </h1>
-                <p className="text-xs mt-1 text-emerald-600 dark:text-emerald-400">
+                <p className="text-sm text-emerald-800 dark:text-emerald-400 mt-3 font-Morabba-Bold">
                   مرحله {step} از {STEPS.length}
                 </p>
               </div>
@@ -106,12 +106,12 @@ function Reservation() {
                         ${done
                           ? 'bg-emerald-500 text-white'
                           : active
-                          ? 'bg-emerald-500/15 border-2 border-emerald-500 text-emerald-700 dark:bg-emerald-400/20 dark:border-emerald-300 dark:text-emerald-200'
+                          ? 'bg-emerald-500/15 border-2 border-teal-500 text-emerald-700 dark:bg-emerald-400/20 dark:border-emerald-300 dark:text-emerald-200'
                           : 'bg-white border border-emerald-200 text-emerald-400 dark:bg-white/5 dark:border-white/20 dark:text-white/40'
                         }`}>
                         {done ? '✓' : i + 1}
                       </div>
-                      <span className={`text-[10px] font-Morabba-Bold transition-colors duration-300
+                      <span className={`text-sm font-Morabba-Bold transition-colors duration-300
                         ${active
                           ? 'text-emerald-700 dark:text-emerald-200'
                           : done
@@ -128,12 +128,12 @@ function Reservation() {
           </div>
 
           {/* ── Content ── */}
-          <div className="px-10 py-8 min-h-80">
+          <div className="py-2 px-4 lg:px-10 lg:py-8 min-h-80">
             <ActiveComponent />
           </div>
 
           {/* ── Footer ── */}
-          <div className="px-10 pb-8 pt-3 flex items-center justify-between gap-3
+          <div className="px-10 pb-3 pt-8 flex items-center justify-between gap-3
             border-t border-emerald-100 dark:border-white/5">
 
             <button

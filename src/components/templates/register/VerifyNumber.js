@@ -3,6 +3,8 @@ import { useState, useEffect, useRef } from 'react'
 import { FiPhone, FiLock, FiEdit2 } from 'react-icons/fi'
 import clsx from 'clsx'
 import { json } from 'zod'
+import LoadingOverlay from '@/components/modules/loading/LoadingOverlay'
+import { errorToast, successToast } from '@/components/modules/toast/toast'
 
 const RESEND_SECONDS = 90
 
@@ -16,6 +18,7 @@ const inputBase = `w-full rounded-xl py-3 pr-10 pl-4 text-base
   transition-all duration-200 text-right`
 
 function VerifyNumber({ phoneNumber, setPhoneNumber, setIsPhoneVerified }) {
+  const [loading, setLoading] = useState(false)
   const [codeSent, setCodeSent] = useState(false)
   const [otp, setOtp] = useState("")
   const [countdown, setCountdown] = useState(RESEND_SECONDS)
@@ -34,20 +37,27 @@ function VerifyNumber({ phoneNumber, setPhoneNumber, setIsPhoneVerified }) {
 
   useEffect(() => () => clearInterval(timerRef.current), [])
 
-  const handleSend = async() => {
+  const handleSend = async () => {
     if (phoneNumber.length < 11) return
-    const res = await fetch("/api/otp/send",{
-      method:"POST",
-      headers:{
-        "Content-type" : "applicarion/json"
-      },
-      body : JSON.stringify({phone:phoneNumber})
-    })
-    if(res.status === 200){
-      setCodeSent(true)
-      startTimer()
-    }    
-  }
+    setLoading(true)
+    try {
+        const res = await fetch("/api/otp/send", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({ phone: phoneNumber })
+        })
+        if (res.status === 200) {
+            setCodeSent(true)
+            startTimer()
+        } else {
+            errorToast("خطا در ارسال کد، دوباره تلاش کنید")
+        }
+    } catch (err) {
+        errorToast("خطا در اتصال به سرور")
+    } finally {
+        setLoading(false)
+    }
+}
 
   const handleEdit = () => {
     setCodeSent(false)
@@ -55,38 +65,41 @@ function VerifyNumber({ phoneNumber, setPhoneNumber, setIsPhoneVerified }) {
     clearInterval(timerRef.current)
   }
 
-  const handleVrifyUserEnterCode =async()=>{
-    const res = await fetch("/api/otp/verify",{
-      method:"POST",
-      headers:{
-        "Content-type" : "applicarion/json"
-      },
-      body:JSON.stringify({
-        phone:phoneNumber,
-        otp
-      })
-    })
-    if(res.status === 200){
-      setIsPhoneVerified(true)
-    }    
-    else if(res.status === 400){
-      alert("کد معتبر نمیباشد")
-    }else{
-      alert("کد منقضی شده است")
+  const handleVrifyUserEnterCode = async () => {
+    if (otp.length < 5) return  
+    setLoading(true)
+    try {
+        const res = await fetch("/api/otp/verify", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({ phone: phoneNumber, otp })
+        })
+        if (res.status === 200) {
+            setIsPhoneVerified(true)
+        } else if (res.status === 400) {
+            errorToast("کد معتبر نمی‌باشد")
+        } else {
+            errorToast("کد منقضی شده است")
+        }
+    } catch (err) {
+        errorToast("خطا در اتصال به سرور")
+    } finally {
+        setLoading(false)
     }
-  }
+}
 
   const handleResend = () => {
     setOtp("")
     handleSend()
-    startTimer()
   }
 
   const fmt = (s) =>
     `${String(Math.floor(s / 60)).padStart(2, '0')}:${String(s % 60).padStart(2, '0')}`
 
   return (
-    <div className="space-y-4">
+    <>
+      <LoadingOverlay loading={loading} />
+      <div className="space-y-4">
       <div className="relative">
         <span className="absolute right-3 top-1/2 -translate-y-1/2
           text-emerald-400 dark:text-emerald-400/60 pointer-events-none">
@@ -169,6 +182,7 @@ function VerifyNumber({ phoneNumber, setPhoneNumber, setIsPhoneVerified }) {
           transition-transform duration-700" />
       </button>
     </div>
+    </>    
   )
 }
 

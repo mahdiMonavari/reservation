@@ -3,6 +3,7 @@ import Navbar from "@/components/modules/navbar/navbar";
 import "@/styles/globals.css"
 import AOSInit from "@/utiles/AOS/initAos";
 import { cookies } from "next/headers";
+import  { Toaster } from "react-hot-toast";
 export default async function RootLayout({ children }) {
   const cookiesStore = await cookies()
   const theme = cookiesStore.get("theme")?.value
@@ -18,6 +19,8 @@ export default async function RootLayout({ children }) {
             <Footer/>
         </div>
         <AOSInit/>
+
+        <Toaster/>
         </body>
     </html>
   );

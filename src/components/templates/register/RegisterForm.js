@@ -19,7 +19,7 @@ const fields = [
 
 function RegisterForm({ phoneNumber }) {
   const [form, setForm] = useState({ firstName: '', lastName: '', password: '' })
-
+  const createUserHandler=()=>{}
   return (
     <div className="space-y-4">
 

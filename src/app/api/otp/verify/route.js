@@ -9,6 +9,7 @@ export async function POST(req) {
     }
     const newTime = new Date();
     const isExp = newTime - otpFinded.expTime > 90000;
+    await otpModel.deleteOne({ _id: otpFinded._id });
     if (isExp) {
       return Response.json({ message: "otp is expierd" }, { status: 410 });
     }

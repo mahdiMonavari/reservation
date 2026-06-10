@@ -29,7 +29,6 @@ export async function POST(req) {
     const hashedPassword = await hashePassword(password);
     const token = generateAccessToken({ phoneNumber });
     const refreshToken = generateRefreshToken({ phoneNumber });
-    console.log(firstName, lastName, hashedPassword, password);
     const newUser = await userModel.create({
       firstName,
       lastName,

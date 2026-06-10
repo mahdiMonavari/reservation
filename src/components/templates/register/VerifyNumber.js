@@ -41,11 +41,9 @@ function VerifyNumber({ phoneNumber, setPhoneNumber, setIsPhoneVerified }) {
   const handleSend = async () => {
     if (phoneNumber.length < 11) {
       return errorToast("شماره تلفن صحیح نمیباشد");
-      return;
     }
     if (!phoneNumber.startsWith("09")) {
       return errorToast("فرمت شماره تلفن صحیح نمیباشد");
-      return;
     }
     setLoading(true);
     try {
@@ -74,7 +72,8 @@ function VerifyNumber({ phoneNumber, setPhoneNumber, setIsPhoneVerified }) {
   };
 
   const handleVrifyUserEnterCode = async () => {
-    if (otp.length < 5) return;
+    if (otp.length < 5) {
+    }
     setLoading(true);
     try {
       const res = await fetch("/api/otp/verify", {

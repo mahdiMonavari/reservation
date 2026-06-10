@@ -6,7 +6,7 @@ const inputBase = `w-full rounded-xl py-3 pr-10 pl-4 text-base
   bg-emerald-50 dark:bg-white/5
   border border-emerald-200 dark:border-white/10
   text-emerald-900 dark:text-white
-  placeholder:text-emerald-400/60 dark:placeholder:text-white/25
+  placeholder:text-emerald-400 dark:placeholder:text-white/25
   focus:outline-none focus:border-emerald-400 dark:focus:border-emerald-400/60
   focus:bg-white dark:focus:bg-white/10
   transition-all duration-200 text-right`;
@@ -26,7 +26,6 @@ function RegisterForm({ phoneNumber }) {
   const createUserHandler = () => {};
   return (
     <div className="space-y-4">
-      {/* شماره — فقط‌خواندنی */}
       <div className="relative">
         <span
           className="absolute right-3 top-1/2 -translate-y-1/2

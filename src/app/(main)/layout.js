@@ -1,27 +1,24 @@
 import Footer from "@/components/modules/footer/Footer";
 import Navbar from "@/components/modules/navbar/navbar";
-import "@/styles/globals.css"
+import "@/styles/globals.css";
 import AOSInit from "@/utiles/AOS/initAos";
 import { cookies } from "next/headers";
-import  { Toaster } from "react-hot-toast";
+import { Toaster } from "react-hot-toast";
 export default async function RootLayout({ children }) {
-  const cookiesStore = await cookies()
-  const theme = cookiesStore.get("theme")?.value
+  const cookiesStore = await cookies();
+  const theme = cookiesStore.get("theme")?.value;
   return (
-    <html
-      lang="fa" dir="rtl"
-      className={theme==="dark"?"dark":""}
-    >
+    <html lang="fa" dir="rtl" className={theme === "dark" ? "dark" : ""}>
       <body className="min-h-full flex flex-col transition-colors duration-300">
-        <Navbar theme={theme}/>
+        <Navbar theme={theme} />
         {children}
         <div className="dark:bg-teal-900 bg-emerald-400">
-            <Footer/>
+          <Footer />
         </div>
-        <AOSInit/>
+        <AOSInit />
 
-        <Toaster/>
-        </body>
+        <Toaster />
+      </body>
     </html>
   );
 }

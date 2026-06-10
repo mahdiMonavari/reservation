@@ -1,5 +1,5 @@
 import { hash } from "bcryptjs";
-import { sign } from "jsonwebtoken";
+import { sign, verify } from "jsonwebtoken";
 
 const hashePassword = async (password) => {
   const hashedPassword = await hash(password, 12);
@@ -17,5 +17,27 @@ const generateRefreshToken = (data) => {
   });
   return token;
 };
+const verifyAccessToken = (token) => {
+  try {
+    const payload = verify(token, process.env.ACCESS_TOKEN_PRIVET_KEY);
+    return payload;
+  } catch {
+    return false;
+  }
+};
+const verifyRefreshToken = (token) => {
+  try {
+    const payload = verify(token, process.env.REFRESH_TOKEN_SECRET_KEY);
+    return payload;
+  } catch {
+    return false;
+  }
+};
 
-export { hashePassword, generateAccessToken, generateRefreshToken };
+export {
+  hashePassword,
+  generateAccessToken,
+  generateRefreshToken,
+  verifyAccessToken,
+  verifyRefreshToken,
+};

@@ -40,11 +40,11 @@ function VerifyNumber({ phoneNumber, setPhoneNumber, setIsPhoneVerified }) {
   useEffect(() => () => clearInterval(timerRef.current), []);
   const handleSend = async () => {
     if (phoneNumber.length < 11) {
-      errorToast("شماره وارد شده معتبر نمیباشد");
+      return errorToast("شماره تلفن صحیح نمیباشد");
       return;
     }
     if (!phoneNumber.startsWith("09")) {
-      errorToast("فرمت شماره تماس درست نمیباشد");
+      return errorToast("فرمت شماره تلفن صحیح نمیباشد");
       return;
     }
     setLoading(true);

@@ -42,16 +42,21 @@ export async function POST(req) {
             code: verificationCode,
             expTime,
           });
-          return Response.json("message sent successfully", { status: 200 });
+          return Response.json(
+            { message: "message sent successfully" },
+            { status: 200 }
+          );
         }
       } catch (err) {
-        return Response.json("pleas try agein leiter", { status: 500 });
+        return Response.json(
+          { message: "pleas try agein later" },
+          { status: 500 }
+        );
       }
     } else {
       return Response.json("bad request", { status: 400 });
     }
   } catch (err) {
-    console.log(err);
-    return Response.json("enternal error");
+    return Response.json({ message: "internal error" }, { status: 500 });
   }
 }

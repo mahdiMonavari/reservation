@@ -10,12 +10,12 @@ function Login() {
     >
       {/* rings — فقط dark */}
       <div
-        className="pointer-events-none absolute w-[600px] h-[600px] rounded-full
+        className="pointer-events-none absolute w-150 h-150 rounded-full
         border border-emerald-900/10 dark:border-emerald-500/10
         top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2"
       />
       <div
-        className="pointer-events-none absolute w-[350px] h-[350px] rounded-full
+        className="pointer-events-none absolute w-87.5 h-87.5 rounded-full
         border border-emerald-900/10 dark:border-emerald-400/10
         top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2"
       />

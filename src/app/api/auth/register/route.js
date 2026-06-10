@@ -26,9 +26,10 @@ export async function POST(req) {
     }
     const usersCount = await userModel.countDocuments();
     const role = usersCount === 0 ? "ADMIN" : "USER";
-    const hashedPassword = hashePassword(password);
+    const hashedPassword = await hashePassword(password);
     const token = generateAccessToken({ phoneNumber });
     const refreshToken = generateRefreshToken({ phoneNumber });
+    console.log(firstName, lastName, hashedPassword, password);
     const newUser = await userModel.create({
       firstName,
       lastName,
@@ -53,6 +54,7 @@ export async function POST(req) {
     }
     return Response.json({ message: "internal error db" }, { status: 500 });
   } catch (err) {
+    console.log(err);
     return Response.json({ message: "internal error" }, { status: 500 });
   }
 }

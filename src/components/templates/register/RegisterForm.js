@@ -1,6 +1,8 @@
 "use client";
 import { useState } from "react";
 import { FiPhone, FiUser, FiLock } from "react-icons/fi";
+import registerSchema from "../../../../validators/frontend/register.validator";
+import { errorToast } from "@/components/modules/toast/toast";
 
 const inputBase = `w-full rounded-xl py-3 pr-10 pl-4 text-base
   bg-emerald-50 dark:bg-white/5
@@ -23,7 +25,37 @@ function RegisterForm({ phoneNumber }) {
     lastName: "",
     password: "",
   });
-  const createUserHandler = () => {};
+  const createUserHandler = async () => {
+    const result = registerSchema.safeParse({
+      phoneNumber,
+      firstName: form.firstName,
+      lastName: form.lastName,
+      password: form.password,
+    });
+    if (!result.success) {
+      return errorToast(result.error.issues[0].message);
+    }
+    const res = await fetch("api/auth/register", {
+      method: "POST",
+      headers: {
+        "Content-type": "application/json",
+      },
+      body: JSON.stringify({
+        phoneNumber,
+        firstName: form.firstName,
+        lastName: form.lastName,
+        password: form.password,
+      }),
+    });
+    if (res.status === 201) {
+    } else if (res.status === 409) {
+      errorToast("کاربر از قبل در سایت وجود دارد");
+    } else if (res.status === 400) {
+      errorToast("ورودی ها معتبر نمیباشد");
+    } else {
+      errorToast("خطا سمت سرور");
+    }
+  };
   return (
     <div className="space-y-4">
       <div className="relative">

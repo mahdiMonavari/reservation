@@ -7,6 +7,10 @@ const schema = new mongoose.Schema(
     phoneNumber: { type: String, required: true, unique: true },
     password: { type: String, required: true },
     role: { type: String, default: "USER" },
+    refreshToken: {
+      type: String,
+      default: null,
+    },
   },
   {
     timestamps: true,

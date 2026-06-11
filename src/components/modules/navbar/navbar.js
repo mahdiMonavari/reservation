@@ -3,6 +3,8 @@ import ThemeCta from "./ThemeCta";
 import Link from "next/link";
 import MobileMenu from "./MobileMenu";
 import NavbarResarvationLink from "./NavbarReservationLink";
+import { getCookie, verifyAccessToken } from "@/utiles/auth/auth";
+import userModel from "../../../../model/user";
 
 const navLinks = [
   { href: "/", label: "خانه" },
@@ -13,6 +15,12 @@ const navLinks = [
 ];
 
 async function Navbar({ theme }) {
+  const token = await getCookie("token");
+  const { phone } = verifyAccessToken(token);
+  const user = await userModel.findOne(
+    { phoneNumber: phone },
+    "firstName lastName"
+  );
   return (
     <>
       {/* ─── Desktop navbar ─── */}
@@ -51,25 +59,29 @@ async function Navbar({ theme }) {
         </ul>
 
         {/* Auth + theme */}
-        <ul className="flex items-center gap-x-3 font-Morabba-Bold text-sm md:text-lg">
-          <li>
-            <Link
-              href="/login"
-              className="flex items-center gap-2 text-green-800/80 dark:text-gray-200
+        {user ? (
+          `${user.firstName} ${user.lastName}`
+        ) : (
+          <ul className="flex items-center gap-x-3 font-Morabba-Bold text-sm md:text-lg">
+            <li>
+              <Link
+                href="/login"
+                className="flex items-center gap-2 text-green-800/80 dark:text-gray-200
                 hover:text-green-900 dark:hover:text-teal-400 transition-all duration-200 group"
-            >
-              <span>ورود</span>
-              <span
-                className="h-5 w-px rounded-full bg-green-400/60 dark:bg-teal-600
+              >
+                <span>ورود</span>
+                <span
+                  className="h-5 w-px rounded-full bg-green-400/60 dark:bg-teal-600
                 group-hover:bg-green-600 dark:group-hover:bg-teal-400 transition-colors duration-200"
-              />
-              <span>ثبت نام</span>
-            </Link>
-          </li>
-          <li>
-            <ThemeCta prevTheme={theme} />
-          </li>
-        </ul>
+                />
+                <span>ثبت نام</span>
+              </Link>
+            </li>
+            <li>
+              <ThemeCta prevTheme={theme} />
+            </li>
+          </ul>
+        )}
       </nav>
 
       {/* ─── Mobile navbar ─── */}

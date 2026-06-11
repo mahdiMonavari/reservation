@@ -5,6 +5,7 @@ import { FiEdit2 } from "react-icons/fi";
 import { useState, useEffect, useRef } from "react";
 import { errorToast } from "@/components/modules/toast/toast";
 import LoadingOverlay from "@/components/modules/loading/LoadingOverlay";
+import { useRouter } from "next/navigation";
 
 const RESEND_SECONDS = 90;
 
@@ -26,6 +27,7 @@ function LoginForm() {
   const [countdown, setCountdown] = useState(RESEND_SECONDS);
   const timerRef = useRef(null);
   const [loading, setLoading] = useState(false);
+  const router = useRouter();
 
   const startTimer = () => {
     setCountdown(RESEND_SECONDS);
@@ -106,6 +108,8 @@ function LoginForm() {
         body: JSON.stringify({ phone, password }),
       });
       if (res.status === 200) {
+        router.push("/reservation");
+        router.refresh();
       } else if (res.status === 400 || 404) {
         errorToast("کاربری با این شماره و رمز عبور پیدا نشد");
       }
@@ -129,6 +133,8 @@ function LoginForm() {
         body: JSON.stringify({ phone, otp }),
       });
       if (res.status === 200) {
+        router.push("/reservation");
+        router.refresh();
       } else if (res.status === 400) {
         errorToast("رمز وارد شده صحیح نمیباشد");
       } else if (res.status === 409) {

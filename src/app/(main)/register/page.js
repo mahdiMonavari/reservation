@@ -1,8 +1,7 @@
 import RegisterCard from "@/components/templates/register/RgisterCard";
 
 async function Register() {
-  return;
-  <RegisterCard />;
+  return <RegisterCard />;
 }
 
 export default Register;

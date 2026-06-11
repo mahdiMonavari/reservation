@@ -1,34 +1,49 @@
 import { cookies } from "next/headers";
 import { NextResponse } from "next/server";
-import { refreshTokenHandler } from "./utiles/auth/auth";
+import { refreshTokenHandler, verifyAccessToken } from "./utiles/auth/auth";
+
+const publicRoutes = ["/login", "/register"];
 
 export async function proxy(request) {
   const cookieStore = await cookies();
   const token = cookieStore.get("token")?.value;
   const refreshToken = cookieStore.get("refreshToken")?.value;
-  const isLoginPage = request.nextUrl.pathname === "/login";
-  const isRegisterPage = request.nextUrl.pathname === "/register";
-  if ((isLoginPage || isRegisterPage) && refreshToken) {
+  const pathname = request.nextUrl.pathname;
+  const isPublicRoute = publicRoutes.includes(pathname);
+
+  if (isPublicRoute && refreshToken) {
     return NextResponse.redirect(new URL("/", request.url));
   }
-  if (!token) {
-    const newAccessToken = await refreshTokenHandler(refreshToken);
-    if (!newAccessToken) {
-      return NextResponse.redirect(new URL("/login", request.url));
-    }
-    const response = NextResponse.next();
-    response.cookies.set("token", newAccessToken, {
-      httpOnly: true,
-      secure: false,
-      sameSite: "lax",
-      path: "/",
-      maxAge: 15 * 60,
-    });
-    return response;
+
+  if (isPublicRoute) {
+    return NextResponse.next();
   }
-  return NextResponse.next();
+
+  // توکن داره، رد بشه
+  if (token) {
+    const isValidToken = verifyAccessToken(token);
+    if (isValidToken) {
+      return NextResponse.next();
+    }
+  }
+
+  // توکن نداره، رفرش توکن چک کن
+  const newAccessToken = await refreshTokenHandler(refreshToken);
+  if (!newAccessToken) {
+    return NextResponse.redirect(new URL("/login", request.url));
+  }
+
+  const response = NextResponse.next();
+  response.cookies.set("token", newAccessToken, {
+    httpOnly: true,
+    secure: false,
+    sameSite: "lax",
+    path: "/",
+    maxAge: 15 * 60,
+  });
+  return response;
 }
 
 export const config = {
-  matcher: ["/dashboard/:path*", "/reservation", "/login", "/register"],
+  matcher: "/:path*",
 };

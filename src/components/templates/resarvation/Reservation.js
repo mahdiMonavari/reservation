@@ -1,6 +1,6 @@
 "use client";
 import useReservationStore from "@/store/reservationStore";
-import React from "react";
+import React, { useEffect } from "react";
 import SelectDoctor from "./steps/SelectDoctor";
 import SelectService from "./steps/SelectService";
 import SelectDate from "./steps/SelectDate";

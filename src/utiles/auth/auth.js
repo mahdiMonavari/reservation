@@ -1,9 +1,13 @@
-import { hash } from "bcryptjs";
+import { compare, hash } from "bcryptjs";
 import { sign, verify } from "jsonwebtoken";
 
 const hashePassword = async (password) => {
   const hashedPassword = await hash(password, 12);
   return hashedPassword;
+};
+const verifyPassword = async (password, hashedPassword) => {
+  const isVerify = await compare(password, hashedPassword);
+  return isVerify;
 };
 const generateAccessToken = (data) => {
   const token = sign({ ...data }, process.env.ACCESS_TOKEN_PRIVET_KEY, {
@@ -40,4 +44,5 @@ export {
   generateRefreshToken,
   verifyAccessToken,
   verifyRefreshToken,
+  verifyPassword,
 };

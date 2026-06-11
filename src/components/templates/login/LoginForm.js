@@ -82,10 +82,40 @@ function LoginForm() {
 
   const handleResend = () => {
     setOtp("");
+    handleSend();
     startTimer();
   };
 
-  const loginWithPassHanler = () => {};
+  const loginWithPassHanler = async () => {
+    if (phone.length < 11) {
+      return errorToast("شماره تلفن صحیح نمیباشد");
+    }
+    if (!phone.startsWith("09")) {
+      return errorToast("فرمت شماره تلفن صحیح نمیباشد");
+    }
+    if (password.length < 8) {
+      return errorToast("پسورد باید حداقل 8 حرف باشد");
+    }
+    try {
+      setLoading(true);
+      const res = await fetch("api/auth/login/password", {
+        method: "POST",
+        headers: {
+          "Content-type": "application/json",
+        },
+        body: JSON.stringify({ phone, password }),
+      });
+      console.log(res.status);
+      if (res.status === 200) {
+      } else if (res.status === 400 || 404) {
+        errorToast("کاربری با این شماره و رمز عبور پیدا نشد");
+      }
+    } catch (err) {
+      errorToast("خطایی رخ داد، دوباره تلاش کنید");
+    } finally {
+      setLoading(false);
+    }
+  };
   const verifyUser = async () => {
     if (otp < 5) {
       return errorToast("کد وارد شده صحیح نمیباشد");

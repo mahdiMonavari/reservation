@@ -35,8 +35,8 @@ export async function POST(req) {
         status: 200,
         headers: {
           "Set-Cookie": [
-            `token=${token}; path=/; httpOnly; Secure; SameSite=Strict`,
-            `refreshToken=${refreshToken}; path=/; httpOnly; Secure; SameSite=Strict`,
+            `token=${token}; path=/; httpOnly; SameSite=Strict`,
+            `refreshToken=${refreshToken}; path=/; httpOnly; SameSite=Strict`,
           ],
         },
       }

@@ -38,6 +38,15 @@ const verifyRefreshToken = (token) => {
   }
 };
 
+const refreshTokenHandler = async (refreshToken) => {
+  const { phone } = verifyRefreshToken(refreshToken);
+  if (!phone) {
+    return false;
+  }
+  const newAccessToken = generateAccessToken({ phone });
+  return newAccessToken;
+};
+
 export {
   hashePassword,
   generateAccessToken,
@@ -45,4 +54,5 @@ export {
   verifyAccessToken,
   verifyRefreshToken,
   verifyPassword,
+  refreshTokenHandler,
 };

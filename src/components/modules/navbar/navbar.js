@@ -1,18 +1,18 @@
-import React from 'react'
-import ThemeCta from './ThemeCta';
-import Link from 'next/link';
-import MobileMenu from './MobileMenu';
-import NavbarResarvationLink from "./NavbarReservationLink"
+import React from "react";
+import ThemeCta from "./ThemeCta";
+import Link from "next/link";
+import MobileMenu from "./MobileMenu";
+import NavbarResarvationLink from "./NavbarReservationLink";
 
 const navLinks = [
-  { href: '/',            label: 'خانه' },
-  { href: '/about',       label: 'درباره ما' },
-  { href: '/contact-us',  label: 'ارتباط با ما' },
-  { href: '/doctors',     label: 'دکترها' },
-  { href: '/reservation', label: 'رزرو نوبت' },
+  { href: "/", label: "خانه" },
+  { href: "/about", label: "درباره ما" },
+  { href: "/contact-us", label: "ارتباط با ما" },
+  { href: "/doctors", label: "دکترها" },
+  { href: "/reservation", label: "رزرو نوبت" },
 ];
 
-function Navbar({ theme }) {
+async function Navbar({ theme }) {
   return (
     <>
       {/* ─── Desktop navbar ─── */}
@@ -30,21 +30,24 @@ function Navbar({ theme }) {
       >
         {/* Nav links */}
         <ul className="flex items-center gap-x-1 font-Morabba-Bold text-sm md:text-lg">
-          {navLinks.map(({ href, label }) => (
-            href !== "/reservation" ?
-            <li key={href}>
-              <Link
-                href={href}
-                className="relative px-3 py-1.5 rounded-lg
+          {navLinks.map(({ href, label }) =>
+            href !== "/reservation" ? (
+              <li key={href}>
+                <Link
+                  href={href}
+                  className="relative px-3 py-1.5 rounded-lg
                   text-green-800/80 dark:text-gray-200
                   hover:text-green-900 dark:hover:text-teal-400
                   hover:bg-green-100/60 dark:hover:bg-teal-800/40
                   transition-all duration-200 inline-block"
-              >
-                {label}
-              </Link>
-            </li> : <NavbarResarvationLink key={href}/>
-          ))}
+                >
+                  {label}
+                </Link>
+              </li>
+            ) : (
+              <NavbarResarvationLink key={href} />
+            )
+          )}
         </ul>
 
         {/* Auth + theme */}
@@ -72,7 +75,7 @@ function Navbar({ theme }) {
       {/* ─── Mobile navbar ─── */}
       <MobileMenu theme={theme} navLinks={navLinks} />
     </>
-  )
+  );
 }
 
-export default Navbar
+export default Navbar;

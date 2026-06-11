@@ -105,7 +105,6 @@ function LoginForm() {
         },
         body: JSON.stringify({ phone, password }),
       });
-      console.log(res.status);
       if (res.status === 200) {
       } else if (res.status === 400 || 404) {
         errorToast("کاربری با این شماره و رمز عبور پیدا نشد");

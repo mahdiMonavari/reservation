@@ -1,5 +1,6 @@
 import { compare, hash } from "bcryptjs";
 import { sign, verify } from "jsonwebtoken";
+import { cookies } from "next/headers";
 
 const hashePassword = async (password) => {
   const hashedPassword = await hash(password, 12);
@@ -39,12 +40,18 @@ const verifyRefreshToken = (token) => {
 };
 
 const refreshTokenHandler = async (refreshToken) => {
-  const { phone } = verifyRefreshToken(refreshToken);
-  if (!phone) {
+  try {
+    const { phone } = verifyRefreshToken(refreshToken);
+    if (!phone) return false;
+    return generateAccessToken({ phone });
+  } catch (err) {
     return false;
   }
-  const newAccessToken = generateAccessToken({ phone });
-  return newAccessToken;
+};
+
+const getCookie = async (key) => {
+  const cookieStore = await cookies();
+  return cookieStore.get(key)?.value;
 };
 
 export {
@@ -55,4 +62,5 @@ export {
   verifyRefreshToken,
   verifyPassword,
   refreshTokenHandler,
+  getCookie,
 };

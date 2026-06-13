@@ -24,8 +24,9 @@ export async function POST(req) {
     if (isExpired) {
       return Response.json({ message: "code is expired" }, { status: 409 });
     }
-    const token = generateAccessToken({ phone });
-    const refreshToken = generateRefreshToken({ phone });
+    const user = await userModel.findOne({ phoneNumber: phone });
+    const token = generateAccessToken({ phone, role: user.role });
+    const refreshToken = generateRefreshToken({ phone, role: user.role });
     await userModel.findOneAndUpdate({ phoneNumber: phone }, { refreshToken });
     return Response.json(
       { message: "login successfully" },

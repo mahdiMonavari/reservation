@@ -26,8 +26,9 @@ export async function POST(req) {
     if (!isVerifyPassword) {
       return Response.json({ message: "user not found" }, { status: 404 });
     }
-    const token = generateAccessToken({ phone });
-    const refreshToken = generateRefreshToken({ phone });
+
+    const token = generateAccessToken({ phone, role: user.role });
+    const refreshToken = generateRefreshToken({ phone, role: user.role });
     await userModel.findOneAndUpdate({ phone }, { refreshToken });
     return Response.json(
       { message: "login successfully" },

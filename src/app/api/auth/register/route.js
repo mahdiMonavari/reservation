@@ -27,8 +27,8 @@ export async function POST(req) {
     const usersCount = await userModel.countDocuments();
     const role = usersCount === 0 ? "ADMIN" : "USER";
     const hashedPassword = await hashePassword(password);
-    const token = generateAccessToken({ phoneNumber });
-    const refreshToken = generateRefreshToken({ phoneNumber });
+    const token = generateAccessToken({ phoneNumber, role });
+    const refreshToken = generateRefreshToken({ phoneNumber, role });
     const newUser = await userModel.create({
       firstName,
       lastName,

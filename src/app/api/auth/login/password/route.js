@@ -31,7 +31,7 @@ export async function POST(req) {
     const refreshToken = generateRefreshToken({ phone, role: user.role });
     await userModel.findOneAndUpdate({ phone }, { refreshToken });
     return Response.json(
-      { message: "login successfully" },
+      { message: "login successfully", data: user },
       {
         status: 200,
         headers: {

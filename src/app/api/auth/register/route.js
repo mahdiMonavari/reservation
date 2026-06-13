@@ -39,7 +39,7 @@ export async function POST(req) {
     });
     if (newUser) {
       return Response.json(
-        { message: "user created" },
+        { message: "user created", data: newUser },
         {
           status: 201,
           headers: {

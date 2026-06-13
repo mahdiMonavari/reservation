@@ -1,11 +1,11 @@
-import React from "react";
+"use client";
+import React, { useContext } from "react";
 import ThemeCta from "./ThemeCta";
 import Link from "next/link";
 import MobileMenu from "./MobileMenu";
 import NavbarResarvationLink from "./NavbarReservationLink";
-import { getCookie, verifyAccessToken } from "@/utiles/auth/auth";
-import userModel from "../../../../model/user";
-import connectionToDB from "@/utiles/DB/connection";
+import { AuthContext } from "@/context/AuthContext";
+import { FaChevronDown, FaUser } from "react-icons/fa";
 
 const navLinks = [
   { href: "/", label: "خانه" },
@@ -15,14 +15,9 @@ const navLinks = [
   { href: "/reservation", label: "رزرو نوبت" },
 ];
 
-async function Navbar({ theme }) {
-  await connectionToDB();
-  const token = await getCookie("token");
-  const { phone } = verifyAccessToken(token);
-  const user = await userModel.findOne(
-    { phoneNumber: phone },
-    "firstName lastName"
-  );
+function Navbar({ theme }) {
+  const { user, setUser } = useContext(AuthContext);
+  console.log(user);
   return (
     <>
       {/* ─── Desktop navbar ─── */}
@@ -61,29 +56,128 @@ async function Navbar({ theme }) {
         </ul>
 
         {/* Auth + theme */}
-        {user ? (
-          `${user.firstName} ${user.lastName}`
-        ) : (
-          <ul className="flex items-center gap-x-3 font-Morabba-Bold text-sm md:text-lg">
-            <li>
-              <Link
-                href="/login"
-                className="flex items-center gap-2 text-green-800/80 dark:text-gray-200
-                hover:text-green-900 dark:hover:text-teal-400 transition-all duration-200 group"
+        <div className=" flex items-center gap-3">
+          {user ? (
+            <div className="relative group">
+              <button
+                className="flex items-center gap-2 px-3 py-1.5 rounded-xl
+        text-green-800/80 dark:text-gray-200
+        hover:bg-green-100/60 dark:hover:bg-teal-800/40
+        transition-all duration-200 select-none"
               >
-                <span>ورود</span>
-                <span
-                  className="h-5 w-px rounded-full bg-green-400/60 dark:bg-teal-600
-                group-hover:bg-green-600 dark:group-hover:bg-teal-400 transition-colors duration-200"
+                <div
+                  className="flex items-center justify-center w-8 h-8 rounded-full
+        bg-emerald-500 text-white shadow-sm shadow-emerald-500/30"
+                >
+                  <FaUser />
+                </div>
+                <span className="text-sm font-Morabba-Bold">
+                  {user.firstName} {user.lastName}
+                </span>
+                <FaChevronDown
+                  className="text-green-600 dark:text-teal-400
+          transition-transform duration-300
+          group-hover:rotate-180"
                 />
-                <span>ثبت نام</span>
-              </Link>
-            </li>
-            <li>
-              <ThemeCta prevTheme={theme} />
-            </li>
-          </ul>
-        )}
+              </button>
+
+              {/* dropdown */}
+              <div
+                className="absolute left-0 top-[calc(100%+8px)] w-52
+        opacity-0 invisible translate-y-2
+        group-hover:opacity-100 group-hover:visible group-hover:translate-y-0
+        transition-all duration-250
+        bg-white/80 dark:bg-teal-950/80
+        backdrop-blur-md
+        border border-green-200/60 dark:border-teal-700/50
+        rounded-2xl shadow-xl shadow-green-900/10 dark:shadow-teal-950/40
+        overflow-hidden z-50"
+              >
+                {/* header */}
+                <div className="px-4 py-3 border-b border-green-100/60 dark:border-teal-800/50">
+                  <p className="text-xs text-green-500/60 dark:text-teal-400/60 font-Morabba-Bold">
+                    خوش آمدید
+                  </p>
+                  <p className="text-sm font-Morabba-Bold text-green-900 dark:text-white mt-0.5">
+                    {user.firstName} {user.lastName}
+                  </p>
+                </div>
+
+                {/* links */}
+                <div className="p-1.5 flex flex-col gap-0.5">
+                  <Link
+                    href="/dashboard"
+                    className="flex items-center gap-2.5 px-3 py-2.5 rounded-xl text-sm font-Morabba-Bold
+            text-green-800/80 dark:text-gray-200
+            hover:bg-green-100/60 dark:hover:bg-teal-800/40
+            transition-colors duration-150"
+                  >
+                    <span
+                      className="flex items-center justify-center w-7 h-7 rounded-lg
+            bg-emerald-100 dark:bg-emerald-500/20 text-emerald-600 dark:text-emerald-400"
+                    >
+                      <FaUser size={12} />
+                    </span>
+                    پنل کاربری
+                  </Link>
+
+                  <div className="h-px bg-green-100/80 dark:bg-teal-800/50 mx-1 my-0.5" />
+
+                  <button
+                    onClick={() => {
+                      /* logout */
+                    }}
+                    className="flex items-center gap-2.5 px-3 py-2.5 rounded-xl text-sm font-Morabba-Bold
+            text-red-500 dark:text-red-400
+            hover:bg-red-50 dark:hover:bg-red-900/20
+            transition-colors duration-150 w-full"
+                  >
+                    <span
+                      className="flex items-center justify-center w-7 h-7 rounded-lg
+            bg-red-100 dark:bg-red-500/20 text-red-500 dark:text-red-400"
+                    >
+                      <FaChevronDown
+                        size={12}
+                        className="-rotate-90"
+                        onClick={() => setUser(null)}
+                      />
+                    </span>
+                    خروج از حساب
+                  </button>
+                </div>
+              </div>
+            </div>
+          ) : (
+            <ul className="flex items-center gap-x-2 font-Morabba-Bold text-sm md:text-lg">
+              <li>
+                <Link
+                  href="/login"
+                  className="px-4 py-1.5 rounded-xl
+          text-green-800/80 dark:text-gray-200
+          hover:text-green-900 dark:hover:text-teal-400
+          hover:bg-green-100/60 dark:hover:bg-teal-800/40
+          transition-all duration-200 inline-block"
+                >
+                  ورود
+                </Link>
+              </li>
+              <li>
+                <Link
+                  href="/register"
+                  className="px-4 py-1.5 rounded-xl
+          bg-emerald-500 hover:bg-emerald-600
+          text-white
+          shadow-sm shadow-emerald-500/30
+          hover:shadow-md hover:shadow-emerald-500/20
+          transition-all duration-200 inline-block"
+                >
+                  ثبت نام
+                </Link>
+              </li>
+            </ul>
+          )}
+          <ThemeCta prevTheme={theme} />
+        </div>
       </nav>
 
       {/* ─── Mobile navbar ─── */}

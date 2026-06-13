@@ -2,10 +2,11 @@
 import clsx from "clsx";
 import { FiPhone, FiLock } from "react-icons/fi";
 import { FiEdit2 } from "react-icons/fi";
-import { useState, useEffect, useRef } from "react";
+import { useState, useEffect, useRef, useContext } from "react";
 import { errorToast } from "@/components/modules/toast/toast";
 import LoadingOverlay from "@/components/modules/loading/LoadingOverlay";
 import { useRouter } from "next/navigation";
+import { AuthContext } from "@/context/AuthContext";
 
 const RESEND_SECONDS = 90;
 
@@ -28,6 +29,7 @@ function LoginForm() {
   const timerRef = useRef(null);
   const [loading, setLoading] = useState(false);
   const router = useRouter();
+  const { setUser } = useContext(AuthContext);
 
   const startTimer = () => {
     setCountdown(RESEND_SECONDS);
@@ -109,7 +111,8 @@ function LoginForm() {
       });
       if (res.status === 200) {
         router.push("/reservation");
-        router.refresh();
+        const { data } = await res.json();
+        setUser({ ...data });
       } else if (res.status === 400 || 404) {
         errorToast("کاربری با این شماره و رمز عبور پیدا نشد");
       }
@@ -134,7 +137,8 @@ function LoginForm() {
       });
       if (res.status === 200) {
         router.push("/reservation");
-        router.refresh();
+        const { data } = await res.json();
+        setUser({ ...data });
       } else if (res.status === 400) {
         errorToast("رمز وارد شده صحیح نمیباشد");
       } else if (res.status === 409) {

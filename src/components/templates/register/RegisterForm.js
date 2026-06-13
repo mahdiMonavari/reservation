@@ -1,9 +1,11 @@
 "use client";
-import { useState } from "react";
+import { useContext, useState } from "react";
 import { FiPhone, FiUser, FiLock } from "react-icons/fi";
 import registerSchema from "../../../../validators/frontend/register.validator";
 import { errorToast } from "@/components/modules/toast/toast";
 import LoadingOverlay from "@/components/modules/loading/LoadingOverlay";
+import { useRouter } from "next/navigation";
+import { AuthContext } from "@/context/AuthContext";
 
 const inputBase = `w-full rounded-xl py-3 pr-10 pl-4 text-base
   bg-emerald-50 dark:bg-white/5
@@ -22,6 +24,8 @@ const fields = [
 
 function RegisterForm({ phoneNumber }) {
   const [loading, setLoading] = useState(false);
+  const router = useRouter();
+  const { setUser } = useContext(AuthContext);
   const [form, setForm] = useState({
     firstName: "",
     lastName: "",
@@ -52,6 +56,9 @@ function RegisterForm({ phoneNumber }) {
         }),
       });
       if (res.status === 201) {
+        router.push("/reservation");
+        const { data } = await res.json();
+        setUser({ ...data });
       } else if (res.status === 409) {
         errorToast("کاربر از قبل در سایت وجود دارد");
       } else if (res.status === 400) {

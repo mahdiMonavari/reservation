@@ -17,8 +17,25 @@ export async function proxy(request) {
     }
     return NextResponse.next();
   } else {
-    if (isProtectedRoute) {
-      return NextResponse.redirect(new URL("/login", request.url));
+    const newAccessToken = refreshTokenHandler(refreshToken);
+    if (!newAccessToken) {
+      if (isProtectedRoute) {
+        return NextResponse.redirect(new URL("/login", request.url));
+      }
+      return NextResponse.next();
+    } else {
+      if (!pathname.startsWith("/p-admin")) {
+        const response = NextResponse.next();
+        response.cookies.set("token", newAccessToken, {
+          httpOnly: true,
+          secure: false,
+          sameSite: "lax",
+          path: "/",
+          maxAge: 15 * 60,
+        });
+        return response;
+      } else {
+      }
     }
   }
 }

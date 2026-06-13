@@ -2,7 +2,7 @@ import { cookies } from "next/headers";
 import { NextResponse } from "next/server";
 import { refreshTokenHandler, verifyAccessToken } from "./utiles/auth/auth";
 
-const publicRoutes = ["/login", "/register"];
+const publicRoutes = ["/login", "/register", "/", "/about", "/contact-us"];
 
 export async function proxy(request) {
   const cookieStore = await cookies();
@@ -10,40 +10,17 @@ export async function proxy(request) {
   const refreshToken = cookieStore.get("refreshToken")?.value;
   const pathname = request.nextUrl.pathname;
   const isPublicRoute = publicRoutes.includes(pathname);
-
-  if (isPublicRoute && refreshToken) {
-    return NextResponse.redirect(new URL("/", request.url));
-  }
-
-  if (isPublicRoute) {
-    return NextResponse.next();
-  }
-
-  // توکن داره، رد بشه
-  if (token) {
-    const isValidToken = verifyAccessToken(token);
-    if (isValidToken) {
-      return NextResponse.next();
+  const payload = verifyAccessToken(token);
+  if (Boolean(payload) !== false) {
+    if (pathname.includes("login") || pathname.includes("register")) {
+      return NextResponse.redirect(new URL("/reservation", request.url));
     }
+    return NextResponse.next();
+  } else {
   }
-
-  // توکن نداره، رفرش توکن چک کن
-  const newAccessToken = await refreshTokenHandler(refreshToken);
-  if (!newAccessToken) {
-    return NextResponse.redirect(new URL("/login", request.url));
-  }
-
-  const response = NextResponse.next();
-  response.cookies.set("token", newAccessToken, {
-    httpOnly: true,
-    secure: false,
-    sameSite: "lax",
-    path: "/",
-    maxAge: 15 * 60,
-  });
-  return response;
 }
-
 export const config = {
-  matcher: "/:path*",
+  matcher: [
+    "/((?!_next/static|_next/image|favicon.ico|.*\\.png|.*\\.jpg|.*\\.svg|.*\\.ico|.*\\.woff|.*\\.woff2|api/).*)",
+  ],
 };

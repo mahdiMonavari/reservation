@@ -5,6 +5,7 @@ import MobileMenu from "./MobileMenu";
 import NavbarResarvationLink from "./NavbarReservationLink";
 import { getCookie, verifyAccessToken } from "@/utiles/auth/auth";
 import userModel from "../../../../model/user";
+import connectionToDB from "@/utiles/DB/connection";
 
 const navLinks = [
   { href: "/", label: "خانه" },
@@ -15,6 +16,7 @@ const navLinks = [
 ];
 
 async function Navbar({ theme }) {
+  await connectionToDB();
   const token = await getCookie("token");
   const { phone } = verifyAccessToken(token);
   const user = await userModel.findOne(

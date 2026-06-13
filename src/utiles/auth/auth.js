@@ -39,7 +39,7 @@ const verifyRefreshToken = (token) => {
   }
 };
 
-const refreshTokenHandler = async (refreshToken) => {
+const refreshTokenHandler = (refreshToken) => {
   try {
     const { phone } = verifyRefreshToken(refreshToken);
     if (!phone) return false;

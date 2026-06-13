@@ -1,11 +1,27 @@
-"use client"
-import { useState } from 'react'
-import Link from 'next/link'
-import ThemeCta from './ThemeCta'
-import { HiMenuAlt3, HiX } from 'react-icons/hi'
+"use client";
+import { useContext, useState } from "react";
+import Link from "next/link";
+import ThemeCta from "./ThemeCta";
+import { HiMenuAlt3, HiX } from "react-icons/hi";
+import { FaUser, FaChevronDown } from "react-icons/fa";
+import { useRouter } from "next/navigation";
+import { AuthContext } from "@/context/AuthContext";
 
 export default function MobileMenu({ theme, navLinks }) {
-  const [open, setOpen] = useState(false)
+  const [open, setOpen] = useState(false);
+  const [userMenuOpen, setUserMenuOpen] = useState(false);
+  const { user, setUser } = useContext(AuthContext);
+  const router = useRouter();
+
+  const handleLogout = async () => {
+    const res = await fetch("/api/auth/logout", { method: "POST" });
+    if (res.ok) {
+      setOpen(false);
+      router.replace("/login");
+      router.refresh();
+      setUser(null);
+    }
+  };
 
   return (
     <div className="sm:hidden fixed top-0 left-0 right-0 z-50">
@@ -17,7 +33,7 @@ export default function MobileMenu({ theme, navLinks }) {
           shadow-sm"
       >
         <button
-          onClick={() => setOpen(o => !o)}
+          onClick={() => setOpen((o) => !o)}
           aria-label="منو"
           className="text-2xl text-green-800 dark:text-gray-100
             hover:text-green-600 dark:hover:text-teal-400 transition-colors"
@@ -37,7 +53,7 @@ export default function MobileMenu({ theme, navLinks }) {
         className={`transition-all duration-300 ease-in-out overflow-hidden
           bg-green-50/95 dark:bg-teal-900/95 backdrop-blur-md
           border-b border-green-200/50 dark:border-teal-700/40
-          ${open ? 'max-h-screen opacity-100' : 'max-h-0 opacity-0'}`}
+          ${open ? "max-h-screen opacity-100" : "max-h-0 opacity-0"}`}
       >
         <ul className="flex flex-col px-6 py-4 gap-1 font-Morabba-Bold text-lg">
           {navLinks.map(({ href, label }) => (
@@ -55,23 +71,104 @@ export default function MobileMenu({ theme, navLinks }) {
               </Link>
             </li>
           ))}
-          {/* Auth links */}
+
+          {/* Auth section */}
           <li className="pt-2 border-t border-green-200/50 dark:border-teal-700/40 mt-1">
-            <Link
-              href="/login"
-              onClick={() => setOpen(false)}
-              className="flex items-center justify-end gap-3 py-2.5 px-3 rounded-lg
-                text-green-800/80 dark:text-gray-200
-                hover:bg-green-100/60 dark:hover:bg-teal-800/40
-                transition-all duration-200"
-            >
-              <span>ثبت نام</span>
-              <span className="h-4 w-px rounded-full bg-green-400/60 dark:bg-teal-600" />
-              <span>ورود</span>
-            </Link>
+            {user ? (
+              <div className="flex flex-col gap-1">
+                {/* user header */}
+                <button
+                  onClick={() => setUserMenuOpen((o) => !o)}
+                  className="flex items-center justify-between w-full py-2.5 px-3 rounded-lg
+                    hover:bg-green-100/60 dark:hover:bg-teal-800/40
+                    transition-all duration-200"
+                >
+                  <FaChevronDown
+                    size={12}
+                    className={`text-green-600 dark:text-teal-400
+                      transition-transform duration-300
+                      ${userMenuOpen ? "rotate-180" : ""}`}
+                  />
+                  <div className="flex items-center gap-2">
+                    <span className="text-sm text-green-800/80 dark:text-gray-200">
+                      {user.firstName} {user.lastName}
+                    </span>
+                    <div
+                      className="flex items-center justify-center w-8 h-8 rounded-full
+                      bg-emerald-500 text-white shadow-sm shadow-emerald-500/30"
+                    >
+                      <FaUser size={13} />
+                    </div>
+                  </div>
+                </button>
+
+                {/* user dropdown */}
+                <div
+                  className={`flex flex-col gap-1 overflow-hidden transition-all duration-300
+                  ${userMenuOpen ? "max-h-40 opacity-100" : "max-h-0 opacity-0"}`}
+                >
+                  <Link
+                    href="/dashboard"
+                    onClick={() => setOpen(false)}
+                    className="flex items-center justify-end gap-2.5 py-2.5 px-3 rounded-lg
+                      text-sm text-green-800/80 dark:text-gray-200
+                      hover:bg-green-100/60 dark:hover:bg-teal-800/40
+                      transition-colors duration-150"
+                  >
+                    پنل کاربری
+                    <span
+                      className="flex items-center justify-center w-7 h-7 rounded-lg
+                      bg-emerald-100 dark:bg-emerald-500/20 text-emerald-600 dark:text-emerald-400"
+                    >
+                      <FaUser size={12} />
+                    </span>
+                  </Link>
+
+                  <button
+                    onClick={handleLogout}
+                    className="flex items-center justify-end gap-2.5 py-2.5 px-3 rounded-lg
+                      text-sm text-red-500 dark:text-red-400
+                      hover:bg-red-50 dark:hover:bg-red-900/20
+                      transition-colors duration-150 w-full"
+                  >
+                    خروج از حساب
+                    <span
+                      className="flex items-center justify-center w-7 h-7 rounded-lg
+                      bg-red-100 dark:bg-red-500/20 text-red-500 dark:text-red-400"
+                    >
+                      <FaChevronDown size={12} className="-rotate-90" />
+                    </span>
+                  </button>
+                </div>
+              </div>
+            ) : (
+              <div className="flex gap-2">
+                <Link
+                  href="/register"
+                  onClick={() => setOpen(false)}
+                  className="flex-1 text-center py-2.5 px-3 rounded-lg
+                    bg-emerald-500 hover:bg-emerald-600
+                    text-white text-sm
+                    shadow-sm shadow-emerald-500/30
+                    transition-all duration-200"
+                >
+                  ثبت نام
+                </Link>
+                <Link
+                  href="/login"
+                  onClick={() => setOpen(false)}
+                  className="flex-1 text-center py-2.5 px-3 rounded-lg
+                    text-sm text-green-800/80 dark:text-gray-200
+                    hover:bg-green-100/60 dark:hover:bg-teal-800/40
+                    transition-all duration-200"
+                >
+                  ورود
+                </Link>
+              </div>
+            )}
           </li>
         </ul>
       </div>
     </div>
-  )
+  );
 }

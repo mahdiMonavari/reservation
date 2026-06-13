@@ -2,14 +2,14 @@ import { cookies } from "next/headers";
 import { NextResponse } from "next/server";
 import { refreshTokenHandler, verifyAccessToken } from "./utiles/auth/auth";
 
-const publicRoutes = ["/login", "/register", "/", "/about", "/contact-us"];
+const protectedRoute = ["/reservation"];
 
 export async function proxy(request) {
   const cookieStore = await cookies();
   const token = cookieStore.get("token")?.value;
   const refreshToken = cookieStore.get("refreshToken")?.value;
   const pathname = request.nextUrl.pathname;
-  const isPublicRoute = publicRoutes.includes(pathname);
+  const isProtectedRoute = protectedRoute.includes(pathname);
   const payload = verifyAccessToken(token);
   if (Boolean(payload) !== false) {
     if (pathname.includes("login") || pathname.includes("register")) {
@@ -17,6 +17,9 @@ export async function proxy(request) {
     }
     return NextResponse.next();
   } else {
+    if (isProtectedRoute) {
+      return NextResponse.redirect(new URL("/login", request.url));
+    }
   }
 }
 export const config = {

@@ -7,7 +7,9 @@ import { verifyAccessToken } from "@/utiles/auth/auth";
 import { cookies } from "next/headers";
 import { Toaster } from "react-hot-toast";
 import userModel from "../../../model/user";
+import connectionToDB from "@/utiles/DB/connection";
 export default async function RootLayout({ children }) {
+  connectionToDB();
   const cookiesStore = await cookies();
   const theme = cookiesStore.get("theme")?.value;
   const userToken = cookiesStore.get("token")?.value;

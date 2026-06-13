@@ -6,6 +6,8 @@ import MobileMenu from "./MobileMenu";
 import NavbarResarvationLink from "./NavbarReservationLink";
 import { AuthContext } from "@/context/AuthContext";
 import { FaChevronDown, FaUser } from "react-icons/fa";
+import { successToast } from "../toast/toast";
+import { useRouter } from "next/navigation";
 
 const navLinks = [
   { href: "/", label: "خانه" },
@@ -17,7 +19,15 @@ const navLinks = [
 
 function Navbar({ theme }) {
   const { user, setUser } = useContext(AuthContext);
-  console.log(user);
+  const router = useRouter();
+  const logoutHandler = async () => {
+    const res = await fetch("/api/auth/logout", { method: "POST" });
+    if (res.ok) {
+      successToast("خروج موفقیت آمیز بود");
+      setUser(null);
+      router.refresh();
+    }
+  };
   return (
     <>
       {/* ─── Desktop navbar ─── */}
@@ -124,9 +134,7 @@ function Navbar({ theme }) {
                   <div className="h-px bg-green-100/80 dark:bg-teal-800/50 mx-1 my-0.5" />
 
                   <button
-                    onClick={() => {
-                      /* logout */
-                    }}
+                    onClick={logoutHandler}
                     className="flex items-center gap-2.5 px-3 py-2.5 rounded-xl text-sm font-Morabba-Bold
             text-red-500 dark:text-red-400
             hover:bg-red-50 dark:hover:bg-red-900/20

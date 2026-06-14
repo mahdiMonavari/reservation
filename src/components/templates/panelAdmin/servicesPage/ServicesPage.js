@@ -48,7 +48,22 @@ function ServicesPage() {
     setFieldData(targetService);
   };
   const deletHanlder = () => {};
-  const editServiceHanlder = () => {};
+  const editServiceHanlder = async () => {
+    const res = await fetch(`/api/services/${fieldData._id}`, {
+      method: "PUT",
+      headers: {
+        "Content-type": "application/json",
+      },
+      body: JSON.stringify({ ...formData, doctorId: user._id }),
+    });
+    if (res.status === 200) {
+      successToast("خدمت با موفقیت ویرایش شد");
+      const { data } = await res.json();
+      setServices((prev) =>
+        prev.map((item) => (item._id === data._id ? data : item))
+      );
+    }
+  };
   const createNewService = async () => {
     const res = await fetch("/api/services", {
       method: "POST",
@@ -114,6 +129,7 @@ function ServicesPage() {
           <button
             onClick={() => {
               setIsModalOpen(true);
+              setModalMode("create");
               setFieldData({});
             }}
             className="flex items-center gap-2 px-4 py-2.5 rounded-xl
@@ -143,7 +159,7 @@ function ServicesPage() {
               transition-all duration-200"
                 >
                   {/* card header */}
-                  <div className="flex items-start justify-between gap-2">
+                  <div className="flex items-center gap-2">
                     <div
                       className="flex items-center justify-center w-10 h-10 rounded-xl
                 bg-violet-100 dark:bg-violet-900/30
@@ -152,14 +168,14 @@ function ServicesPage() {
                       ✦
                     </div>
                     <div className="flex-1 text-right">
-                      <h2 className="text-sm font-bold text-slate-800 dark:text-slate-100">
+                      <h2 className="text-lg font-bold text-slate-800 dark:text-slate-100 line-clamp-1">
                         {service.title}
                       </h2>
-                      <p className="text-xs text-slate-400 dark:text-slate-500 mt-1 leading-relaxed">
-                        {service.description}
-                      </p>
                     </div>
                   </div>
+                  <p className="text-md line-clamp-2 text-slate-400 dark:text-slate-500 leading-relaxed">
+                    {service.description}
+                  </p>
 
                   {/* divider */}
                   <div className="h-px bg-slate-100 dark:bg-slate-800" />
@@ -167,12 +183,12 @@ function ServicesPage() {
                   {/* info */}
                   <div className="flex items-center justify-between">
                     <div className="flex items-center gap-1.5">
-                      <span className="text-xs text-slate-400 dark:text-slate-500">
+                      <span className="text-xs text-slate-600 dark:text-slate-400 font-Morabba-Bold">
                         {service.duration} دقیقه
                       </span>
                       <span className="w-1 h-1 rounded-full bg-slate-300 dark:bg-slate-700" />
-                      <span className="text-xs font-bold text-emerald-600 dark:text-emerald-400">
-                        {service.price.toLocaleString("fa-IR")} تومان
+                      <span className="text-lg font-bold text-emerald-600 dark:text-emerald-400 font-Morabba-Bold">
+                        {Number(service.price).toLocaleString()} تومان
                       </span>
                     </div>
                   </div>
@@ -180,7 +196,10 @@ function ServicesPage() {
                   {/* actions */}
                   <div className="flex items-center gap-2">
                     <button
-                      onClick={() => editHandler(service._id)}
+                      onClick={() => {
+                        editHandler(service._id);
+                        setModalMode("edit");
+                      }}
                       className="flex-1 flex items-center justify-center gap-1.5
                   py-2 rounded-xl text-xs font-bold
                   text-violet-600 dark:text-violet-400

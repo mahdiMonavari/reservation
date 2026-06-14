@@ -2,11 +2,11 @@ import { cookies } from "next/headers";
 import serviceModel from "../../../../model/service";
 import connectionToDB from "@/utiles/DB/connection";
 import { verifyAccessToken } from "@/utiles/auth/auth";
-import { createServiceValidator } from "../../../../validators/backend/serviceValidator";
+import { ServiceValidator } from "../../../../validators/backend/serviceValidator";
 
 export async function POST(req) {
   try {
-    connectionToDB();
+    await connectionToDB();
     const cookiesStore = await cookies();
     const token = cookiesStore.get("token")?.value;
     if (!token) {
@@ -17,13 +17,13 @@ export async function POST(req) {
     if (role === "ADMIN" || role === "DOCTOR") {
       const { title, doctorId, price, duration, description } =
         await req.json();
-      const isValidData = createServiceValidator({
+      const isValidData = ServiceValidator({
         title,
         doctorId,
         price,
         duration,
       });
-      if (!isValidData) {
+      if (isValidData !== true) {
         return Response.json({ message: "bad request " }, { status: 400 });
       }
 
@@ -50,7 +50,7 @@ export async function POST(req) {
 
 export async function GET() {
   try {
-    connectionToDB();
+    await connectionToDB();
     const services = await serviceModel.find();
     return Response.json({ message: "get successfully", data: services });
   } catch (err) {

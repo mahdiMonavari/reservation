@@ -15,6 +15,20 @@ export async function proxy(request) {
     if (pathname.includes("login") || pathname.includes("register")) {
       return NextResponse.redirect(new URL("/reservation", request.url));
     }
+    if (
+      payload.role !== "ADMIN" &&
+      payload.role !== "DOCTOR" &&
+      pathname.startsWith("/p-admin")
+    ) {
+      return NextResponse.redirect(new URL("/login", request.url));
+    }
+    if (
+      (pathname.startsWith("/p-admin/comments") ||
+        pathname.startsWith("/p-admin/users")) &&
+      payload.role === "DOCTOR"
+    ) {
+      return NextResponse.redirect(new URL("/p-admin", request.url));
+    }
     return NextResponse.next();
   } else {
     const newAccessToken = refreshTokenHandler(refreshToken);
@@ -35,6 +49,18 @@ export async function proxy(request) {
         });
         return response;
       } else {
+        const payload = verifyAccessToken(newAccessToken);
+        if (payload.role !== "ADMIN" && payload.role !== "DOCTOR") {
+          return NextResponse.redirect(new URL("/login", request.url));
+        }
+        if (
+          (pathname.startsWith("/p-admin/comments") ||
+            pathname.startsWith("/p-admin/users")) &&
+          payload.role === "DOCTOR"
+        ) {
+          return NextResponse.redirect(new URL("/p-admin", request.url));
+        }
+        return NextResponse.next();
       }
     }
   }

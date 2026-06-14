@@ -41,9 +41,9 @@ const verifyRefreshToken = (token) => {
 
 const refreshTokenHandler = (refreshToken) => {
   try {
-    const { phone } = verifyRefreshToken(refreshToken);
+    const { phone, role } = verifyRefreshToken(refreshToken);
     if (!phone) return false;
-    return generateAccessToken({ phone });
+    return generateAccessToken({ phone, role });
   } catch (err) {
     return false;
   }

@@ -13,7 +13,6 @@ export async function POST(req) {
       return Response.json({ message: "Unauthenticated " }, { status: 401 });
     }
     const { role } = verifyAccessToken(token);
-
     if (role === "ADMIN" || role === "DOCTOR") {
       const { title, doctorId, price, duration, description } =
         await req.json();
@@ -40,8 +39,9 @@ export async function POST(req) {
           { status: 201 }
         );
       }
+    } else {
+      return Response.json({ message: "Unauthenticated " }, { status: 401 });
     }
-    return Response.json({ message: "Unauthenticated " }, { status: 401 });
   } catch (err) {
     console.log(err);
     return Response.json({ message: "internal error" }, { status: 500 });

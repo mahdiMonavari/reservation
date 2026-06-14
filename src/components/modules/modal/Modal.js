@@ -96,21 +96,18 @@ function Modal({
           >
             <FaTimes />
           </button>
-          <h2 className="text-sm font-bold text-slate-800 dark:text-slate-100 ">
-            {title}
-          </h2>
         </div>
 
         {/* body */}
         <div className="px-5 py-6">
-          <p className="text-sm text-slate-400 dark:text-slate-500 text-right mb-5">
+          <p className="text-lg font-bold text-slate-400 dark:text-rose-500 text-right mb-5">
             {title}
           </p>
           <div className="flex flex-col gap-3">
             {fields.map((field) =>
               field.type === "textarea" ? (
                 <label key={field.name} className="flex flex-col gap-1.5">
-                  <span className="text-xs font-bold text-slate-500 dark:text-slate-400 text-right">
+                  <span className="text-md font-bold text-slate-500 dark:text-rose-300 text-right">
                     {field.label}
                     {field.required && (
                       <span className="text-red-400 mr-1">*</span>
@@ -133,7 +130,7 @@ function Modal({
                 </label>
               ) : (
                 <label key={field.name} className="flex flex-col gap-1.5">
-                  <span className="text-xs font-bold text-slate-500 dark:text-slate-400 text-right">
+                  <span className="text-md font-bold text-slate-500 dark:text-rose-300 text-right">
                     {field.label}
                     {field.required && (
                       <span className="text-red-400 mr-1">*</span>

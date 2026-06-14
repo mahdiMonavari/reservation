@@ -6,6 +6,7 @@ import { FaEdit, FaTrash, FaPlus } from "react-icons/fa";
 import { AuthContext } from "@/context/AuthContext";
 import LoadingOverlay from "@/components/modules/loading/LoadingOverlay";
 import { successToast } from "@/components/modules/toast/toast";
+import DeleteModal from "@/components/modules/modal/DeleteModal";
 
 const serviceFields = [
   { name: "title", label: "عنوان خدمت", type: "text" },
@@ -23,6 +24,8 @@ function ServicesPage() {
   const [fieldData, setFieldData] = useState({});
   const [isLoading, setIsloading] = useState(false);
   const [error, setError] = useState(false);
+  const [titleModal, seTitleModal] = useState("افزودن خدمت جدید");
+  const [deleteModal, setDeleteModal] = useState(false);
   useEffect(() => {
     handelGetServices();
   }, []);
@@ -43,11 +46,28 @@ function ServicesPage() {
   };
   const onClose = () => setIsModalOpen(false);
   const editHandler = (id) => {
+    setModalMode("edit");
     setIsModalOpen(true);
     const targetService = services.find((service) => service._id === id);
+    seTitleModal(`ویرایش خدمت ${targetService.title}`);
     setFieldData(targetService);
   };
-  const deletHanlder = () => {};
+  const deleteHanlder = (id) => {
+    setDeleteModal(true);
+    const targetService = services.find((service) => service._id === id);
+    seTitleModal(`${targetService.title}`);
+    setFieldData(targetService);
+  };
+  const deleteService = async () => {
+    const res = await fetch(`/api/services/${fieldData._id}`, {
+      method: "DELETE",
+    });
+    if (res.status === 200) {
+      const { data } = await res.json();
+      setServices((prev) => prev.filter((item) => item._id !== data._id));
+      successToast("حذف سرویس موفقیت آمیز بود");
+    }
+  };
   const editServiceHanlder = async () => {
     const res = await fetch(`/api/services/${fieldData._id}`, {
       method: "PUT",
@@ -130,6 +150,7 @@ function ServicesPage() {
             onClick={() => {
               setIsModalOpen(true);
               setModalMode("create");
+              seTitleModal(`افزودن خدمت جدید`);
               setFieldData({});
             }}
             className="flex items-center gap-2 px-4 py-2.5 rounded-xl
@@ -198,7 +219,6 @@ function ServicesPage() {
                     <button
                       onClick={() => {
                         editHandler(service._id);
-                        setModalMode("edit");
                       }}
                       className="flex-1 flex items-center justify-center gap-1.5
                   py-2 rounded-xl text-xs font-bold
@@ -211,7 +231,7 @@ function ServicesPage() {
                       ویرایش
                     </button>
                     <button
-                      onClick={() => deletHanlder(service._id)}
+                      onClick={() => deleteHanlder(service._id)}
                       className="flex-1 flex items-center justify-center gap-1.5
                   py-2 rounded-xl text-xs font-bold
                   text-red-500 dark:text-red-400
@@ -231,7 +251,7 @@ function ServicesPage() {
       <Modal
         formData={formData}
         setFormData={setFormData}
-        title={"افزودن خدمت جدید"}
+        title={titleModal}
         fields={serviceFields}
         isOpen={isModalOpen}
         data={fieldData}
@@ -239,6 +259,12 @@ function ServicesPage() {
         onConfirm={
           modalMode === "create" ? createNewService : editServiceHanlder
         }
+      />
+      <DeleteModal
+        isOpen={deleteModal}
+        onClose={() => setDeleteModal(false)}
+        onConfirm={deleteService}
+        title={titleModal}
       />
     </>
   );

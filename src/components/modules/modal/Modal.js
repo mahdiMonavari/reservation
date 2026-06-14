@@ -2,10 +2,19 @@
 import { useState, useEffect } from "react";
 import { FaTimes } from "react-icons/fa";
 
-function Modal({ isOpen, onClose, onConfirm, fields, title, data }) {
+function Modal({
+  isOpen,
+  onClose,
+  onConfirm,
+  fields,
+  title,
+  data,
+  formData,
+  setFormData,
+}) {
   const [visible, setVisible] = useState(false);
   const [animClass, setAnimClass] = useState("");
-  const [formData, setFormData] = useState();
+
   const handleChange = (name, value) => {
     setFormData((prev) => ({ ...prev, [name]: value }));
   };
@@ -14,6 +23,10 @@ function Modal({ isOpen, onClose, onConfirm, fields, title, data }) {
     if (isOpen) {
       setVisible(true);
       setTimeout(() => setAnimClass("open"), 10);
+    } else {
+      // وقتی بسته میشه reset کن
+      setAnimClass("");
+      setVisible(false);
     }
   }, [isOpen]);
 
@@ -30,7 +43,7 @@ function Modal({ isOpen, onClose, onConfirm, fields, title, data }) {
     setAnimClass("close");
     setTimeout(() => {
       setVisible(false);
-      onClose();
+      onClose(); // isOpen رو false میکنه
     }, 300);
   };
 
@@ -39,7 +52,7 @@ function Modal({ isOpen, onClose, onConfirm, fields, title, data }) {
     setTimeout(() => {
       setVisible(false);
       onConfirm();
-      setAnimClass("close");
+      onClose(); // ✅ اینجا هم onClose صدا بزن
     }, 300);
   };
 

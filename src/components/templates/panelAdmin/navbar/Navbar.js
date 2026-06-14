@@ -38,7 +38,6 @@ const menu = [
 
 function Navbar() {
   const { user, setUser } = useContext(AuthContext);
-  console.log(user);
   return (
     <aside
       className="sticky top-0 h-screen w-70 flex flex-col

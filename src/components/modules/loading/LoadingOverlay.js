@@ -7,7 +7,7 @@ function LoadingOverlay({ loading }) {
 
   return (
     <div
-      className="fixed inset-0 z-[9999] flex items-center justify-center
+      className="absolute inset-0 z-[9999] flex items-center justify-center
       bg-gray-300/5 backdrop-blur-sm dark:bg-gray-800/60
       transition-all duration-300"
     >

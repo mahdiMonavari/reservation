@@ -33,7 +33,7 @@ export async function proxy(request) {
   } else {
     const newAccessToken = refreshTokenHandler(refreshToken);
     if (!newAccessToken) {
-      if (isProtectedRoute) {
+      if (isProtectedRoute || pathname.startsWith("/p-admin")) {
         return NextResponse.redirect(new URL("/login", request.url));
       }
       return NextResponse.next();
@@ -60,7 +60,15 @@ export async function proxy(request) {
         ) {
           return NextResponse.redirect(new URL("/p-admin", request.url));
         }
-        return NextResponse.next();
+        const response = NextResponse.next();
+        response.cookies.set("token", newAccessToken, {
+          httpOnly: true,
+          secure: false,
+          sameSite: "lax",
+          path: "/",
+          maxAge: 15 * 60,
+        });
+        return response;
       }
     }
   }

@@ -12,42 +12,42 @@ import {
 import { AuthContext } from "@/context/AuthContext";
 
 const menu = [
-  { label: "داشبورد", href: "/p-admin", icon: <FaTachometerAlt size={16} /> },
-  { label: "کاربران", href: "/p-admin/users", icon: <FaUsers size={16} /> },
+  { label: "داشبورد", href: "/p-admin", icon: <FaTachometerAlt /> },
+  { label: "کاربران", href: "/p-admin/users", icon: <FaUsers /> },
   {
     label: "کامنت‌ها",
     href: "/p-admin/comments",
-    icon: <FaComments size={16} />,
+    icon: <FaComments />,
   },
   {
     label: "نوبت‌ها",
     href: "/p-admin/reservations",
-    icon: <FaCalendarAlt size={16} />,
+    icon: <FaCalendarAlt />,
   },
   {
     label: "خدمات",
     href: "/p-admin/services",
-    icon: <FaConciergeBell size={16} />,
+    icon: <FaConciergeBell />,
   },
   {
     label: "روزهای حضور",
     href: "/p-admin/schedule",
-    icon: <FaCalendarCheck size={16} />,
+    icon: <FaCalendarCheck />,
   },
 ];
 
 function Navbar() {
   const { user, setUser } = useContext(AuthContext);
-  console.log(user.role);
+  console.log(user);
   return (
     <aside
-      className="sticky top-0 h-screen w-56 flex flex-col
+      className="sticky top-0 h-screen w-70 flex flex-col
         bg-slate-50 dark:bg-slate-950
         border-l border-slate-200 dark:border-slate-800/60"
     >
       {/* logo */}
-      <div className="px-5 py-6 border-b border-slate-200 dark:border-slate-800/60">
-        <div className="flex items-center gap-3">
+      <div className="px-5 h-20 flex items-center border-b border-slate-200 dark:border-slate-800/60">
+        <div className="flex items-center gap-5">
           <div
             className="w-8 h-8 rounded-lg
             bg-violet-600 dark:bg-violet-600
@@ -60,7 +60,7 @@ function Navbar() {
             <p className="text-slate-800 dark:text-slate-100 text-xl font-bold leading-none">
               پنل مدیریت
             </p>
-            <p className="text-slate-400 dark:text-slate-500 text-sm mt-1">
+            <p className="text-slate-400 dark:text-slate-500 text-sm mt-3">
               کلینیک
             </p>
           </div>
@@ -86,7 +86,7 @@ function Navbar() {
               <span
                 className="text-violet-400 dark:text-violet-500
               group-hover:text-emerald-500 dark:group-hover:text-emerald-400
-              transition-colors duration-200"
+              transition-colors duration-200 text-xl"
               >
                 {icon}
               </span>

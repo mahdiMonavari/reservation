@@ -21,12 +21,16 @@ export default async function RootLayout({ children }) {
   );
   return (
     <html lang="fa" dir="rtl" className={theme === "dark" ? "dark" : ""}>
-      <body className="min-h-full flex flex-col transition-colors duration-300">
+      <body className="transition-colors duration-300">
         <AuthProvider initailUser={user}>
-          <Navbar />
-          <div>
-            <TopBar />
-            {children}
+          <div className="flex">
+            <Navbar />
+            <div className="w-full">
+              <TopBar />
+              <div className="bg-gray-50 dark:bg-zinc-800 min-h-screen">
+                {children}
+              </div>
+            </div>
           </div>
           <AOSInit />
           <Toaster />

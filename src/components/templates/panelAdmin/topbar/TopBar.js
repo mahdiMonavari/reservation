@@ -5,6 +5,14 @@ import { cookies } from "next/headers";
 import { verifyAccessToken } from "@/utiles/auth/auth";
 import Link from "next/link";
 
+const themeCtaStyle = `w-9 h-9 flex items-center justify-center rounded-full
+  bg-slate-100 dark:bg-slate-800
+  text-violet-600 dark:text-violet-400
+  hover:bg-violet-100 dark:hover:bg-violet-900/30
+  hover:scale-110 active:scale-95
+  transition-all duration-200 text-base
+  border border-slate-200 dark:border-slate-700`;
+
 async function TopBar() {
   const cookieStore = await cookies();
   const theme = cookieStore.get("theme")?.value;
@@ -13,8 +21,8 @@ async function TopBar() {
 
   return (
     <header
-      className="sticky top-0 z-40 w-full h-16 flex items-center justify-between px-6
-        bg-slate-50/80 dark:bg-slate-950/80
+      className="sticky top-0 z-40 w-full  flex items-center justify-between px-6
+        bg-slate-50/80 dark:bg-slate-950/80 h-20
         backdrop-blur-md
         border-b border-slate-200 dark:border-slate-800/60"
     >
@@ -23,15 +31,11 @@ async function TopBar() {
         <h1 className="text-sm font-bold text-slate-500 dark:text-slate-400">
           پنل مدیریت
         </h1>
-        <span className="text-slate-300 dark:text-slate-700">/</span>
-        <span className="text-sm font-bold text-slate-800 dark:text-slate-100">
-          داشبورد
-        </span>
       </div>
 
       {/* left */}
       <div className="flex items-center gap-3">
-        <ThemeCta prevTheme={theme} />
+        <ThemeCta prevTheme={theme} style={themeCtaStyle} />
 
         <div className="h-6 w-px bg-slate-200 dark:bg-slate-800" />
 
@@ -43,28 +47,27 @@ async function TopBar() {
               transition-all duration-200 select-none"
           >
             <div
-              className="flex items-center justify-center w-8 h-8 rounded-full
+              className="flex items-center justify-center w-9 h-9 rounded-full text-sm
               bg-violet-600 text-white shadow-md shadow-violet-200 dark:shadow-violet-900/50"
             >
-              <FaUser size={13} />
+              <FaUser />
             </div>
-            <div className="text-right">
+            <div className="">
               <p className="text-xs font-bold text-slate-800 dark:text-slate-100 leading-none">
                 {admin?.firstName} {admin?.lastName}
               </p>
-              <p className="text-xs text-violet-500 dark:text-violet-400 mt-0.5">
+              <p className="text-xl text-violet-500 dark:text-violet-400 mt-0.5">
                 مدیر سیستم
               </p>
             </div>
             <FaChevronDown
-              size={11}
               className="text-slate-400 dark:text-slate-500
                 transition-transform duration-300
+                text-xl
                 group-hover:rotate-180"
             />
           </button>
 
-          {/* dropdown */}
           <div
             className="absolute left-0 top-[calc(100%+8px)] w-56
               opacity-0 invisible translate-y-2

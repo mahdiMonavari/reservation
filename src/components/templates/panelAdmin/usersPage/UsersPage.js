@@ -3,6 +3,7 @@ import React from "react";
 import UsersTable from "./UsersTable";
 import HeaderPage from "@/components/modules/admin/HeaderPage";
 import SearchInput from "@/components/modules/admin/Search";
+import Pagination from "@/components/modules/pagination/Pagination";
 
 function UsersPage({ initialUsers, totalPages, currentPage, search, total }) {
   const openEditModal = () => {};
@@ -28,6 +29,7 @@ function UsersPage({ initialUsers, totalPages, currentPage, search, total }) {
           onDelete={(id) => console.log("delete", id)}
         />
       </div>
+      <Pagination totalPages={totalPages} currentPage={currentPage} />
     </>
   );
 }

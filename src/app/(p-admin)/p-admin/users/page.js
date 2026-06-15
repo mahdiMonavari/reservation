@@ -16,14 +16,12 @@ async function Page({ searchParams }) {
         ],
       }
     : {};
-  console.log(query);
-
   const [users, total] = await Promise.all([
     userModel
       .find(query)
       .skip((page - 1) * limit)
       .limit(limit),
-    userModel.countDocuments({}),
+    userModel.countDocuments(query),
   ]);
   const totalPages = Math.ceil(total / limit);
 

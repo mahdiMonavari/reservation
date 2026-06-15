@@ -7,27 +7,34 @@ async function Page({ searchParams }) {
   const search = params.search || "";
   const limit = 10;
 
-  const query = search ? { name: { $regex: search, $options: "i" } } : {};
+  const query = search
+    ? {
+        $or: [
+          { firstName: { $regex: search, $options: "i" } },
+          { lastName: { $regex: search, $options: "i" } },
+          { phoneNumber: { $regex: search } },
+        ],
+      }
+    : {};
+  console.log(query);
 
   const [users, total] = await Promise.all([
     userModel
       .find(query)
       .skip((page - 1) * limit)
       .limit(limit),
-    userModel.countDocuments(query),
+    userModel.countDocuments({}),
   ]);
-
   const totalPages = Math.ceil(total / limit);
 
   return (
-    <div className="pt-10">
-      <UsersPage
-        initialUsers={JSON.parse(JSON.stringify(users))}
-        totalPages={totalPages}
-        currentPage={page}
-        search={search}
-      />
-    </div>
+    <UsersPage
+      total={total}
+      initialUsers={JSON.parse(JSON.stringify(users))}
+      totalPages={totalPages}
+      currentPage={page}
+      search={search}
+    />
   );
 }
 export default Page;

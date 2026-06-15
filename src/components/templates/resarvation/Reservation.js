@@ -35,6 +35,7 @@ function Reservation() {
   };
 
   const canProceed = isStepValid();
+  console.log(isStepValid());
   const ActiveComponent = STEPS[step - 1]?.component ?? SelectDoctor;
 
   return (

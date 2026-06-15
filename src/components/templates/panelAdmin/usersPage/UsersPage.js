@@ -1,8 +1,10 @@
 "use client";
 import React from "react";
 import UsersTable from "./UsersTable";
+import HeaderPage from "@/components/modules/admin/HeaderPage";
+import SearchInput from "@/components/modules/admin/Search";
 
-function UsersPage({ initialUsers, totalPages, currentPage, search }) {
+function UsersPage({ initialUsers, totalPages, currentPage, search, total }) {
   const openEditModal = () => {};
   const openDeleteModal = () => {};
   const openCreateModal = () => {};
@@ -11,7 +13,14 @@ function UsersPage({ initialUsers, totalPages, currentPage, search }) {
   const onDelete = async () => {};
   return (
     <>
-      <div className="m-4 mt-0">
+      <div className="p-6 flex flex-col gap-6">
+        <HeaderPage
+          title={"کاربر"}
+          total={total}
+          onOpen={openCreateModal}
+          titlePage={"کاربران"}
+          Other={SearchInput}
+        />
         <UsersTable
           users={initialUsers}
           onEdit={(id) => console.log("edit", id)}

@@ -107,7 +107,7 @@ function ServicesPage({ initialServices = [] }) {
       <div className="p-6 flex flex-col gap-6">
         <HeaderPage
           title={"خدمت"}
-          data={services}
+          total={services.length}
           onOpen={openCreateModal}
           titlePage={"خدمات"}
         />

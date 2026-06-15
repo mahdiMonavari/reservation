@@ -1,11 +1,33 @@
-import React from "react";
 import userModel from "../../../../../model/user";
-import connectionToDB from "@/utiles/DB/connection";
+import UsersPage from "@/components/templates/panelAdmin/usersPage/UsersPage";
 
-async function page() {
-  connectionToDB();
-  const users = await userModel.find({});
-  return <div>page</div>;
+async function Page({ searchParams }) {
+  const params = await searchParams;
+  const page = Number(params.page) || 1;
+  const search = params.search || "";
+  const limit = 10;
+
+  const query = search ? { name: { $regex: search, $options: "i" } } : {};
+
+  const [users, total] = await Promise.all([
+    userModel
+      .find(query)
+      .skip((page - 1) * limit)
+      .limit(limit),
+    userModel.countDocuments(query),
+  ]);
+
+  const totalPages = Math.ceil(total / limit);
+
+  return (
+    <div className="pt-10">
+      <UsersPage
+        initialUsers={JSON.parse(JSON.stringify(users))}
+        totalPages={totalPages}
+        currentPage={page}
+        search={search}
+      />
+    </div>
+  );
 }
-
-export default page;
+export default Page;

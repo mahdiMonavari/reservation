@@ -8,6 +8,8 @@ import DeleteModal from "@/components/modules/modal/DeleteModal";
 import { successToast } from "@/components/modules/toast/toast";
 import ServiceCard from "./serviceCard";
 import EmptyState from "@/components/modules/emptyState/EmptyState";
+import LoadingOverlay from "@/components/modules/loading/LoadingOverlay";
+import HeaderPage from "@/components/modules/admin/HeaderPage";
 
 const SERVICE_FIELDS = [
   { name: "title", label: "عنوان خدمت", type: "text" },
@@ -32,6 +34,7 @@ function ServicesPage({ initialServices = [] }) {
   const [isEditModalOpen, setIsEditModalOpen] = useState(false);
   const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
   const [modalMode, setModalMode] = useState("create");
+  const [isLoading, setIsLoading] = useState(false);
 
   const openCreateModal = () => {
     setModalMode("create");
@@ -56,11 +59,13 @@ function ServicesPage({ initialServices = [] }) {
   };
 
   const handleCreate = async () => {
+    setIsLoading(true);
     const res = await fetch("/api/services", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({ ...formData, doctorId: user._id }),
     });
+    setIsLoading(false);
     if (res.status === 201) {
       const { data } = await res.json();
       setServices((prev) => [data, ...prev]);
@@ -69,11 +74,13 @@ function ServicesPage({ initialServices = [] }) {
   };
 
   const handleEdit = async () => {
+    setIsLoading(true);
     const res = await fetch(`/api/services/${selectedService._id}`, {
       method: "PUT",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({ ...formData, doctorId: user._id }),
     });
+    setIsLoading(false);
     if (res.status === 200) {
       const { data } = await res.json();
       setServices((prev) => prev.map((s) => (s._id === data._id ? data : s)));
@@ -82,9 +89,11 @@ function ServicesPage({ initialServices = [] }) {
   };
 
   const handleDelete = async () => {
+    setIsLoading(true);
     const res = await fetch(`/api/services/${selectedService._id}`, {
       method: "DELETE",
     });
+    setIsLoading(false);
     if (res.status === 200) {
       const { data } = await res.json();
       setServices((prev) => prev.filter((s) => s._id !== data._id));
@@ -94,28 +103,14 @@ function ServicesPage({ initialServices = [] }) {
 
   return (
     <>
+      <LoadingOverlay loading={isLoading} />
       <div className="p-6 flex flex-col gap-6">
-        <div className="flex items-center justify-between">
-          <div>
-            <h1 className="text-xl font-bold text-slate-800 dark:text-slate-100">
-              خدمات
-            </h1>
-            <p className="text-sm text-slate-400 dark:text-slate-500 mt-0.5">
-              {services.length} خدمت ثبت شده
-            </p>
-          </div>
-          <button
-            onClick={openCreateModal}
-            className="flex items-center gap-2 px-4 py-2.5 rounded-xl
-              bg-violet-600 hover:bg-violet-700
-              text-white text-sm font-bold
-              shadow-md shadow-violet-200 dark:shadow-violet-900/30
-              transition-all duration-200 active:scale-95"
-          >
-            <FaPlus />
-            افزودن خدمت
-          </button>
-        </div>
+        <HeaderPage
+          title={"خدمت"}
+          data={services}
+          onOpen={openCreateModal}
+          titlePage={"خدمات"}
+        />
         {services.length ? (
           <div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-3 gap-4">
             {services.map((service) => (

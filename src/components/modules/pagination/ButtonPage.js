@@ -6,7 +6,8 @@ function ButtonPage({ currentPage, value }) {
   const router = useRouter();
   const searchParams = useSearchParams();
   const handleGoPage = () => {
-    router.push(`?search=${searchParams.get("search")}&page=${value}`);
+    const search = searchParams.get("search") || "";
+    router.push(`?search=${search}&page=${value}`);
   };
 
   return (

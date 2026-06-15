@@ -7,6 +7,7 @@ import Modal from "@/components/modules/modal/Modal";
 import DeleteModal from "@/components/modules/modal/DeleteModal";
 import { successToast } from "@/components/modules/toast/toast";
 import ServiceCard from "./serviceCard";
+import EmptyState from "@/components/modules/emptyState/EmptyState";
 
 const SERVICE_FIELDS = [
   { name: "title", label: "عنوان خدمت", type: "text" },
@@ -115,17 +116,20 @@ function ServicesPage({ initialServices = [] }) {
             افزودن خدمت
           </button>
         </div>
-
-        <div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-3 gap-4">
-          {services.map((service) => (
-            <ServiceCard
-              key={service._id}
-              service={service}
-              onEdit={openEditModal}
-              onDelete={openDeleteModal}
-            />
-          ))}
-        </div>
+        {services.length ? (
+          <div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-3 gap-4">
+            {services.map((service) => (
+              <ServiceCard
+                key={service._id}
+                service={service}
+                onEdit={openEditModal}
+                onDelete={openDeleteModal}
+              />
+            ))}
+          </div>
+        ) : (
+          <EmptyState title="خدماتی ثبت نشده" />
+        )}
       </div>
 
       <Modal

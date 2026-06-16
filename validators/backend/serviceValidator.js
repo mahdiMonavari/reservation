@@ -20,5 +20,10 @@ export const ServiceValidator = v.compile({
   duration: {
     type: "string",
   },
+  description: {
+    type: "string",
+    min: 3,
+    max: 200,
+  },
   $$strict: true,
 });

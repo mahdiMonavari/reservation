@@ -23,6 +23,7 @@ export async function PUT(req, { params }) {
         doctorId,
         price,
         duration,
+        description,
       });
       if (isValidData !== true) {
         return Response.json({ message: "bad request " }, { status: 400 });

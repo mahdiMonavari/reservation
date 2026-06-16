@@ -24,7 +24,6 @@ function Modal({
       setVisible(true);
       setTimeout(() => setAnimClass("open"), 10);
     } else {
-      // وقتی بسته میشه reset کن
       setAnimClass("");
       setVisible(false);
     }

@@ -8,6 +8,7 @@ import userModel from "../../../model/user";
 import connectionToDB from "@/utiles/DB/connection";
 import Navbar from "@/components/templates/panelAdmin/navbar/Navbar";
 import TopBar from "@/components/templates/panelAdmin/topbar/TopBar";
+import { MenuProvider } from "@/context/MenuMobile";
 export default async function RootLayout({ children }) {
   connectionToDB();
   const cookiesStore = await cookies();
@@ -19,21 +20,24 @@ export default async function RootLayout({ children }) {
       await userModel.findOne({ phoneNumber: userTokenVerify?.phone })
     )
   );
+  const admin = verifyAccessToken(userToken);
   return (
     <html lang="fa" dir="rtl" className={theme === "dark" ? "dark" : ""}>
       <body className="transition-colors duration-300">
         <AuthProvider initailUser={user}>
-          <div className="flex">
-            <Navbar />
-            <div className="w-full">
-              <TopBar />
-              <div className="bg-gray-200 relative dark:bg-zinc-800 min-h-screen">
-                {children}
+          <MenuProvider>
+            <div className="flex">
+              <Navbar />
+              <div className="w-full">
+                <TopBar theme={theme} admin={admin} />
+                <div className="bg-gray-200 relative dark:bg-zinc-800 min-h-screen">
+                  {children}
+                </div>
               </div>
             </div>
-          </div>
-          <AOSInit />
-          <Toaster />
+            <AOSInit />
+            <Toaster />
+          </MenuProvider>
         </AuthProvider>
       </body>
     </html>

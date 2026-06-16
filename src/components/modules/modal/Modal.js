@@ -42,7 +42,7 @@ function Modal({
     setAnimClass("close");
     setTimeout(() => {
       setVisible(false);
-      onClose(); // isOpen رو false میکنه
+      onClose();
     }, 300);
   };
 
@@ -51,7 +51,7 @@ function Modal({
     setTimeout(() => {
       setVisible(false);
       onConfirm();
-      onClose(); // ✅ اینجا هم onClose صدا بزن
+      onClose();
     }, 300);
   };
 

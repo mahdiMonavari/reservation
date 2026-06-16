@@ -9,16 +9,16 @@ function UsersTable({ users = [], onEdit, onBan, onDelete }) {
       <table className="w-full">
         <thead>
           <tr className="border-b border-slate-100 dark:border-slate-800 bg-slate-50 dark:bg-slate-800/50">
-            <th className="px-4 py-3 text-center text-xs font-semibold text-slate-500 dark:text-slate-400">
+            <th className="px-4 py-3 text-center text-sm font-Morabba-Bold text-slate-500 dark:text-slate-400">
               کاربر
             </th>
-            <th className="px-4 py-3 text-center text-xs font-semibold text-slate-500 dark:text-slate-400 hidden sm:table-cell">
+            <th className="px-4 py-3 text-center text-sm font-Morabba-Bold text-slate-500 dark:text-slate-400 hidden sm:table-cell">
               شماره
             </th>
-            <th className="px-4 py-3 text-center text-xs font-semibold text-slate-500 dark:text-slate-400 hidden md:table-cell">
+            <th className="px-4 py-3 text-center text-sm font-Morabba-Bold text-slate-500 dark:text-slate-400 hidden md:table-cell">
               نقش
             </th>
-            <th className="px-4 py-3 text-center text-xs font-semibold text-slate-500 dark:text-slate-400">
+            <th className="px-4 py-3 text-center text-sm font-Morabba-Bold text-slate-500 dark:text-slate-400">
               عملیات
             </th>
           </tr>

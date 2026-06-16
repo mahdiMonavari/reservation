@@ -7,6 +7,8 @@ import Pagination from "@/components/modules/pagination/Pagination";
 import EmptyState from "@/components/modules/emptyState/EmptyState";
 import Modal from "@/components/modules/modal/Modal";
 import LoadingOverlay from "@/components/modules/loading/LoadingOverlay";
+import { errorToast, successToast } from "@/components/modules/toast/toast";
+import DeleteModal from "@/components/modules/modal/DeleteModal";
 
 const USER_FIELDS = [
   { name: "phoneNumber", label: "شماره همراه", type: "number" },
@@ -21,6 +23,12 @@ const USER_FIELDS_EDIT = [
   { name: "lastName", label: "نام خانوادی کاربر", type: "text" },
 ];
 
+const typeTitle = {
+  create: () => "ایجاد کاربر جدید",
+  delete: (name) => `آیا از حذف کاربر ${name} مطمئن هستید؟`,
+  edit: (name) => `ویرایش کاربر ${name}`,
+};
+
 function UsersPage({ initialUsers, totalPages, currentPage, total }) {
   const [userFields, setUserFields] = useState(USER_FIELDS);
   const [users, setUsers] = useState(initialUsers);
@@ -29,6 +37,7 @@ function UsersPage({ initialUsers, totalPages, currentPage, total }) {
   const [user, setUser] = useState({});
   const [formData, setFormData] = useState({});
   const [isLoading, setIsLoading] = useState(false);
+  const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
   useEffect(() => {
     setUsers(initialUsers);
   }, [initialUsers]);
@@ -41,7 +50,13 @@ function UsersPage({ initialUsers, totalPages, currentPage, total }) {
     const target = users.find((user) => user._id === id);
     setUser(target);
   };
-  const openDeleteModal = () => {};
+  const deleteModalOnClose = () => setIsDeleteModalOpen(false);
+  const openDeleteModal = (id) => {
+    setState("delete");
+    setIsDeleteModalOpen(true);
+    const target = users.find((user) => user._id === id);
+    setUser(target);
+  };
   const openCreateModal = () => {
     setUserFields(USER_FIELDS);
     setIsModalOpen(true);
@@ -49,25 +64,68 @@ function UsersPage({ initialUsers, totalPages, currentPage, total }) {
     setState("create");
   };
   const onEdit = async () => {
-    console.log(user);
+    try {
+      setIsLoading(true);
+      const res = await fetch(`/api/admin/user/${user._id}`, {
+        method: "PUT",
+        headers: { "Content-type": "application/json" },
+        body: JSON.stringify({ ...formData }),
+      });
+
+      if (res.status === 200) {
+        const { data } = await res.json();
+        setUsers((prev) =>
+          prev.map((item) => (item._id === data._id ? data : item))
+        );
+        successToast("ویرایش موفقیت آمیز بود");
+      } else {
+        errorToast("خطایی پیش آمده دوباره امتحان کنید");
+      }
+    } catch {
+      errorToast("خطا در اتصال به سرور");
+    } finally {
+      setIsLoading(false);
+    }
   };
   const onCreate = async () => {
-    setIsLoading(true);
-    const res = await fetch("/api/admin/user", {
-      method: "POST",
-      headers: {
-        "Content-type": "application/json",
-      },
-      body: JSON.stringify(formData),
-    });
-    setIsLoading(false);
-    if (res.status === 201) {
-      const { data } = await res.json();
-      setUsers((prev) => [...prev, data]);
+    try {
+      setIsLoading(true);
+      const res = await fetch("/api/admin/user", {
+        method: "POST",
+        headers: { "Content-type": "application/json" },
+        body: JSON.stringify(formData),
+      });
+      if (res.status === 201) {
+        const { data } = await res.json();
+        setUsers((prev) => [...prev, data]);
+        successToast("ثبت نام موفقیت آمیز بود");
+      } else {
+        errorToast("خطایی پیش آمده دوباره امتحان کنید");
+      }
+    } catch {
+      errorToast("خطا در اتصال به سرور");
+    } finally {
+      setIsLoading(false);
     }
   };
   const onBan = async () => {};
-  const onDelete = async () => {};
+  const onDelete = async () => {
+    try {
+      setIsLoading(true);
+      const res = await fetch(`/api/admin/user/${user._id}`, {
+        method: "DELETE",
+      });
+      if (res.ok) {
+        const { data } = await res.json();
+        setUsers((prev) => prev.filter((item) => item._id !== data._id));
+        successToast("حذف کاربر موفقیت آمیز بود");
+      }
+    } catch (err) {
+      errorToast("خطا در اتصال به سرور");
+    } finally {
+      setIsLoading(false);
+    }
+  };
   const choseHandler = () => {
     if (state === "create") return onCreate();
     if (state === "edit") return onEdit();
@@ -79,12 +137,18 @@ function UsersPage({ initialUsers, totalPages, currentPage, total }) {
       <Modal
         formData={formData}
         setFormData={setFormData}
-        title={"ایجاد کاربر جدید"}
+        title={typeTitle[state](`${user.firstName} ${user.lastName}`)}
         fields={userFields}
         isOpen={isModalOpen}
         data={user}
         onClose={onClose}
         onConfirm={choseHandler}
+      />
+      <DeleteModal
+        isOpen={isDeleteModalOpen}
+        onClose={deleteModalOnClose}
+        onConfirm={onDelete}
+        title={typeTitle[state](`${user.firstName} ${user.lastName}`)}
       />
       <div className="p-6 flex flex-col gap-6">
         <HeaderPage

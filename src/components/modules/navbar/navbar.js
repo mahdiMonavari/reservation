@@ -19,7 +19,6 @@ const navLinks = [
 
 function Navbar({ theme }) {
   const { user, setUser } = useContext(AuthContext);
-  console.log(user);
   const router = useRouter();
   const logoutHandler = async () => {
     const res = await fetch("/api/auth/logout", { method: "POST" });

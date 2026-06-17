@@ -28,6 +28,10 @@ const commentSchema = new mongoose.Schema(
       type: Boolean,
       default: false,
     },
+    hasAnswer: {
+      type: Boolean,
+      default: false,
+    },
   },
   { timestamps: true }
 );

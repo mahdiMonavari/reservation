@@ -1,7 +1,14 @@
-import React from "react";
+import CommentsPage from "@/components/templates/panelAdmin/comments/CommentsPage";
+import commentModel from "../../../../../model/comment";
 
-function Comments() {
-  return <div>Comments</div>;
+async function Comments() {
+  const comments = await commentModel.find({}).populate("userId");
+
+  return (
+    <div>
+      <CommentsPage comments={comments} />
+    </div>
+  );
 }
 
 export default Comments;

@@ -11,6 +11,10 @@ const schema = new mongoose.Schema(
       type: Date,
       required: true,
     },
+    isVisited: {
+      type: Boolean,
+      default: false,
+    },
     doctorId: {
       type: mongoose.Schema.Types.ObjectId,
       required: true,

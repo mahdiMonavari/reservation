@@ -12,6 +12,9 @@ export const appointmentValidator = v.compile({
       string: "آیدی کاربر باید متنی باشد",
     },
   },
+  date: {
+    type: "date",
+  },
   doctorId: {
     type: "string",
     messages: {

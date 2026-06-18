@@ -19,8 +19,15 @@ export async function POST(req) {
     }
 
     const body = await req.json();
-    const { userId, serviceIds, totalTime, timeStart, timeEnd, doctorId } =
-      body;
+    const {
+      userId,
+      serviceIds,
+      totalTime,
+      timeStart,
+      timeEnd,
+      doctorId,
+      date,
+    } = body;
     const isValid = appointmentValidator({
       userId,
       serviceIds,
@@ -28,6 +35,7 @@ export async function POST(req) {
       totalTime,
       timeStart,
       timeEnd,
+      date: new Date(date),
     });
     if (isValid !== true) {
       return Response.json({ message: "bad request" }, { status: 400 });
@@ -40,6 +48,7 @@ export async function POST(req) {
       totalTime,
       timeStart,
       timeEnd,
+      date,
     });
 
     return Response.json(

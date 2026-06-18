@@ -5,6 +5,7 @@ import appointmentModel from "../../../../model/appointment";
 import connectionToDB from "@/utiles/DB/connection";
 import { cookies } from "next/headers";
 import { verifyAccessToken } from "@/utiles/auth/auth";
+import serviceModel from "../../../../model/service";
 
 async function getAdminStats() {
   const [
@@ -51,7 +52,7 @@ async function getDoctorStats(doctorId) {
       appointmentModel.find({ doctorId, date: { $gte: today, $lt: tomorrow } }),
       appointmentModel
         .find({ doctorId, createdAt: { $gte: startOfMonth } })
-        .populate("services"),
+        .populate("serviceIds"),
     ]);
 
   const remaining = todayReservations.filter((r) => !r.isDone).length;

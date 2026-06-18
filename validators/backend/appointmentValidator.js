@@ -3,26 +3,19 @@ import Validator from "fastest-validator";
 
 const v = new Validator();
 
-const objectIdPattern = /^[a-fA-F0-9]{24}$/;
 const timePattern = /^([01]\d|2[0-3]):([0-5]\d)$/; // HH:MM
 
 export const appointmentValidator = v.compile({
   userId: {
     type: "string",
-    pattern: objectIdPattern,
     messages: {
       string: "آیدی کاربر باید متنی باشد",
-      stringPattern: "آیدی کاربر معتبر نیست",
-      required: "آیدی کاربر الزامی است",
     },
   },
   doctorId: {
     type: "string",
-    pattern: objectIdPattern,
     messages: {
       string: "آیدی دکتر باید متنی باشد",
-      stringPattern: "آیدی دکتر معتبر نیست",
-      required: "آیدی دکتر الزامی است",
     },
   },
   serviceIds: {
@@ -30,16 +23,13 @@ export const appointmentValidator = v.compile({
     min: 1,
     items: {
       type: "string",
-      pattern: objectIdPattern,
       messages: {
         string: "آیدی سرویس باید متنی باشد",
-        stringPattern: "آیدی سرویس معتبر نیست",
       },
     },
     messages: {
       array: "سرویس‌ها باید آرایه باشند",
       arrayMin: "حداقل یک سرویس باید انتخاب شود",
-      required: "سرویس‌ها الزامی هستند",
     },
   },
   totalTime: {

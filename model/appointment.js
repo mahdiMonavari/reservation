@@ -7,10 +7,14 @@ const schema = new mongoose.Schema(
       required: true,
       ref: "User",
     },
+    date: {
+      type: Date,
+      required: true,
+    },
     doctorId: {
       type: mongoose.Schema.Types.ObjectId,
       required: true,
-      ref: "Doctor",
+      ref: "User",
     },
     serviceIds: [
       {

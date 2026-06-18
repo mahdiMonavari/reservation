@@ -1,41 +1,68 @@
 import { cookies } from "next/headers";
-import React from "react";
 import userModel from "../../../../../model/user";
 import { verifyAccessToken } from "@/utiles/auth/auth";
 import appointmentModel from "../../../../../model/appointment";
+import serviceModel from "../../../../../model/service";
+import doctorModel from "../../../../../model/doctor";
+import AppointMentPage from "@/components/templates/panelAdmin/appointment/AppointMentPage";
+import connectionToDB from "@/utiles/DB/connection";
 
 async function Appointment({ searchParams }) {
+  await connectionToDB();
+
   const params = await searchParams;
-  const search = params?.search;
-  const page = params?.page || 1;
+  const search = params?.search || "";
+  const page = Number(params?.page) || 1;
+  const inPage = 10;
+
   const cookiesStore = await cookies();
   const token = cookiesStore.get("token")?.value;
   const { phone } = verifyAccessToken(token);
   const user = await userModel.findOne({ phoneNumber: phone }, "_id");
-  const inPage = 10;
-  const query = search
-    ? {
+
+  let matchedUserIds = [];
+  if (search) {
+    const matchedUsers = await userModel.find(
+      {
         $or: [
           { firstName: { $regex: search, $options: "i" } },
           { lastName: { $regex: search, $options: "i" } },
           { phoneNumber: { $regex: search } },
         ],
-      }
-    : {};
-  const appointmentsUserId = await userModel.findOne({ ...query }, "_id");
-  const [appointments, totlaCount] = await Promise.all([
+      },
+      "_id"
+    );
+    matchedUserIds = matchedUsers.map((u) => u._id);
+  }
+
+  const filter = {
+    doctorId: user._id,
+    ...(search && { userId: { $in: matchedUserIds } }),
+  };
+
+  const [appointments, totalCount] = await Promise.all([
     appointmentModel
-      .find({
-        doctorId: user._id,
-        userId: appointmentsUserId,
-      })
+      .find(filter)
+      .sort({ createdAt: -1 })
       .skip((page - 1) * inPage)
       .limit(inPage)
-      .populate("userId"),
-    appointmentModel.countDocuments({ doctorId: user._id, ...query }),
+      .populate("userId", "firstName lastName phoneNumber")
+      .populate("doctorId", "firstName lastName")
+      .populate("serviceIds")
+      .lean(),
+    appointmentModel.countDocuments(filter),
   ]);
-  console.log(totlaCount);
-  return <div></div>;
+
+  const totalPages = Math.ceil(totalCount / inPage);
+
+  return (
+    <AppointMentPage
+      totalPages={totalPages}
+      appointments={JSON.parse(JSON.stringify(appointments))}
+      currentPage={page}
+      search={search}
+    />
+  );
 }
 
 export default Appointment;

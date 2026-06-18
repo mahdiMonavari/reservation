@@ -22,11 +22,7 @@ export async function proxy(request) {
     ) {
       return NextResponse.redirect(new URL("/login", request.url));
     }
-    if (
-      (pathname.startsWith("/p-admin/comments") ||
-        pathname.startsWith("/p-admin/users")) &&
-      payload.role === "DOCTOR"
-    ) {
+    if (pathname.startsWith("/p-admin/users") && payload.role === "DOCTOR") {
       return NextResponse.redirect(new URL("/p-admin", request.url));
     }
     return NextResponse.next();

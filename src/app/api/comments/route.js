@@ -16,8 +16,3 @@ export async function POST(req) {
     return Response.json({ message: "internal error" }, { status: 500 });
   }
 }
-export async function GET(req, { params }) {
-  const searchParams = await params;
-  return Response.json(searchParams);
-  // const id = searchParams.get("")
-}

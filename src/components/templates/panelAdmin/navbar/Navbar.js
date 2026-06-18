@@ -22,7 +22,7 @@ const menu = [
   },
   {
     label: "نوبت‌ها",
-    href: "/p-admin/reservations",
+    href: "/p-admin/appointment",
     icon: <FaCalendarAlt />,
   },
   {
@@ -72,8 +72,7 @@ function Navbar() {
         {/* menu */}
         <nav className="flex-1 px-3 py-4 flex flex-col gap-1 overflow-y-auto">
           {menu.map(({ label, href, icon }) =>
-            (href === "/p-admin/comments" || href === "/p-admin/users") &&
-            user.role === "DOCTOR" ? (
+            href === "/p-admin/users" && user.role === "DOCTOR" ? (
               ""
             ) : (
               <Link

@@ -1,4 +1,5 @@
-import { Bar, BarChart, XAxis, YAxis } from "recharts";
+"use client";
+import { Bar, BarChart, CartesianGrid, XAxis, YAxis } from "recharts";
 
 const data = [
   {
@@ -40,26 +41,11 @@ const margin = {
 
 export default function Recharts() {
   return (
-    <BarChart width={600} height={300} data={data} margin={margin}>
-      <XAxis
-        dataKey="name"
-        tickFormatter={formatAxisTick}
-        label={{
-          position: "insideBottomRight",
-          value: "XAxis title",
-          offset: -10,
-        }}
-      />
-      <YAxis
-        label={{
-          position: "insideTopLeft",
-          value: "YAxis title",
-          angle: -90,
-          dy: 60,
-        }}
-      />
-      <Bar dataKey="uv" fill="#8884d8" label={renderCustomBarLabel} />
-      <RechartsDevtools />
+    <BarChart width={"80%"} height={300} data={data} margin={margin}>
+      <CartesianGrid strokeDasharray="4 4" />
+      <XAxis dataKey="date" />
+      <YAxis />
+      <Bar dataKey="appointment" fill="#8884d8" />
     </BarChart>
   );
 }

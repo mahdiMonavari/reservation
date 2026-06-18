@@ -10,7 +10,6 @@ async function Page() {
   const { phone } = verifyAccessToken(token);
   const user = await userModel.findOne({ phoneNumber: phone });
   const services = await serviceModel.find({ doctorId: user._id });
-  console.log(services);
   return (
     <ServicesPage initialServices={JSON.parse(JSON.stringify(services))} />
   );

@@ -6,7 +6,7 @@ import React, { useContext } from "react";
 import Link from "next/link";
 import { FaTimes } from "react-icons/fa";
 
-function NavMobile({ menu, user, setUser }) {
+function NavMobile({ menu, user }) {
   const { isMenuOpen, toggleMenu } = useContext(menuMobile);
 
   return (
@@ -55,12 +55,10 @@ function NavMobile({ menu, user, setUser }) {
           </div>
         </div>
 
-        {/* menu */}
         <nav className="flex-1 px-3 py-4 flex flex-col gap-1 overflow-y-auto">
           {menu.map(({ label, href, icon }) => {
             const isHidden =
-              (href === "/p-admin/comments" || href === "/p-admin/users") &&
-              user?.role === "DOCTOR";
+              href === "/p-admin/users" && user?.role === "DOCTOR";
             if (isHidden) return null;
             return (
               <Link

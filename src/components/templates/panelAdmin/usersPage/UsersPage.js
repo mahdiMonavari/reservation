@@ -21,6 +21,16 @@ const USER_FIELDS_EDIT = [
   { name: "phoneNumber", label: "شماره همراه", type: "number" },
   { name: "firstName", label: "نام کاربر", type: "text" },
   { name: "lastName", label: "نام خانوادی کاربر", type: "text" },
+  {
+    name: "role",
+    label: "نقش کاربر را وارد کنید",
+    type: "select",
+    fields: [
+      { value: "DOCTOR", name: "role", title: "دکتر" },
+      { value: "USER", name: "role", title: "کاربر" },
+      { value: "ADMIN", name: "role", title: "ادمین" },
+    ],
+  },
 ];
 
 const typeTitle = {

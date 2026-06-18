@@ -9,6 +9,7 @@ import connectionToDB from "@/utiles/DB/connection";
 import Navbar from "@/components/templates/panelAdmin/navbar/Navbar";
 import TopBar from "@/components/templates/panelAdmin/topbar/TopBar";
 import { MenuProvider } from "@/context/MenuMobile";
+import { redirect } from "next/navigation";
 export default async function RootLayout({ children }) {
   connectionToDB();
   const cookiesStore = await cookies();
@@ -20,6 +21,9 @@ export default async function RootLayout({ children }) {
       await userModel.findOne({ phoneNumber: userTokenVerify?.phone })
     )
   );
+  if (user.role === "USER") {
+    redirect("/");
+  }
   const admin = verifyAccessToken(userToken);
   return (
     <html lang="fa" dir="rtl" className={theme === "dark" ? "dark" : ""}>

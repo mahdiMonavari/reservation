@@ -1,6 +1,7 @@
 import { compare, hash } from "bcryptjs";
 import { sign, verify } from "jsonwebtoken";
 import { cookies } from "next/headers";
+import userModel from "../../../model/user";
 
 const hashePassword = async (password) => {
   const hashedPassword = await hash(password, 12);
@@ -39,11 +40,13 @@ const verifyRefreshToken = (token) => {
   }
 };
 
-const refreshTokenHandler = (refreshToken) => {
+const refreshTokenHandler = async (refreshToken) => {
   try {
-    const { phone, role } = verifyRefreshToken(refreshToken);
+    const { phone } = verifyRefreshToken(refreshToken);
     if (!phone) return false;
-    return generateAccessToken({ phone, role });
+    const user = await userModel.findOne({ phoneNumber: phone });
+    if (!user) return false;
+    return generateAccessToken({ phone: user.phoneNumber, role: user.role });
   } catch (err) {
     return false;
   }

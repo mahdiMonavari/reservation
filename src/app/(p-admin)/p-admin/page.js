@@ -55,7 +55,7 @@ async function getDoctorStats(doctorId) {
         .populate("serviceIds"),
     ]);
 
-  const remaining = todayReservations.filter((r) => !r.isDone).length;
+  const remaining = todayReservations.filter((r) => !r.isVisited).length;
 
   const monthlyIncome = monthlyReservations.reduce((sum, r) => {
     const total = (r.services || []).reduce((s, sv) => s + (sv.price || 0), 0);

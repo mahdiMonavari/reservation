@@ -1,14 +1,55 @@
+"use client";
+import { useState } from "react";
 import { FiEdit3 } from "react-icons/fi";
-import { FaClock, FaUser, FaStethoscope } from "react-icons/fa";
+import {
+  FaClock,
+  FaUser,
+  FaStethoscope,
+  FaCalendarAlt,
+  FaCheck,
+} from "react-icons/fa";
+import { successToast, errorToast } from "@/components/modules/toast/toast";
 
 function AppointmentCard({ appointment, onEdit }) {
+  const [isVisited, setIsVisited] = useState(appointment.isVisited);
+  const [isLoading, setIsLoading] = useState(false);
+
+  const handleVisit = async () => {
+    try {
+      setIsLoading(true);
+      const res = await fetch(`/api/appointments/${appointment._id}`, {
+        method: "PUT",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ isVisited: !isVisited }),
+      });
+      if (res.status === 200) {
+        setIsVisited((prev) => !prev);
+        successToast(!isVisited ? "مراجعه ثبت شد" : "مراجعه لغو شد");
+      } else {
+        errorToast("خطایی پیش آمد");
+      }
+    } catch {
+      errorToast("خطا در اتصال به سرور");
+    } finally {
+      setIsLoading(false);
+    }
+  };
+
+  const formattedDate = appointment.date
+    ? new Date(appointment.date).toLocaleDateString("fa-IR")
+    : null;
+
   return (
     <div
-      className="bg-white dark:bg-slate-900 rounded-2xl border border-slate-200 dark:border-slate-800
-        shadow-sm hover:shadow-md hover:shadow-slate-100 dark:hover:shadow-slate-950
-        transition-all duration-200 p-5 flex flex-col gap-4"
+      className={`bg-white dark:bg-slate-900 rounded-2xl border
+        shadow-sm hover:shadow-md transition-all duration-200 p-5 flex flex-col gap-4
+        ${
+          isVisited
+            ? "border-emerald-200 dark:border-emerald-900 hover:shadow-emerald-50 dark:hover:shadow-emerald-950"
+            : "border-slate-200 dark:border-slate-800 hover:shadow-slate-100 dark:hover:shadow-slate-950"
+        }`}
     >
-      {/* header — بیمار + دکتر + دکمه ویرایش */}
+      {/* header */}
       <div className="flex items-start justify-between gap-3">
         <div className="flex flex-col gap-1.5">
           <div className="flex items-center gap-2">
@@ -37,25 +78,50 @@ function AppointmentCard({ appointment, onEdit }) {
           </div>
         </div>
 
-        <button
-          onClick={() => onEdit(appointment)}
-          title="افزودن توضیحات"
-          className="w-8 h-8 flex items-center justify-center rounded-lg shrink-0
-            text-slate-400 hover:text-violet-600 dark:hover:text-violet-400
-            hover:bg-violet-50 dark:hover:bg-violet-900/20
-            border border-transparent hover:border-violet-200 dark:hover:border-violet-800
-            transition-all duration-150"
-        >
-          <FiEdit3 size={14} />
-        </button>
+        {/* دکمه‌ها */}
+        <div className="flex items-center gap-1.5 shrink-0">
+          <button
+            onClick={handleVisit}
+            disabled={isLoading}
+            title={isVisited ? "لغو مراجعه" : "ثبت مراجعه"}
+            className={`w-8 h-8 flex items-center justify-center rounded-lg
+              border transition-all duration-150
+              disabled:opacity-50 disabled:cursor-not-allowed
+              ${
+                isVisited
+                  ? "bg-emerald-50 dark:bg-emerald-900/20 text-emerald-600 dark:text-emerald-400 border-emerald-200 dark:border-emerald-800 hover:bg-emerald-100 dark:hover:bg-emerald-900/40"
+                  : "bg-slate-100 dark:bg-slate-800 text-slate-400 dark:text-slate-500 border-slate-200 dark:border-slate-700 hover:bg-emerald-50 dark:hover:bg-emerald-900/20 hover:text-emerald-500 hover:border-emerald-200"
+              }`}
+          >
+            <FaCheck size={11} />
+          </button>
+
+          <button
+            onClick={() => onEdit(appointment)}
+            title="افزودن توضیحات"
+            className="w-8 h-8 flex items-center justify-center rounded-lg
+              text-slate-400 hover:text-violet-600 dark:hover:text-violet-400
+              hover:bg-violet-50 dark:hover:bg-violet-900/20
+              border border-transparent hover:border-violet-200 dark:hover:border-violet-800
+              transition-all duration-150"
+          >
+            <FiEdit3 size={14} />
+          </button>
+        </div>
       </div>
 
       <div className="h-px bg-slate-100 dark:bg-slate-800" />
 
-      {/* زمان */}
-      <div className="flex items-center gap-4">
+      {/* تاریخ + زمان */}
+      <div className="flex items-center flex-wrap gap-3">
+        {formattedDate && (
+          <div className="flex items-center gap-1.5 text-slate-500 dark:text-slate-400">
+            <FaCalendarAlt size={11} />
+            <span className="text-xs font-Dana-Medium">{formattedDate}</span>
+          </div>
+        )}
         <div className="flex items-center gap-1.5 text-slate-500 dark:text-slate-400">
-          <FaClock size={12} />
+          <FaClock size={11} />
           <span className="text-xs font-Dana-Medium" dir="ltr">
             {appointment.timeStart} — {appointment.timeEnd}
           </span>
@@ -63,6 +129,19 @@ function AppointmentCard({ appointment, onEdit }) {
         <span className="text-xs font-Dana-Medium text-slate-400 dark:text-slate-500">
           {appointment.totalTime} دقیقه
         </span>
+      </div>
+
+      {/* وضعیت مراجعه */}
+      <div
+        className={`flex items-center gap-1.5 text-xs font-Morabba-Bold px-2.5 py-1.5 rounded-lg w-fit
+          ${
+            isVisited
+              ? "bg-emerald-50 dark:bg-emerald-900/20 text-emerald-700 dark:text-emerald-400"
+              : "bg-slate-100 dark:bg-slate-800 text-slate-500 dark:text-slate-400"
+          }`}
+      >
+        <FaCheck size={10} />
+        {isVisited ? "مراجعه کرده" : "مراجعه نکرده"}
       </div>
 
       {/* سرویس‌ها */}
@@ -82,6 +161,7 @@ function AppointmentCard({ appointment, onEdit }) {
         </div>
       )}
 
+      {/* شرح حال */}
       {appointment.description && (
         <div
           className="bg-slate-50 dark:bg-slate-800/50 rounded-xl p-3
@@ -98,4 +178,5 @@ function AppointmentCard({ appointment, onEdit }) {
     </div>
   );
 }
+
 export default AppointmentCard;

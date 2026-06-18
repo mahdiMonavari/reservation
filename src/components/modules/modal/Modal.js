@@ -89,7 +89,7 @@ function Modal({
           <button
             onClick={handleClose}
             className="w-8 h-8 flex items-center justify-center rounded-lg
-                text-slate-400 hover:text-slate-600 dark:hover:text-slate-200
+                text-slate-400 hover:text-slate-600 dark:hover:text-slate-300 font-Morabba-Medium
                 hover:bg-slate-100 dark:hover:bg-slate-800
                 transition-colors duration-150"
           >
@@ -99,14 +99,14 @@ function Modal({
 
         {/* body */}
         <div className="px-5 py-6">
-          <p className="text-lg font-bold text-slate-400 dark:text-rose-500 text-right mb-5">
+          <p className="text-lg text-slate-400 font-Morabba-Bold dark:text-rose-50 text-right mb-5">
             {title}
           </p>
           <div className="flex flex-col gap-3">
             {fields.map((field) =>
               field.type === "textarea" ? (
                 <label key={field.name} className="flex flex-col gap-1.5">
-                  <span className="text-md font-bold text-slate-500 dark:text-rose-300 text-right">
+                  <span className="text-md  text-slate-500 dark:text-slate-300 font-Morabba-Medium text-right">
                     {field.label}
                     {field.required && (
                       <span className="text-red-400 mr-1">*</span>
@@ -127,9 +127,46 @@ function Modal({
                 transition-all duration-200 resize-none text-right"
                   />
                 </label>
+              ) : field.type === "select" ? (
+                <label
+                  key={field.name}
+                  className="flex flex-col gap-1.5 items-start w-full"
+                >
+                  <span className="text-md  text-slate-500 dark:text-slate-300 font-Morabba-Medium text-right">
+                    {field.label}
+                    {field.required && (
+                      <span className="text-red-400 mr-1">*</span>
+                    )}
+                  </span>
+                  <div className="flex  gap-3 w-full flex-wrap">
+                    {field.fields.map((option) => (
+                      <label
+                        key={option.value}
+                        className={`flex items-center font-Morabba-Medium gap-2 px-4 py-2.5 rounded-xl text-sm cursor-pointer border transition-all duration-200
+            ${
+              formData[field.name] === option.value
+                ? "bg-violet-500 dark:bg-violet-600 border-violet-500 dark:border-violet-600 text-white"
+                : "bg-slate-50 dark:bg-slate-800 border-slate-200 dark:border-slate-700 text-slate-700 dark:text-slate-300 hover:border-violet-300 dark:hover:border-violet-500"
+            }`}
+                      >
+                        <input
+                          type="radio"
+                          name={option.name}
+                          value={option.value}
+                          checked={formData[field.name] === option.value}
+                          onChange={(e) =>
+                            handleChange(field.name, e.target.value)
+                          }
+                          className="hidden"
+                        />
+                        {option.title}
+                      </label>
+                    ))}
+                  </div>
+                </label>
               ) : (
                 <label key={field.name} className="flex flex-col gap-1.5">
-                  <span className="text-md font-bold text-slate-500 dark:text-rose-300 text-right">
+                  <span className="text-md text-slate-500 dark:text-slate-300 font-Morabba-Medium text-right">
                     {field.label}
                     {field.required && (
                       <span className="text-red-400 mr-1">*</span>
@@ -157,12 +194,12 @@ function Modal({
 
         {/* footer */}
         <div
-          className="flex items-center gap-2 px-5 py-4
+          className="flex items-center gap-2 px-5 py-4 font-Morabba-Bold
             border-t border-slate-100 dark:border-slate-800"
         >
           <button
             onClick={handleConfirm}
-            className="flex-1 py-2.5 rounded-xl text-sm font-bold
+            className="flex-1 py-2.5 rounded-xl text-sm
                 bg-violet-600 hover:bg-violet-700 text-white
                 shadow-md shadow-violet-200 dark:shadow-violet-900/30
                 transition-all duration-150 active:scale-95"
@@ -171,7 +208,7 @@ function Modal({
           </button>
           <button
             onClick={handleClose}
-            className="flex-1 py-2.5 rounded-xl text-sm font-bold
+            className="flex-1 py-2.5 rounded-xl text-sm
                 text-slate-500 dark:text-slate-400
                 bg-slate-100 dark:bg-slate-800
                 hover:bg-slate-200 dark:hover:bg-slate-700

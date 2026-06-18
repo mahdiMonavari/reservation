@@ -6,7 +6,7 @@ export async function PUT(req, { params }) {
   try {
     await connectionToDB();
     const { id } = await params;
-    const { phoneNumber, firstName, lastName } = await req.json();
+    const { phoneNumber, firstName, lastName, role } = await req.json();
 
     const isValidData = editValidator({ phoneNumber, firstName, lastName });
     if (isValidData !== true) {
@@ -15,7 +15,7 @@ export async function PUT(req, { params }) {
 
     const user = await userModel.findOneAndUpdate(
       { _id: id },
-      { phoneNumber, firstName, lastName },
+      { phoneNumber, firstName, lastName, role },
       { new: true }
     );
 

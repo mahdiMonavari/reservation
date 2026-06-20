@@ -1,7 +1,7 @@
 "use client";
 import { resoneOfDate } from "@/utiles/jalali/jalali";
 import React, { useEffect, useMemo, useState } from "react";
-import { FaCalendarAlt } from "react-icons/fa";
+import { FaCalendarAlt, FaChevronRight, FaChevronLeft } from "react-icons/fa";
 
 const Days = [
   "شنبه",
@@ -38,43 +38,50 @@ const isPastDay = (a, b) => {
   return dayA < dayB;
 };
 
-function Calendar({ role, selectedDate, onSelectDate }) {
-  const current = new Date();
-  const [year, setYear] = useState(current.getFullYear());
-  const [month, setMonth] = useState(current.getMonth());
-  const [date] = useState(current.getDate());
-  const [dates, setDates] = useState(() => resoneOfDate(year, month, date));
-  const permission = role === "USER" ? 1 : 2;
-  useEffect(() => {
-    setDates(resoneOfDate(year, month, date));
-  }, [year, month, date]);
+// تبدیل سال/ماه میلادی به یک عدد قابل‌مقایسه، برای رعایت درست مرز سال
+const totalMonths = (y, m) => y * 12 + m;
 
-  const headerLabel = useMemo(() => {
-    const firstReal = dates.find(Boolean);
-    if (!firstReal) return "";
-    return `${jalaliMonths[firstReal.jalali.month]}  ${firstReal.jalali.year}`;
-  }, [dates]);
+function Calendar({ role, selectedDate, onSelectDate, permission = 2 }) {
+  const current = new Date();
   const today = {
     year: current.getFullYear(),
     month: current.getMonth(),
     date: current.getDate(),
   };
+
+  const [year, setYear] = useState(today.year);
+  const [month, setMonth] = useState(today.month);
+  const [dates, setDates] = useState(() =>
+    resoneOfDate(year, month, today.date)
+  );
+
+  useEffect(() => {
+    setDates(resoneOfDate(year, month, today.date));
+  }, [year, month]);
+
+  const isNextDisabled =
+    totalMonths(year, month) >=
+    totalMonths(today.year, today.month) + permission;
+  const isPrevDisabled =
+    totalMonths(year, month) <= totalMonths(today.year, today.month);
+
   const nextMonthHandler = () => {
-    if (month < today.month + permission) {
-      if (month !== 11) {
-        setMonth(month + 1);
-      }
+    if (isNextDisabled) return;
+    if (month === 11) {
       setMonth(0);
-      setYear(year + 1);
+      setYear((y) => y + 1);
+    } else {
+      setMonth((m) => m + 1);
     }
   };
+
   const prevMonthHandler = () => {
-    if (month > today.month) {
-      if (month !== 0) {
-        setMonth(month - 1);
-      }
+    if (isPrevDisabled) return;
+    if (month === 0) {
       setMonth(11);
-      setYear(year - 1);
+      setYear((y) => y - 1);
+    } else {
+      setMonth((m) => m - 1);
     }
   };
 
@@ -87,17 +94,48 @@ function Calendar({ role, selectedDate, onSelectDate }) {
         p-6 max-[480px]:p-3 flex flex-col gap-5 max-[480px]:gap-3"
     >
       {/* هدر */}
-      <div className="flex items-center gap-2">
-        <div
-          className="w-8 h-8 max-[480px]:w-7 max-[480px]:h-7 rounded-lg bg-violet-100 dark:bg-violet-900/30
-            text-violet-700 dark:text-violet-400
-            flex items-center justify-center shrink-0"
+      <div className="flex items-center justify-between">
+        <button
+          type="button"
+          onClick={prevMonthHandler}
+          disabled={isPrevDisabled}
+          aria-label="ماه قبل"
+          className="w-8 h-8 max-[480px]:w-7 max-[480px]:h-7 flex items-center justify-center rounded-lg
+            text-slate-400 dark:text-slate-500
+            hover:bg-slate-100 dark:hover:bg-slate-800 hover:text-violet-600 dark:hover:text-violet-400
+            disabled:opacity-30 disabled:hover:bg-transparent disabled:hover:text-slate-400
+            disabled:cursor-not-allowed transition-all duration-150"
         >
-          <FaCalendarAlt size={13} />
+          <FaChevronRight size={12} />
+        </button>
+
+        <div className="flex items-center gap-2">
+          <div
+            className="w-8 h-8 max-[480px]:w-7 max-[480px]:h-7 rounded-lg bg-violet-100 dark:bg-violet-900/30
+              text-violet-700 dark:text-violet-400
+              flex items-center justify-center shrink-0"
+          >
+            <FaCalendarAlt size={13} />
+          </div>
+          <span className="flex items-center gap-1 text-base max-[480px]:text-sm font-Morabba-Bold text-slate-800 dark:text-slate-100">
+            <span>{jalaliMonths[dates.find(Boolean).jalali.month]}</span>
+            <span>{dates.find(Boolean).jalali.year}</span>
+          </span>
         </div>
-        <span className="text-base max-[480px]:text-sm font-Morabba-Bold text-slate-800 dark:text-slate-100">
-          {headerLabel}
-        </span>
+
+        <button
+          type="button"
+          onClick={nextMonthHandler}
+          disabled={isNextDisabled}
+          aria-label="ماه بعد"
+          className="w-8 h-8 max-[480px]:w-7 max-[480px]:h-7 flex items-center justify-center rounded-lg
+            text-slate-400 dark:text-slate-500
+            hover:bg-slate-100 dark:hover:bg-slate-800 hover:text-violet-600 dark:hover:text-violet-400
+            disabled:opacity-30 disabled:hover:bg-transparent disabled:hover:text-slate-400
+            disabled:cursor-not-allowed transition-all duration-150"
+        >
+          <FaChevronLeft size={12} />
+        </button>
       </div>
 
       <div className="h-px bg-slate-100 dark:bg-slate-800" />
@@ -149,7 +187,7 @@ function Calendar({ role, selectedDate, onSelectDate }) {
                           ? "bg-emerald-50 dark:bg-emerald-900/20 text-emerald-700 dark:text-emerald-400 font-Morabba-Bold border border-emerald-200 dark:border-emerald-800"
                           : isFriday
                             ? "text-rose-500 dark:text-rose-400 hover:bg-slate-100 dark:hover:bg-slate-800"
-                            : "text-slate-800 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-800"
+                            : "text-slate-600 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-800"
                   }`}
               >
                 {d.jalali.date.toLocaleString("fa-IR")}

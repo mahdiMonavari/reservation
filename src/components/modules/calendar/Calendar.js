@@ -54,11 +54,28 @@ function Calendar({ role, selectedDate, onSelectDate }) {
     if (!firstReal) return "";
     return `${jalaliMonths[firstReal.jalali.month]}  ${firstReal.jalali.year}`;
   }, [dates]);
-  const nextMonthHandler = () => {};
   const today = {
     year: current.getFullYear(),
     month: current.getMonth(),
     date: current.getDate(),
+  };
+  const nextMonthHandler = () => {
+    if (month < today.month + permission) {
+      if (month !== 11) {
+        setMonth(month + 1);
+      }
+      setMonth(0);
+      setYear(year + 1);
+    }
+  };
+  const prevMonthHandler = () => {
+    if (month > today.month) {
+      if (month !== 0) {
+        setMonth(month - 1);
+      }
+      setMonth(11);
+      setYear(year - 1);
+    }
   };
 
   return (

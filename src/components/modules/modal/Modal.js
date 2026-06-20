@@ -36,7 +36,7 @@ function Modal({
         return acc;
       }, {})
     );
-  }, [data]);
+  }, [data, isOpen]);
 
   const handleClose = () => {
     setAnimClass("close");

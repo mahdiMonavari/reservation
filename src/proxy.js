@@ -28,7 +28,6 @@ export async function proxy(request) {
     return NextResponse.next();
   } else {
     const newAccessToken = await refreshTokenHandler(refreshToken);
-    console.log(newAccessToken);
     if (!newAccessToken) {
       if (isProtectedRoute || pathname.startsWith("/p-admin")) {
         return NextResponse.redirect(new URL("/login", request.url));

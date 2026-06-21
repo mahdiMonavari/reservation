@@ -24,7 +24,7 @@ function SchedulePage({ schedules, doctorId }) {
         schedules={schedulesDate}
         setSchedulesDate={setSchedulesDate}
       />
-      {schedulesDate.length ? <SubmitSchedule schedules={schedules} /> : ""}
+      {schedulesDate.length ? <SubmitSchedule schedules={schedulesDate} /> : ""}
     </div>
   );
 }

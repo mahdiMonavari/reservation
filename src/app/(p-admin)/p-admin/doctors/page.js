@@ -1,0 +1,48 @@
+import doctorModel from "../../../../../model/doctor";
+import userModel from "../../../../../model/user";
+import DoctorsPage from "@/components/templates/panelAdmin/doctors/DoctorPage";
+
+async function Page({ searchParams }) {
+  const params = await searchParams;
+  const page = Number(params.page) || 1;
+  const search = params.search || "";
+  const limit = 10;
+
+  const query = search
+    ? {
+        $or: [
+          { firstName: { $regex: search, $options: "i" } },
+          { lastName: { $regex: search, $options: "i" } },
+          { phoneNumber: { $regex: search, $options: "i" } },
+        ],
+        role: "DOCTOR",
+      }
+    : { role: "DOCTOR" };
+
+  const matchedUsers = await userModel.find(query, "_id");
+  const arrayIds = matchedUsers.map((item) => item._id);
+
+  const [doctorsAllData, total] = await Promise.all([
+    doctorModel
+      .find({ userId: { $in: arrayIds } })
+      .populate("userId")
+      .sort({ createdAt: -1 })
+      .skip((page - 1) * limit)
+      .limit(limit),
+    doctorModel.countDocuments({ userId: { $in: arrayIds } }),
+  ]);
+
+  const totalPages = Math.ceil(total / limit);
+
+  return (
+    <DoctorsPage
+      total={total}
+      initialDoctors={JSON.parse(JSON.stringify(doctorsAllData))}
+      totalPages={totalPages}
+      currentPage={page}
+      search={search}
+    />
+  );
+}
+
+export default Page;

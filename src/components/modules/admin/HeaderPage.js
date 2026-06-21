@@ -11,7 +11,7 @@ function HeaderPage({ total, title, onOpen, titlePage, Other }) {
             {titlePage}
           </h1>
           <p className="text-sm font-Dana-Medium flex items-center gap-1.5 text-slate-400 dark:text-slate-500 mt-0.5">
-            <span className="text-violet-500 dark:text-violet-400 font-Morabba-Bold">
+            <span className="text-violet-500 block mt-2 dark:text-violet-400 font-Morabba-Bold">
               {total}
             </span>
             <span>{title} ثبت شده</span>

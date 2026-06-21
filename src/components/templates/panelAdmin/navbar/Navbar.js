@@ -11,10 +11,12 @@ import {
 } from "react-icons/fa";
 import { AuthContext } from "@/context/AuthContext";
 import NavMobile from "./NavMobile";
+import { FaUserDoctor } from "react-icons/fa6";
 
 const menu = [
   { label: "داشبورد", href: "/p-admin", icon: <FaTachometerAlt /> },
   { label: "کاربران", href: "/p-admin/users", icon: <FaUsers /> },
+  { label: "دکترها", href: "/p-admin/doctors", icon: <FaUserDoctor /> },
   {
     label: "کامنت‌ها",
     href: "/p-admin/comments",

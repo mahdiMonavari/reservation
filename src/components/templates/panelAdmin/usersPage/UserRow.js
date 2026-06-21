@@ -44,43 +44,57 @@ function UserRow({ user, onEdit, onBan, onDelete }) {
       </td>
 
       <td className="px-4 py-3">
-        <div className="flex items-center justify-center gap-1.5">
-          <button
-            onClick={() => onEdit(user._id)}
-            title="ویرایش"
-            className="w-8 h-8 rounded-lg flex items-center justify-center
+        {user.role === "USER" ? (
+          <div className="flex items-center justify-center gap-1.5">
+            <button
+              onClick={() => onEdit(user._id)}
+              title="ویرایش"
+              className="w-8 h-8 rounded-lg flex items-center justify-center
               text-slate-400 hover:text-blue-600 dark:hover:text-blue-400
               hover:bg-blue-50 dark:hover:bg-blue-900/20
               border border-transparent hover:border-blue-200 dark:hover:border-blue-800
               transition-all duration-150 text-lg"
-          >
-            <FaEdit />
-          </button>
-
-          <button
-            onClick={() => onBan(user._id)}
-            title="بن کردن"
-            className="w-8 h-8 rounded-lg flex items-center justify-center
-              text-slate-400 hover:text-amber-600 dark:hover:text-amber-400
-              hover:bg-amber-50 dark:hover:bg-amber-900/20
-              border border-transparent hover:border-amber-200 dark:hover:border-amber-800
-              transition-all duration-150 text-lg"
-          >
-            <FaBan />
-          </button>
-
-          <button
-            onClick={() => onDelete(user._id)}
-            title="حذف"
-            className="w-8 h-8 rounded-lg flex items-center justify-center
+            >
+              <FaEdit />
+            </button>
+            <button
+              onClick={() => onDelete(user._id)}
+              title="حذف"
+              className="w-8 h-8 rounded-lg flex items-center justify-center
               text-slate-400 hover:text-red-500 dark:hover:text-red-400
               hover:bg-red-50 dark:hover:bg-red-900/20
               border border-transparent hover:border-red-200 dark:hover:border-red-800
               transition-all duration-150 text-lg"
-          >
-            <FaTrash />
-          </button>
-        </div>
+            >
+              <FaTrash />
+            </button>
+          </div>
+        ) : (
+          <div className="flex items-center justify-center gap-1.5">
+            <button
+              onClick={() => onDelete(user._id)}
+              title="حذف"
+              className="w-8 h-8 rounded-lg flex items-center justify-center
+              text-slate-400 hover:text-red-500 dark:hover:text-red-400
+              hover:bg-red-50 dark:hover:bg-red-900/20
+              border border-transparent hover:border-red-200 dark:hover:border-red-800
+              transition-all duration-150 text-lg"
+            >
+              <FaTrash />
+            </button>
+            <button
+              onClick={() => onBan(user._id)}
+              title="بن کردن"
+              className="w-8 h-8 rounded-lg flex items-center justify-center
+              text-slate-400 hover:text-amber-600 dark:hover:text-amber-400
+              hover:bg-amber-50 dark:hover:bg-amber-900/20
+              border border-transparent hover:border-amber-200 dark:hover:border-amber-800
+              transition-all duration-150 text-lg"
+            >
+              <FaBan />
+            </button>
+          </div>
+        )}
       </td>
     </tr>
   );

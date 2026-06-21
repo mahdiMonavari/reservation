@@ -14,8 +14,9 @@ async function Page({ searchParams }) {
           { lastName: { $regex: search, $options: "i" } },
           { phoneNumber: { $regex: search } },
         ],
+        role: "USER",
       }
-    : {};
+    : { role: "USER" };
   const [users, total] = await Promise.all([
     userModel
       .find(query)

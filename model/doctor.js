@@ -5,48 +5,53 @@ const doctorSchema = new mongoose.Schema(
     userId: {
       type: mongoose.Schema.Types.ObjectId,
       required: true,
-      ref: "USER",
+      ref: "User",
     },
     specialty: {
       type: String,
-      required: true,
+      required: false,
     },
     about: {
       type: String,
-      required: true,
+      required: false,
     },
     rating: {
       type: Number,
-      required: true,
+      required: false,
       min: 0,
       max: 5,
       default: 0,
     },
     experience: {
       type: Number,
-      required: true,
+      required: false,
       min: 0,
     },
     reviewsCount: {
       type: Number,
-      required: true,
+      required: false,
       min: 0,
       default: 0,
     },
     avgAppointmentTime: {
       type: Number,
-      required: true,
+      required: false,
       min: 0,
       default: 15,
     },
     baseFee: {
       type: Number,
-      required: true,
+      required: false,
       min: 0,
     },
     fieldOfStudy: {
       type: String,
+      required: false,
+    },
+    isActive: {
+      type: Boolean,
       required: true,
+      default: false,
     },
   },
   {
@@ -54,6 +59,7 @@ const doctorSchema = new mongoose.Schema(
   }
 );
 
-const Doctor = mongoose.models.Doctor || mongoose.model("Doctor", doctorSchema);
+const doctorModel =
+  mongoose.models.Doctor || mongoose.model("Doctor", doctorSchema);
 
-export default Doctor;
+export default doctorModel;

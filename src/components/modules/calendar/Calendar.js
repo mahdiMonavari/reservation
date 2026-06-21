@@ -1,6 +1,6 @@
 "use client";
 import { resoneOfDate } from "@/utiles/jalali/jalali";
-import React, { useEffect, useMemo, useState } from "react";
+import React, { useEffect, useState } from "react";
 import { FaCalendarAlt, FaChevronRight, FaChevronLeft } from "react-icons/fa";
 
 const Days = [
@@ -38,10 +38,35 @@ const isPastDay = (a, b) => {
   return dayA < dayB;
 };
 
-// تبدیل سال/ماه میلادی به یک عدد قابل‌مقایسه، برای رعایت درست مرز سال
 const totalMonths = (y, m) => y * 12 + m;
 
-function Calendar({ role, selectedDate, onSelectDate, permission = 2 }) {
+const findScheduleIndex = (schedules, gregorian) => {
+  return schedules.findIndex((s) => {
+    const sDate = new Date(s.date);
+    return (
+      sDate.getFullYear() === gregorian.year &&
+      sDate.getMonth() === gregorian.month &&
+      sDate.getDate() === gregorian.date
+    );
+  });
+};
+
+const noSpinnerClass =
+  "[&::-webkit-inner-spin-button]:appearance-none [&::-webkit-outer-spin-button]:appearance-none [-moz-appearance:textfield]";
+
+function Calendar({
+  mode = "single",
+  permission = 2,
+  selectedDate,
+  onSelectDate,
+  doctorId,
+  schedules = [],
+  setSchedulesDate,
+  defaultStartTime,
+  defaultEndTime,
+  setDefaultStartTime,
+  setDefaultEndTime,
+}) {
   const current = new Date();
   const today = {
     year: current.getFullYear(),
@@ -83,6 +108,82 @@ function Calendar({ role, selectedDate, onSelectDate, permission = 2 }) {
     } else {
       setMonth((m) => m - 1);
     }
+  };
+
+  const handleDayClick = (d) => {
+    if (mode !== "multi") {
+      onSelectDate?.(d);
+      return;
+    }
+
+    const existingIndex = findScheduleIndex(schedules, d.gregorian);
+
+    if (existingIndex !== -1) {
+      setSchedulesDate(schedules.filter((_, i) => i !== existingIndex));
+    } else {
+      const newEntry = {
+        doctorId,
+        date: new Date(d.gregorian.year, d.gregorian.month, d.gregorian.date),
+        timeStart: defaultStartTime,
+        timeEnd: defaultEndTime,
+      };
+      setSchedulesDate([...schedules, newEntry]);
+    }
+  };
+
+  // مقادیر فعلیِ شکسته‌شده‌ی ساعت/دقیقه برای اینپوت‌های شروع و پایان
+
+  // "09:30" -> { hour: 9, minute: 30 }
+  const parseTimeParts = (time) => {
+    const [h, m] = (time || "00:00").split(":");
+    return {
+      hour: h,
+      minute: m,
+    };
+  };
+
+  const formatTimeParts = (hour, minute) => {
+    const h = String(hour).padStart(2, "0");
+    const m = String(minute).padStart(2, "0");
+    return `${h}:${m}`;
+  };
+  const inRangeHandler = (type, value) => {
+    if (type === "hour") {
+      return value <= 23 ? true : false;
+    } else {
+      return value <= 59 ? true : false;
+    }
+  };
+
+  const startParts = parseTimeParts(defaultStartTime);
+  const endParts = parseTimeParts(defaultEndTime);
+
+  const handleStartHourChange = (e) => {
+    const inRange = inRangeHandler("hour", e.target.value);
+    if (inRange === false) return;
+    const hour = Number(e.target.value);
+    setDefaultStartTime(formatTimeParts(hour, startParts.minute));
+  };
+
+  const handleStartMinuteChange = (e) => {
+    const inRange = inRangeHandler("minute", e.target.value);
+    if (inRange === false) return;
+    const minute = Number(e.target.value);
+    setDefaultStartTime(formatTimeParts(startParts.hour, minute));
+  };
+
+  const handleEndHourChange = (e) => {
+    const inRange = inRangeHandler("hour", e.target.value);
+    if (inRange === false) return;
+    const hour = Number(e.target.value);
+    setDefaultEndTime(formatTimeParts(hour, endParts.minute));
+  };
+
+  const handleEndMinuteChange = (e) => {
+    const inRange = inRangeHandler("minute", e.target.value);
+    if (inRange === false) return;
+    const minute = Number(e.target.value);
+    setDefaultEndTime(formatTimeParts(endParts.hour, minute));
   };
 
   return (
@@ -138,6 +239,75 @@ function Calendar({ role, selectedDate, onSelectDate, permission = 2 }) {
         </button>
       </div>
 
+      {/* کنترل ساعت دیفالت — فقط در حالت چندانتخابی */}
+      {mode === "multi" && (
+        <div className="flex items-center gap-3 max-[480px]:flex-col max-[480px]:gap-2">
+          {/* ساعت شروع */}
+          <div
+            className="flex-1 flex items-center justify-between gap-2 text-sm font-Dana-Medium
+              text-slate-600 dark:text-slate-300 bg-slate-50 dark:bg-slate-800/50
+              rounded-lg px-3 py-2 border border-slate-200 dark:border-slate-700
+              transition-all duration-150
+              focus-within:border-violet-500 dark:focus-within:border-violet-500
+              focus-within:ring-2 focus-within:ring-violet-200 dark:focus-within:ring-violet-900/40
+              focus-within:bg-white dark:focus-within:bg-slate-800"
+          >
+            <span>ساعت شروع</span>
+            <div className="flex items-center gap-1">
+              <input
+                type="number"
+                min={0}
+                max={59}
+                value={startParts.minute}
+                onChange={handleStartMinuteChange}
+                className={`w-9 text-center bg-transparent outline-none text-slate-800 dark:text-slate-100 font-Dana-Medium ${noSpinnerClass}`}
+              />
+              <span className="text-slate-400 dark:text-slate-500">:</span>
+              <input
+                type="number"
+                min={0}
+                max={23}
+                value={startParts.hour}
+                onChange={handleStartHourChange}
+                className={`w-9 text-center bg-transparent outline-none text-slate-800 dark:text-slate-100 font-Dana-Medium ${noSpinnerClass}`}
+              />
+            </div>
+          </div>
+
+          {/* ساعت پایان */}
+          <div
+            className="flex-1 flex items-center justify-between gap-2 text-sm font-Dana-Medium
+              text-slate-600 dark:text-slate-300 bg-slate-50 dark:bg-slate-800/50
+              rounded-lg px-3 py-2 border border-slate-200 dark:border-slate-700
+              transition-all duration-150
+              focus-within:border-violet-500 dark:focus-within:border-violet-500
+              focus-within:ring-2 focus-within:ring-violet-200 dark:focus-within:ring-violet-900/40
+              focus-within:bg-white dark:focus-within:bg-slate-800"
+          >
+            <span>ساعت پایان</span>
+            <div className="flex items-center gap-1">
+              <input
+                type="number"
+                min={0}
+                max={59}
+                value={endParts.minute}
+                onChange={handleEndMinuteChange}
+                className={`w-9 text-center bg-transparent outline-none text-slate-800 dark:text-slate-100 font-Dana-Medium ${noSpinnerClass}`}
+              />
+              <span className="text-slate-400 dark:text-slate-500">:</span>
+              <input
+                type="number"
+                min={0}
+                max={23}
+                value={endParts.hour}
+                onChange={handleEndHourChange}
+                className={`w-9 text-center bg-transparent outline-none text-slate-800 dark:text-slate-100 font-Dana-Medium ${noSpinnerClass}`}
+              />
+            </div>
+          </div>
+        </div>
+      )}
+
       <div className="h-px bg-slate-100 dark:bg-slate-800" />
 
       {/* نام روزها */}
@@ -163,7 +333,10 @@ function Calendar({ role, selectedDate, onSelectDate, permission = 2 }) {
           if (!d) return <span key={`empty-${index}`} />;
 
           const isToday = isSameDay(d.gregorian, today);
-          const isSelected = isSameDay(d.gregorian, selectedDate);
+          const isSelected =
+            mode === "multi"
+              ? findScheduleIndex(schedules, d.gregorian) !== -1
+              : isSameDay(d.gregorian, selectedDate);
           const isFriday = index % 7 === 6;
           const isPast = isPastDay(d.gregorian, today);
 
@@ -175,7 +348,7 @@ function Calendar({ role, selectedDate, onSelectDate, permission = 2 }) {
               <button
                 type="button"
                 disabled={isPast}
-                onClick={() => onSelectDate?.(d)}
+                onClick={() => handleDayClick(d)}
                 className={`w-11 h-11 max-[480px]:w-9 max-[480px]:h-9 flex items-center justify-center rounded-lg
                   text-base max-[480px]:text-sm font-Dana-Medium transition-all duration-150
                   ${

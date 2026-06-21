@@ -1,13 +1,29 @@
+"use client";
 import Calendar from "@/components/modules/calendar/Calendar";
-import React from "react";
+import React, { useState } from "react";
 import WorkingDayCards from "./WorkingDayCards";
 
-function SchedulePage({ schedules }) {
-  const schedulesDate = schedules.map((schedule) => schedule.date);
+function SchedulePage({ schedules, doctorId }) {
+  const [schedulesDate, setSchedulesDate] = useState(schedules || []);
+  const [defaultStartTime, setDefaultStartTime] = useState("09:00");
+  const [defaultEndTime, setDefaultEndTime] = useState("17:00");
+  console.log(schedulesDate);
   return (
-    <div className="flex flex-col items-center justify-center">
-      <Calendar schedules={schedulesDate} />
-      <WorkingDayCards schedules={schedules} />
+    <div className="flex flex-col items-center justify-center gap-6">
+      <Calendar
+        mode="multi"
+        doctorId={doctorId}
+        schedules={schedulesDate}
+        setSchedulesDate={setSchedulesDate}
+        defaultStartTime={defaultStartTime}
+        setDefaultStartTime={setDefaultStartTime}
+        defaultEndTime={defaultEndTime}
+        setDefaultEndTime={setDefaultEndTime}
+      />
+      <WorkingDayCards
+        schedules={schedulesDate}
+        setSchedulesDate={setSchedulesDate}
+      />
     </div>
   );
 }

@@ -2,12 +2,12 @@
 import Calendar from "@/components/modules/calendar/Calendar";
 import React, { useState } from "react";
 import WorkingDayCards from "./WorkingDayCards";
+import SubmitSchedule from "./SubmitSchedule";
 
 function SchedulePage({ schedules, doctorId }) {
   const [schedulesDate, setSchedulesDate] = useState(schedules || []);
   const [defaultStartTime, setDefaultStartTime] = useState("09:00");
   const [defaultEndTime, setDefaultEndTime] = useState("17:00");
-  console.log(schedulesDate);
   return (
     <div className="flex flex-col items-center justify-center gap-6">
       <Calendar
@@ -24,6 +24,7 @@ function SchedulePage({ schedules, doctorId }) {
         schedules={schedulesDate}
         setSchedulesDate={setSchedulesDate}
       />
+      {schedulesDate.length ? <SubmitSchedule schedules={schedules} /> : ""}
     </div>
   );
 }

@@ -82,21 +82,27 @@ function UsersPage({ initialUsers, totalPages, currentPage, total }) {
         body: JSON.stringify({ ...formData }),
       });
 
-      if (res.status === 200) {
+      if (res.ok) {
         const { data } = await res.json();
-        setUsers((prev) =>
-          prev.map((item) => (item._id === data._id ? data : item))
-        );
-        successToast("ویرایش موفقیت آمیز بود");
+        if (data.role === "USER") {
+          setUsers((prev) =>
+            prev.map((item) => (item._id === data._id ? data : item))
+          );
+        } else {
+          setUsers((prev) => prev.filter((item) => item._id !== data._id));
+        }
+        return successToast("ویرایش موفقیت آمیز بود");
       } else {
         errorToast("خطایی پیش آمده دوباره امتحان کنید");
       }
-    } catch {
+    } catch (err) {
+      console.error(err);
       errorToast("خطا در اتصال به سرور");
     } finally {
       setIsLoading(false);
     }
   };
+
   const onCreate = async () => {
     try {
       setIsLoading(true);

@@ -10,13 +10,13 @@ import DeleteModal from "@/components/modules/modal/DeleteModal";
 
 function DoctorsPage({ initialDoctors, totalPages, currentPage, total }) {
   const [doctors, setDoctors] = useState(() =>
-    initialDoctors.map((item) => item.userId)
+    initialDoctors.map((item) => ({ ...item.userId, isActive: item.isActive }))
   );
   const [doctor, setDoctor] = useState({});
   const [isLoading, setIsLoading] = useState(false);
   const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
   useEffect(() => {
-    setDoctors(initialDoctors.map((item) => item.userId));
+    initialDoctors.map((item) => ({ ...item.userId, isActive: item.isActive }));
   }, [initialDoctors]);
 
   const deleteModalOnClose = () => setIsDeleteModalOpen(false);

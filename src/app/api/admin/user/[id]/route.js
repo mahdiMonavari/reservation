@@ -16,7 +16,7 @@ export async function PUT(req, { params }) {
     const user = await userModel.findOneAndUpdate(
       { _id: id },
       { phoneNumber, firstName, lastName, role },
-      { new: true }
+      { returnDocument: "after" }
     );
 
     return Response.json(

@@ -1,6 +1,7 @@
 import UserRow from "./UserRow";
 
 function UsersTable({ users = [], onEdit, onBan, onDelete }) {
+  console.log(users);
   return (
     <div
       className="rounded-2xl border border-slate-200 dark:border-slate-800

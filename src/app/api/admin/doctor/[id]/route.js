@@ -18,9 +18,9 @@ export async function PUT(req, { params }) {
     let doctorEdited;
     if (doctor.isActive === true) {
       doctorEdited = await doctorModel.findByIdAndUpdate(
-        { _id: id },
+        doctor._id, // از همون doctor که بالا گرفتی استفاده کن
         { isActive: false },
-        { returnDocument: "after" }
+        { new: true } // returnDocument معتبر نیست، باید new: true باشه
       );
       return Response.json(
         { message: "doctor unActived", data: doctorEdited },
@@ -30,9 +30,9 @@ export async function PUT(req, { params }) {
     const canDoctorActive = canDoctorActiveValidation(doctor);
     if (canDoctorActive) {
       doctorEdited = await doctorModel.findByIdAndUpdate(
-        { _id: id },
+        doctor._id,
         { isActive: true },
-        { returnDocument: "after" }
+        { new: true }
       );
       return Response.json(
         { message: "doctor actived", data: doctorEdited },

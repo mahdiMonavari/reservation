@@ -6,6 +6,7 @@ import {
   FaTimesCircle,
   FaTrash,
 } from "react-icons/fa";
+import { IoCheckmarkCircleSharp } from "react-icons/io5";
 
 const roleLabel = {
   DOCTOR: "پزشک",

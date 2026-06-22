@@ -7,54 +7,18 @@ const doctorSchema = new mongoose.Schema(
       required: true,
       ref: "User",
     },
-    specialty: {
-      type: String,
-      required: false,
-    },
-    about: {
-      type: String,
-      required: false,
-    },
-    rating: {
-      type: Number,
-      required: false,
-      default: 5,
-    },
-    experience: {
-      type: Number,
-      required: false,
-      min: 0,
-    },
-    reviewsCount: {
-      type: Number,
-      required: false,
-      min: 0,
-      default: 0,
-    },
-    avgAppointmentTime: {
-      type: Number,
-      required: false,
-      min: 0,
-      default: 15,
-    },
-    baseFee: {
-      type: Number,
-      required: false,
-      min: 0,
-    },
-    fieldOfStudy: {
-      type: String,
-      required: false,
-    },
-    isActive: {
-      type: Boolean,
-      required: true,
-      default: false,
-    },
+    photo: { type: String, default: null },
+    specialty: { type: String, default: null },
+    about: { type: String, default: null },
+    fieldOfStudy: { type: String, default: null },
+    experience: { type: Number, min: 0, default: null },
+    avgAppointmentTime: { type: Number, min: 0, default: 15 },
+    baseFee: { type: Number, min: 0, default: null },
+    rating: { type: Number, default: 5 },
+    reviewsCount: { type: Number, min: 0, default: 0 },
+    isActive: { type: Boolean, default: false },
   },
-  {
-    timestamps: true,
-  }
+  { timestamps: true }
 );
 
 const doctorModel =

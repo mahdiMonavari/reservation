@@ -1,6 +1,12 @@
 import UserRow from "./UserRow";
 
-function UsersTable({ users = [], onEdit, onToggleActive, onDelete }) {
+function UsersTable({
+  users = [],
+  onEdit,
+  onToggleActive,
+  onDelete,
+  showDoctorProfile,
+}) {
   return (
     <div
       className="rounded-2xl border border-slate-200 dark:border-slate-800
@@ -18,7 +24,7 @@ function UsersTable({ users = [], onEdit, onToggleActive, onDelete }) {
             <th className="px-4 py-3 text-center text-sm font-Morabba-Bold text-slate-500 dark:text-slate-400 hidden md:table-cell">
               نقش
             </th>
-            {users[0].role === "DOCTOR" ? (
+            {users[0].role === "ADMIN" ? (
               <th className="px-4 py-3 text-center text-sm font-Morabba-Bold text-slate-500 dark:text-slate-400 hidden md:table-cell">
                 وضعیت
               </th>
@@ -33,6 +39,7 @@ function UsersTable({ users = [], onEdit, onToggleActive, onDelete }) {
         <tbody>
           {users.map((user) => (
             <UserRow
+              showDoctorProfile={showDoctorProfile}
               key={user._id}
               user={user}
               onEdit={onEdit}

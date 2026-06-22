@@ -2,6 +2,7 @@ import {
   FaBan,
   FaCheckCircle,
   FaEdit,
+  FaEye,
   FaTimesCircle,
   FaTrash,
 } from "react-icons/fa";
@@ -19,7 +20,13 @@ const roleStyle = {
   ADMIN: "bg-amber-100 text-amber-700 dark:bg-amber-900/30 dark:text-amber-400",
 };
 
-function UserRow({ user, onEdit, onToggleActive, onDelete }) {
+function UserRow({
+  user,
+  onEdit,
+  onToggleActive,
+  onDelete,
+  showDoctorProfile,
+}) {
   return (
     <tr className="border-b border-slate-100 dark:border-slate-800 hover:bg-slate-50 dark:hover:bg-slate-800/50 transition-colors">
       <td className="px-4 py-3">
@@ -94,6 +101,17 @@ function UserRow({ user, onEdit, onToggleActive, onDelete }) {
         ) : (
           <div className="flex items-center justify-center gap-1.5">
             <button
+              onClick={() => showDoctorProfile(user._id)}
+              title="مشاهده دکتر"
+              className="w-8 h-8 rounded-lg flex items-center justify-center
+    text-slate-400 hover:text-blue-600 dark:hover:text-blue-400
+    hover:bg-blue-50 dark:hover:bg-blue-900/20
+    border border-transparent hover:border-blue-200 dark:hover:border-blue-800
+    transition-all duration-150 text-lg"
+            >
+              <FaEye />
+            </button>
+            <button
               onClick={() => onDelete(user._id)}
               title="حذف"
               className="w-8 h-8 rounded-lg flex items-center justify-center
@@ -105,16 +123,26 @@ function UserRow({ user, onEdit, onToggleActive, onDelete }) {
               <FaTrash />
             </button>
             {user.isActive ? (
-              <IoCheckmarkCircleSharp />
+              <button
+                onClick={() => onToggleActive(user._id)}
+                title="دکتر اکتیو"
+                className="w-8 h-8 rounded-lg flex items-center justify-center
+    text-emerald-500 hover:text-emerald-600 dark:hover:text-emerald-400
+    hover:bg-emerald-50 dark:hover:bg-emerald-900/20
+    border border-transparent hover:border-emerald-200 dark:hover:border-emerald-800
+    transition-all duration-150 text-lg"
+              >
+                <IoCheckmarkCircleSharp />
+              </button>
             ) : (
               <button
                 onClick={() => onToggleActive(user._id)}
-                title="بن کردن"
+                title="دکتر نات اکتیو"
                 className="w-8 h-8 rounded-lg flex items-center justify-center
-              text-slate-400 hover:text-amber-600 dark:hover:text-amber-400
-              hover:bg-amber-50 dark:hover:bg-amber-900/20
-              border border-transparent hover:border-amber-200 dark:hover:border-amber-800
-              transition-all duration-150 text-lg"
+    text-slate-400 hover:text-amber-600 dark:hover:text-amber-400
+    hover:bg-amber-50 dark:hover:bg-amber-900/20
+    border border-transparent hover:border-amber-200 dark:hover:border-amber-800
+    transition-all duration-150 text-lg"
               >
                 <FaBan />
               </button>

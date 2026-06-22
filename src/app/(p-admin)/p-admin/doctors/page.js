@@ -8,17 +8,23 @@ async function Page({ searchParams }) {
   const search = params.search || "";
   const limit = 10;
 
-  const query = search
-    ? {
-        $or: [
-          { firstName: { $regex: search, $options: "i" } },
-          { lastName: { $regex: search, $options: "i" } },
-          { phoneNumber: { $regex: search, $options: "i" } },
-        ],
-        role: "DOCTOR",
-      }
-    : { role: "DOCTOR" };
-
+  const query =
+    search.length > 0
+      ? {
+          $and: [
+            {
+              $or: [
+                { firstName: { $regex: search, $options: "i" } },
+                { lastName: { $regex: search, $options: "i" } },
+                { phoneNumber: { $regex: search, $options: "i" } },
+              ],
+            },
+            {
+              $or: [{ role: "DOCTOR" }, { role: "ADMIN" }],
+            },
+          ],
+        }
+      : { $or: [{ role: "DOCTOR" }, { role: "ADMIN" }] };
   const matchedUsers = await userModel.find(query, "_id");
   const arrayIds = matchedUsers.map((item) => item._id);
 

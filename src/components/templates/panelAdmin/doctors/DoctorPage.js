@@ -21,10 +21,12 @@ function DoctorsPage({ initialDoctors, totalPages, currentPage, total }) {
 
   const deleteModalOnClose = () => setIsDeleteModalOpen(false);
   const openDeleteModal = (id) => {
+    console.log(id);
     setIsDeleteModalOpen(true);
-    const target = users.find((user) => user._id === id);
+    const target = doctors.find((user) => user._id === id);
     setDoctor(target);
   };
+  const onToggleActive = () => {};
   const onDelete = async () => {
     try {
       setIsLoading(true);
@@ -49,7 +51,7 @@ function DoctorsPage({ initialDoctors, totalPages, currentPage, total }) {
         isOpen={isDeleteModalOpen}
         onClose={deleteModalOnClose}
         onConfirm={onDelete}
-        title={`آیا از حذف دکتر ${doctor?.userId?.firstName} ${doctor?.userId?.lastName} مطمئن هستید؟`}
+        title={`آیا از حذف دکتر ${doctor.firstName} ${doctor.lastName} مطمئن هستید؟`}
       />
       <div className="p-6 flex flex-col gap-6">
         <div className="flex items-center justify-between">
@@ -66,7 +68,11 @@ function DoctorsPage({ initialDoctors, totalPages, currentPage, total }) {
           <SearchInput />
         </div>
         {doctors.length ? (
-          <UsersTable users={doctors} onDelete={openDeleteModal} />
+          <UsersTable
+            users={doctors}
+            onDelete={openDeleteModal}
+            onToggleActive={onToggleActive}
+          />
         ) : (
           <EmptyState title={"دکتری یافت نشد"} />
         )}

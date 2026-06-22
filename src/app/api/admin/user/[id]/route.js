@@ -18,7 +18,18 @@ export async function PUT(req, { params }) {
       { phoneNumber, firstName, lastName, role },
       { returnDocument: "after" }
     );
-
+    if (user.role !== "USER") {
+      const res = await fetch("http://localhost:3000/api/doctor", {
+        method: "POST",
+        headers: {
+          "Content-type": "application/json",
+        },
+        body: JSON.stringify({ userId: user._id }),
+      });
+      if (!res.ok) {
+        return Response.json({ message: "internal error" }, { status: 500 });
+      }
+    }
     return Response.json(
       { message: "user updated", data: user },
       { status: 200 }

@@ -1,4 +1,10 @@
-import { FaBan, FaEdit, FaTrash } from "react-icons/fa";
+import {
+  FaBan,
+  FaCheckCircle,
+  FaEdit,
+  FaTimesCircle,
+  FaTrash,
+} from "react-icons/fa";
 
 const roleLabel = {
   DOCTOR: "پزشک",
@@ -13,7 +19,7 @@ const roleStyle = {
   ADMIN: "bg-amber-100 text-amber-700 dark:bg-amber-900/30 dark:text-amber-400",
 };
 
-function UserRow({ user, onEdit, onBan, onDelete }) {
+function UserRow({ user, onEdit, onToggleActive, onDelete }) {
   return (
     <tr className="border-b border-slate-100 dark:border-slate-800 hover:bg-slate-50 dark:hover:bg-slate-800/50 transition-colors">
       <td className="px-4 py-3">
@@ -42,7 +48,23 @@ function UserRow({ user, onEdit, onBan, onDelete }) {
           </span>
         </div>
       </td>
-
+      {user.isActive !== undefined ? (
+        <td className="px-4 py-3 hidden md:table-cell">
+          <div className="flex justify-center">
+            <span
+              className={`text-sm font-Morabba-Bold px-2.5 py-1 rounded-lg ${roleStyle[user.role]}`}
+            >
+              {user.isActive ? (
+                <FaCheckCircle className="text-emerald-500" />
+              ) : (
+                <FaTimesCircle className="text-rose-500" />
+              )}
+            </span>
+          </div>
+        </td>
+      ) : (
+        ""
+      )}
       <td className="px-4 py-3">
         {user.role === "USER" ? (
           <div className="flex items-center justify-center gap-1.5">
@@ -82,17 +104,21 @@ function UserRow({ user, onEdit, onBan, onDelete }) {
             >
               <FaTrash />
             </button>
-            <button
-              onClick={() => onBan(user._id)}
-              title="بن کردن"
-              className="w-8 h-8 rounded-lg flex items-center justify-center
+            {user.isActive ? (
+              <IoCheckmarkCircleSharp />
+            ) : (
+              <button
+                onClick={() => onToggleActive(user._id)}
+                title="بن کردن"
+                className="w-8 h-8 rounded-lg flex items-center justify-center
               text-slate-400 hover:text-amber-600 dark:hover:text-amber-400
               hover:bg-amber-50 dark:hover:bg-amber-900/20
               border border-transparent hover:border-amber-200 dark:hover:border-amber-800
               transition-all duration-150 text-lg"
-            >
-              <FaBan />
-            </button>
+              >
+                <FaBan />
+              </button>
+            )}
           </div>
         )}
       </td>

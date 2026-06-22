@@ -1,7 +1,6 @@
 import UserRow from "./UserRow";
 
-function UsersTable({ users = [], onEdit, onBan, onDelete }) {
-  console.log(users);
+function UsersTable({ users = [], onEdit, onToggleActive, onDelete }) {
   return (
     <div
       className="rounded-2xl border border-slate-200 dark:border-slate-800
@@ -19,6 +18,13 @@ function UsersTable({ users = [], onEdit, onBan, onDelete }) {
             <th className="px-4 py-3 text-center text-sm font-Morabba-Bold text-slate-500 dark:text-slate-400 hidden md:table-cell">
               نقش
             </th>
+            {users[0].role === "DOCTOR" ? (
+              <th className="px-4 py-3 text-center text-sm font-Morabba-Bold text-slate-500 dark:text-slate-400 hidden md:table-cell">
+                وضعیت
+              </th>
+            ) : (
+              ""
+            )}
             <th className="px-4 py-3 text-center text-sm font-Morabba-Bold text-slate-500 dark:text-slate-400">
               عملیات
             </th>
@@ -30,7 +36,7 @@ function UsersTable({ users = [], onEdit, onBan, onDelete }) {
               key={user._id}
               user={user}
               onEdit={onEdit}
-              onBan={onBan}
+              onToggleActive={onToggleActive}
               onDelete={onDelete}
             />
           ))}

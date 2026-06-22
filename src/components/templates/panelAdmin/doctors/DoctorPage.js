@@ -26,7 +26,12 @@ function DoctorsPage({ initialDoctors, totalPages, currentPage, total }) {
     const target = doctors.find((user) => user._id === id);
     setDoctor(target);
   };
-  const onToggleActive = () => {};
+  const onToggleActive = async (id) => {
+    const res = await fetch(`api/admin/doctor/${id}`, {
+      method: "PUT",
+    });
+    console.log(res);
+  };
   const onDelete = async () => {
     try {
       setIsLoading(true);

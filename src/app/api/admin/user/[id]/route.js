@@ -19,14 +19,19 @@ export async function PUT(req, { params }) {
       { returnDocument: "after" }
     );
     if (user.role !== "USER") {
-      const res = await fetch("http://localhost:3000/api/doctor", {
+      const res = await fetch("http://localhost:3000/api/admin/doctor", {
         method: "POST",
         headers: {
           "Content-type": "application/json",
         },
         body: JSON.stringify({ userId: user._id }),
       });
-      if (!res.ok) {
+      if (res.status === 403) {
+        return Response.json(
+          { message: "already exist doctor" },
+          { status: 403 }
+        );
+      } else if (!res.ok) {
         return Response.json({ message: "internal error" }, { status: 500 });
       }
     }

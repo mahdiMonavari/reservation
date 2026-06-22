@@ -92,6 +92,8 @@ function UsersPage({ initialUsers, totalPages, currentPage, total }) {
           setUsers((prev) => prev.filter((item) => item._id !== data._id));
         }
         return successToast("ویرایش موفقیت آمیز بود");
+      } else if (res.status === 403) {
+        errorToast("دکتر از قبل وجود دارد");
       } else {
         errorToast("خطایی پیش آمده دوباره امتحان کنید");
       }

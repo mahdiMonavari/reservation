@@ -1,5 +1,5 @@
 import connectionToDB from "@/utiles/DB/connection";
-import doctorModel from "../../../../model/doctor";
+import doctorModel from "../../../../../model/doctor";
 
 export async function POST(req) {
   try {
@@ -17,6 +17,13 @@ export async function POST(req) {
       fieldOfStudy,
       isActive,
     } = reqBody;
+    const doctorAlreadyExist = await doctorModel.findOne({ userId });
+    if (doctorAlreadyExist) {
+      return Response.json(
+        { message: "already exist doctor" },
+        { status: 403 }
+      );
+    }
     const doctor = await doctorModel.create({
       userId,
       specialty,

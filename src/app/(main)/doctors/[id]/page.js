@@ -4,8 +4,10 @@ import commentModel from "../../../../../model/comment";
 import { cookies } from "next/headers";
 import { verifyAccessToken } from "@/utiles/auth/auth";
 import userModel from "../../../../../model/user";
+import connectionToDB from "@/utiles/DB/connection";
 
 async function page({ params }) {
+  await connectionToDB();
   const { id } = await params;
   const doctor = await doctorModel
     .findOne({ userId: id })

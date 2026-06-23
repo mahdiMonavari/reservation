@@ -1,7 +1,7 @@
 "use client";
 import LoadingOverlay from "@/components/modules/loading/LoadingOverlay";
 import { useEffect, useState } from "react";
-import { FaUser } from "react-icons/fa";
+import { FaTrash, FaUser } from "react-icons/fa";
 import { FiSend } from "react-icons/fi";
 import { successToast, errorToast } from "@/components/modules/toast/toast";
 
@@ -18,6 +18,17 @@ export default function TextModal({ text, onClose, id, setAnsweredIds }) {
     setTimeout(() => setAnimClass("open"), 10);
     getAnswers();
   }, []);
+
+  const onDeleteAnswer = async (id) => {
+    const res = await fetch(`/api/comments/${id}`, { method: "DELETE" });
+    if (res.ok) {
+      const { data } = await res.json();
+      setAnswers((prev) => prev.filter((item) => item._id !== data._id));
+      successToast("جواب حذف شد");
+    } else {
+      errorToast("مشکلی پیش آمده دوباره امتحان کنید");
+    }
+  };
 
   const handleClose = () => {
     setAnimClass("");
@@ -139,6 +150,15 @@ export default function TextModal({ text, onClose, id, setAnsweredIds }) {
                   {answer.text}
                 </p>
               </div>
+              <button
+                onClick={() => onDeleteAnswer(answer._id)}
+                className="w-6 h-6 rounded-lg flex items-center justify-center justify-self-end
+            text-slate-400 hover:text-rose-500 dark:hover:text-rose-400
+            hover:bg-rose-50 dark:hover:bg-rose-900/20
+            transition-all duration-150"
+              >
+                <FaTrash size={14} />
+              </button>
             </div>
           ))}
         </div>

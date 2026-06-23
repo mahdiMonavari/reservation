@@ -28,3 +28,21 @@ export async function PUT(req, { params }) {
     return Response.json({ message: "internal error" }, { status: 500 });
   }
 }
+
+export async function DELETE(req, { params }) {
+  try {
+    await connectionToDB();
+    const { id } = await params;
+
+    if (!id || id.length !== 24) {
+      return Response.json({ message: "bad request" }, { status: 400 });
+    }
+    const comment = await commentModel.findByIdAndDelete({ _id: id });
+    if (!comment) {
+      return Response.json({ message: "comment not found" }, { status: 404 });
+    }
+    return Response.json({ message: "updated", data: comment });
+  } catch {
+    return Response.json({ message: "internal error" }, { status: 500 });
+  }
+}

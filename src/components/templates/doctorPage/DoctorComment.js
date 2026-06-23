@@ -47,30 +47,16 @@ function DoctorComment({ comments, doctorId, isUserLogin, answerComments }) {
           </div>
 
           {isUserLogin && (
-            <button
-              onClick={() => setIsNewCommentOpen(true)}
-              className="flex items-center gap-2 px-5 py-2.5 rounded-2xl
-                border border-emerald-200 dark:border-emerald-800
-                bg-white/50 dark:bg-emerald-950/30
-                hover:bg-emerald-50 dark:hover:bg-emerald-900/50
-                backdrop-blur-md transition-all duration-300
-                text-emerald-900 dark:text-emerald-100
-                font-Morabba-Bold text-sm shadow-sm"
-            >
-              ثبت نظر
-              <span
-                className="w-5 h-5 rounded-full bg-emerald-500 text-white
-                flex items-center justify-center text-base leading-none"
-              >
-                +
-              </span>
+            <button className="flex items-center gap-2 px-6 py-3 rounded-2xl bg-emerald-600 hover:bg-emerald-700 active:scale-95 transition-all duration-300 shadow-lg shadow-emerald-200 dark:shadow-none text-white font-Morabba-Bold text-base">
+              <span className="text-xl">+</span>
+              <span>ایجاد کامنت جدید</span>
             </button>
           )}
         </div>
 
         {/* list */}
         {mainComments.length ? (
-          <div className="grid gap-4">
+          <div className="grid gap-4 lg:grid-cols-2">
             {mainComments.map((item) => (
               <CommentCard key={item._id} item={item} />
             ))}

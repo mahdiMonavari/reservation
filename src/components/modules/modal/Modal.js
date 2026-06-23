@@ -17,7 +17,6 @@ function Modal({
   const handleChange = (name, value) => {
     setFormData((prev) => ({ ...prev, [name]: value }));
   };
-
   useEffect(() => {
     if (isOpen) {
       setVisible(true);

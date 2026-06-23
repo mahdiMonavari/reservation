@@ -15,7 +15,7 @@ export async function PUT(req, { params }) {
     const { role } = verifyAccessToken(token);
     if (role === "ADMIN" || role === "DOCTOR") {
       const { id } = await params;
-      const { title, doctorId, price, duration, description } =
+      const { title, doctorId, price, duration, description, isPopular } =
         await req.json();
 
       const isValidData = ServiceValidator({
@@ -30,7 +30,7 @@ export async function PUT(req, { params }) {
       }
       const editedService = await serviceModel.findOneAndUpdate(
         { _id: id },
-        { title, doctorId, price, duration, description },
+        { title, doctorId, price, duration, description, isPopular },
         { new: true }
       );
       return Response.json({

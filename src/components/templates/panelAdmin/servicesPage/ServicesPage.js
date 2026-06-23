@@ -1,7 +1,6 @@
 "use client";
 
 import { useContext, useState } from "react";
-import { FaPlus } from "react-icons/fa";
 import { AuthContext } from "@/context/AuthContext";
 import Modal from "@/components/modules/modal/Modal";
 import DeleteModal from "@/components/modules/modal/DeleteModal";
@@ -12,10 +11,25 @@ import LoadingOverlay from "@/components/modules/loading/LoadingOverlay";
 import HeaderPage from "@/components/modules/admin/HeaderPage";
 
 const SERVICE_FIELDS = [
-  { name: "title", label: "عنوان خدمت", type: "text" },
-  { name: "price", label: "قیمت (تومان)", type: "number" },
-  { name: "duration", label: "مدت زمان (دقیقه)", type: "number" },
-  { name: "description", label: "توضیحات", type: "textarea" },
+  { name: "title", label: "عنوان خدمت", type: "text", defaultValue: "" },
+  { name: "price", label: "قیمت (تومان)", type: "number", defaultValue: "" },
+  {
+    name: "duration",
+    label: "مدت زمان (دقیقه)",
+    type: "number",
+    defaultValue: "",
+  },
+  { name: "description", label: "توضیحات", type: "textarea", defaultValue: "" },
+  {
+    name: "isPopular",
+    label: "نمایش در ویترین",
+    type: "select",
+    fields: [
+      { value: "true", name: "isPopular", title: "نمایش داده شود" },
+      { value: "false", name: "isPopular", title: "عدم نمایش" },
+    ],
+    defaultValue: "false",
+  },
 ];
 
 const MODAL_TITLES = {

@@ -14,7 +14,6 @@ function Modal({
 }) {
   const [visible, setVisible] = useState(false);
   const [animClass, setAnimClass] = useState("");
-
   const handleChange = (name, value) => {
     setFormData((prev) => ({ ...prev, [name]: value }));
   };
@@ -32,10 +31,11 @@ function Modal({
   useEffect(() => {
     setFormData(
       fields.reduce((acc, field) => {
-        acc[field.name] = data[field.name] || "";
+        acc[field.name] = data[field.name] || field.defaultValue || "";
         return acc;
       }, {})
     );
+    console.log(formData);
   }, [data, isOpen]);
 
   const handleClose = () => {
@@ -139,7 +139,7 @@ function Modal({
                     )}
                   </span>
                   <div className="flex  gap-3 w-full flex-wrap">
-                    {field.fields.map((option) => (
+                    {field?.fields?.map((option) => (
                       <label
                         key={option.value}
                         className={`flex items-center font-Morabba-Medium gap-2 px-4 py-2.5 rounded-xl text-sm cursor-pointer border transition-all duration-200

@@ -14,7 +14,7 @@ export async function POST(req) {
     }
     const { role } = verifyAccessToken(token);
     if (role === "ADMIN" || role === "DOCTOR") {
-      const { title, doctorId, price, duration, description } =
+      const { title, doctorId, price, duration, description, isPopular } =
         await req.json();
       const isValidData = ServiceValidator({
         title,
@@ -32,6 +32,7 @@ export async function POST(req) {
         doctorId,
         price,
         duration,
+        isPopular,
         description,
       });
       if (newService) {

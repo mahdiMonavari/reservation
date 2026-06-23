@@ -4,21 +4,24 @@ import { FaEdit, FaTrash } from "react-icons/fa";
 function ServiceCard({ service, onEdit, onDelete }) {
   return (
     <div
-      className="flex flex-col gap-4 p-5 rounded-2xl
-        bg-white dark:bg-slate-900
+      className={`flex flex-col gap-4 p-5 rounded-2xl        
         border border-slate-200 dark:border-slate-800
         shadow-sm shadow-slate-100 dark:shadow-slate-950/50
         hover:shadow-md hover:shadow-slate-200/50 dark:hover:shadow-slate-950
-        transition-all duration-200"
+        transition-all duration-200 ${service.isPopular === "false" ? "bg-white dark:bg-slate-900" : "bg-violet-200"}`}
     >
       <div className="flex items-center gap-2">
-        <div
-          className="flex items-center justify-center w-10 h-10 rounded-xl
+        {service.isPopular === "true" ? (
+          <div
+            className="flex items-center justify-center w-10 h-10 rounded-xl
             bg-violet-100 dark:bg-violet-900/30
             text-violet-600 dark:text-violet-400 shrink-0"
-        >
-          ✦
-        </div>
+          >
+            ✦
+          </div>
+        ) : (
+          ""
+        )}
         <h2 className="flex-1 text-right text-lg font-bold text-slate-800 dark:text-slate-100 line-clamp-1">
           {service.title}
         </h2>

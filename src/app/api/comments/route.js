@@ -4,8 +4,13 @@ import { createCommentValidator } from "../../../../validators/backend/commentVa
 export async function POST(req) {
   try {
     const commentBody = await req.json();
-    const { doctorId, userId, text, parentId } = commentBody;
-    const isValidData = createCommentValidator({ doctorId, userId, text });
+    const { doctorId, text, userId } = commentBody;
+    const isValidData = createCommentValidator({
+      doctorId,
+      userId,
+      text,
+    });
+    console.log(isValidData);
     if (isValidData !== true) {
       return Response.json({ message: "bad request " }, { status: 400 });
     }

@@ -35,7 +35,6 @@ function DoctorService({ service, index }) {
             <span className="text-[10px] font-Dana-Medium text-emerald-600/60">
               هزینه سرویس
             </span>
-            {console.log(service.price)}
             {service.price !== "0" ? (
               <span className="text-sm font-Morabba-Bold text-emerald-800 dark:text-emerald-300">
                 {new Intl.NumberFormat("fa-IR").format(service.price)}{" "}

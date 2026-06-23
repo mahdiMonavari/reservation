@@ -49,7 +49,6 @@ function DoctorsPage({ initialDoctors, totalPages, currentPage, total }) {
       );
       if (res.ok) {
         const { data } = await res.json();
-        console.log(doctors, data);
         setDoctors((prev) => prev.filter((item) => item._id !== data));
         successToast("حذف دکتر موفقیت آمیز بود");
       }

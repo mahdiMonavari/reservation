@@ -6,7 +6,6 @@ export async function POST(req) {
   try {
     await connectionToDB();
     const schedules = await req.json();
-    console.log(schedules);
 
     const isValid = schedules.some((item, index) => {
       const resulte = workingDayValidator({
@@ -18,7 +17,6 @@ export async function POST(req) {
       if (resulte !== true) return false;
       if (schedules.length === index + 1) return true;
     });
-    console.log(isValid);
     if (isValid !== true) {
       return Response.json({ message: "bad request" }, { status: 400 });
     }

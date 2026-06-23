@@ -3,17 +3,22 @@ import React, { useState } from "react";
 import { FaStar } from "react-icons/fa"; // نیاز به نصب react-icons دارید
 import CommentModal from "./CommentModal";
 
-function DoctorComment({ comments, doctorId }) {
+function DoctorComment({ comments, doctorId, isUserLogin }) {
   const [isNewCommentOpen, setIsNewCommentOpen] = useState(false);
   const onOpenNewComment = () => setIsNewCommentOpen(true);
   const onCloseNewComment = () => setIsNewCommentOpen(false);
   return (
     <>
-      <CommentModal
-        doctorId={doctorId}
-        isNewCommentOpen={isNewCommentOpen}
-        onCloseNewComment={onCloseNewComment}
-      />
+      {isUserLogin ? (
+        <CommentModal
+          doctorId={doctorId}
+          isNewCommentOpen={isNewCommentOpen}
+          onCloseNewComment={onCloseNewComment}
+          userId={isUserLogin._id}
+        />
+      ) : (
+        ""
+      )}
       <section className="container py-16">
         {/* Header Section */}
         <div className="flex flex-col md:flex-row md:items-end justify-between mb-10 gap-4">
@@ -27,20 +32,23 @@ function DoctorComment({ comments, doctorId }) {
           </div>
 
           {/* میانگین امتیاز کلی (ایده‌ای برای زیبایی بیشتر) */}
-          <div>
-            <button
-              onClick={onOpenNewComment}
-              className="px-6 py-3 rounded-2xl border flex items-center gap-2
+          {isUserLogin ? (
+            <div>
+              <button
+                onClick={onOpenNewComment}
+                className="px-6 py-3 rounded-2xl border flex items-center gap-2
            border-emerald-200 dark:border-emerald-800 bg-white/50
             dark:bg-emerald-950/30 backdrop-blur-md hover:bg-emerald-50 dark:hover:bg-emerald-900/50 transition-all 
           duration-300 text-emerald-900 dark:text-emerald-100 font-Morabba-Bold text-base shadow-sm"
-            >
-              <span>ایجاد کامنت جدید</span>
-              <span className="text-xl">+</span>
-            </button>
-          </div>
+              >
+                <span>ایجاد کامنت جدید</span>
+                <span className="text-xl">+</span>
+              </button>
+            </div>
+          ) : (
+            ""
+          )}
         </div>
-
         {/* Comments List */}
         <div className="grid gap-6">
           {comments.map((item, index) => (

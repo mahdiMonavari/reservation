@@ -3,7 +3,6 @@ import React from "react";
 
 function SubmitSchedule({ schedules }) {
   const submitHandler = async () => {
-    console.log(schedules);
     const res = await fetch("/api/schedule", {
       method: "POST",
       headers: {

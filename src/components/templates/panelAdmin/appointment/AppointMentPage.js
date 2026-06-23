@@ -42,7 +42,6 @@ function AppointMentPage({ appointments: initial, totalPages, currentPage }) {
         {appointments.length ? (
           <div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-3 gap-4">
             {appointments.map((appointment) => (
-              //   <>{console.log(appointment)}</>
               <AppointmentCard
                 key={appointment._id}
                 appointment={appointment}

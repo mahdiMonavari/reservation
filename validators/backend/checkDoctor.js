@@ -6,9 +6,9 @@ const schema = {
   specialty: { type: "string", empty: false },
   about: { type: "string", empty: false },
   fieldOfStudy: { type: "string", empty: false },
-  rating: { type: "number", positive: true },
+  reviewsCount: { type: "number", min: 0 },
   experience: { type: "number", positive: true },
-  reviewsCount: { type: "number", positive: true },
+  reviewsCount: { type: "number", min: 0 },
   avgAppointmentTime: { type: "number", positive: true },
   baseFee: { type: "number", positive: true },
   $$strict: false,
@@ -36,7 +36,6 @@ const canDoctorActiveValidation = ({
     baseFee,
     fieldOfStudy,
   });
-
   return result === true;
 };
 

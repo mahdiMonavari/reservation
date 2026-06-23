@@ -116,7 +116,7 @@ function DashboardPage({ adminStats, doctorStats, recentUsers, userRole }) {
               icon={<FaChartBar size={14} />}
               label="پزشکان"
               value={adminStats?.doctorsCount ?? "—"}
-              sub="فعال"
+              sub={`${adminStats.deactiveDoctor} دکتر غیر فعال است`}
               iconBg="bg-emerald-100 dark:bg-emerald-900/30"
               iconColor="text-emerald-600 dark:text-emerald-400"
             />

@@ -41,12 +41,16 @@ function DoctorsPage({ initialDoctors, totalPages, currentPage, total }) {
     if (!selectedDoctor) return;
     try {
       setIsLoading(true);
-      const res = await fetch(`/api/admin/user/${selectedDoctor.userId._id}`, {
-        method: "DELETE",
-      });
+      const res = await fetch(
+        `/api/admin/doctor/${selectedDoctor.userId._id}`,
+        {
+          method: "DELETE",
+        }
+      );
       if (res.ok) {
         const { data } = await res.json();
-        setDoctors((prev) => prev.filter((item) => item._id !== data._id));
+        console.log(doctors, data);
+        setDoctors((prev) => prev.filter((item) => item._id !== data));
         successToast("حذف دکتر موفقیت آمیز بود");
       }
     } catch {

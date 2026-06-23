@@ -6,17 +6,20 @@ import connectionToDB from "@/utiles/DB/connection";
 import { cookies } from "next/headers";
 import { verifyAccessToken } from "@/utiles/auth/auth";
 import serviceModel from "../../../../model/service";
+import doctorModel from "../../../../model/doctor";
 
 async function getAdminStats() {
   const [
     usersCount,
     doctorsCount,
+    deactiveDoctor,
     reservationsCount,
     commentsCount,
     pendingComments,
   ] = await Promise.all([
     userModel.countDocuments({ role: "USER" }),
     userModel.countDocuments({ $or: [{ role: "DOCTOR" }, { role: "ADMIN" }] }),
+    doctorModel.countDocuments({ isActive: false }),
     appointmentModel.countDocuments(),
     commentModel.countDocuments({ parentId: null }),
     commentModel.countDocuments({ parentId: null, isVerified: false }),
@@ -31,6 +34,7 @@ async function getAdminStats() {
   return {
     usersCount,
     doctorsCount,
+    deactiveDoctor,
     reservationsCount,
     commentsCount,
     pendingComments,

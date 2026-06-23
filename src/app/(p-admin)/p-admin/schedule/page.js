@@ -10,7 +10,10 @@ async function page() {
   const token = cookieStore.get("token")?.value;
   const { phone } = verifyAccessToken(token);
   const user = await userModel.findOne({ phoneNumber: phone }, "_id").lean();
-  const schedules = await workingDayModel.find({ doctorId: user._id }).lean();
+  const date = new Date();
+  const schedules = await workingDayModel
+    .find({ doctorId: user._id, date: { $gte: date } })
+    .lean();
 
   return (
     <div className="p-6 flex flex-col gap-6">

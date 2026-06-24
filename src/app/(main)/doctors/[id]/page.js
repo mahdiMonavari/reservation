@@ -13,6 +13,7 @@ async function page({ params }) {
     .findOne({ userId: id })
     .populate("userId", "firstName lastName");
   const commentCount = await commentModel.countDocuments({
+    doctorId: id,
     parentId: null,
     isVerified: true,
   });

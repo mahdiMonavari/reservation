@@ -38,6 +38,21 @@ export async function POST(req) {
       refreshToken,
     });
     if (newUser) {
+      if (role === "ADMIN") {
+        const res = await fetch("http://localhost:3000/api/admin/doctor", {
+          method: "POST",
+          headers: {
+            "Content-type": "application/json",
+          },
+          body: JSON.stringify({ userId: newUser._id }),
+        });
+        if (res.ok) {
+          return Response.json(
+            { message: isValidEntry.error },
+            { status: 400 }
+          );
+        }
+      }
       return Response.json(
         { message: "user created", data: newUser },
         {

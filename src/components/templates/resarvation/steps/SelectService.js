@@ -2,24 +2,25 @@
 import useReservationStore from "@/store/reservationStore";
 import { FiCheck, FiClock, FiDollarSign } from "react-icons/fi";
 
-const SERVICES = [
-  { id: 1, name: "سونوگرافی عادی", duration: "۳۰ دقیقه", price: "۳۵۰,۰۰۰" },
-  { id: 2, name: "سونوگرافی سه‌بعدی", duration: "۴۵ دقیقه", price: "۶۵۰,۰۰۰" },
-  { id: 3, name: "آمنیوسنتز", duration: "۶۰ دقیقه", price: "۱,۲۰۰,۰۰۰" },
-  { id: 4, name: "ویزیت متخصص", duration: "۲۰ دقیقه", price: "۲۸۰,۰۰۰" },
-  {
-    id: 5,
-    name: "CTG (مانیتورینگ جنین)",
-    duration: "۴۵ دقیقه",
-    price: "۴۵۰,۰۰۰",
-  },
-  { id: 6, name: "مشاوره بارداری", duration: "۳۰ دقیقه", price: "۳۰۰,۰۰۰" },
-];
+// const SERVICES = [
+//   { id: 1, name: "سونوگرافی عادی", duration: "۳۰ دقیقه", price: "۳۵۰,۰۰۰" },
+//   { id: 2, name: "سونوگرافی سه‌بعدی", duration: "۴۵ دقیقه", price: "۶۵۰,۰۰۰" },
+//   { id: 3, name: "آمنیوسنتز", duration: "۶۰ دقیقه", price: "۱,۲۰۰,۰۰۰" },
+//   { id: 4, name: "ویزیت متخصص", duration: "۲۰ دقیقه", price: "۲۸۰,۰۰۰" },
+//   {
+//     id: 5,
+//     name: "CTG (مانیتورینگ جنین)",
+//     duration: "۴۵ دقیقه",
+//     price: "۴۵۰,۰۰۰",
+//   },
+//   { id: 6, name: "مشاوره بارداری", duration: "۳۰ دقیقه", price: "۳۰۰,۰۰۰" },
+// ];
 
 function SelectService() {
+  const selectedDoctor = useReservationStore((s) => s.selectedDoctor);
   const selectedServices = useReservationStore((s) => s.selectedServices);
   const setServices = useReservationStore((s) => s.setServices);
-
+  console.log(selectedDoctor);
   const toggle = (service) => {
     const exists = selectedServices.find((s) => s.id === service.id);
     if (exists) {

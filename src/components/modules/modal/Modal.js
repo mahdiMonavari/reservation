@@ -34,7 +34,6 @@ function Modal({
         return acc;
       }, {})
     );
-    console.log(formData);
   }, [data, isOpen]);
 
   const handleClose = () => {

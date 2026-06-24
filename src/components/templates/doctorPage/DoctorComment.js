@@ -47,7 +47,10 @@ function DoctorComment({ comments, doctorId, isUserLogin, answerComments }) {
           </div>
 
           {isUserLogin && (
-            <button className="flex items-center gap-2 px-6 py-3 rounded-2xl bg-emerald-600 hover:bg-emerald-700 active:scale-95 transition-all duration-300 shadow-lg shadow-emerald-200 dark:shadow-none text-white font-Morabba-Bold text-base">
+            <button
+              onClick={() => setIsNewCommentOpen(true)}
+              className="flex items-center gap-2 px-6 py-3 rounded-2xl bg-emerald-600 hover:bg-emerald-700 active:scale-95 transition-all duration-300 shadow-lg shadow-emerald-200 dark:shadow-none text-white font-Morabba-Bold text-base"
+            >
               <span className="text-xl">+</span>
               <span>ایجاد کامنت جدید</span>
             </button>

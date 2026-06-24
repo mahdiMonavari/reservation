@@ -1,13 +1,21 @@
+import { cookies } from "next/headers";
 import doctorModel from "../../../../../model/doctor";
 import userModel from "../../../../../model/user";
 import DoctorsPage from "@/components/templates/panelAdmin/doctors/DoctorPage";
+import { verifyAccessToken } from "@/utiles/auth/auth";
+import { redirect } from "next/navigation";
 
 async function Page({ searchParams }) {
   const params = await searchParams;
   const page = Number(params.page) || 1;
   const search = params.search || "";
   const limit = 10;
-
+  const cookieStore = await cookies();
+  const token = cookieStore.get("token")?.value;
+  const { role } = verifyAccessToken(token);
+  if (role !== "ADMIN") {
+    return redirect("/p-admin");
+  }
   const query =
     search.length > 0
       ? {

@@ -6,10 +6,11 @@ import userModel from "../../../../../model/user";
 
 async function Comments() {
   const comments = await commentModel
-    .find({ parentId: null })
+    .find({ parentId: null }, {})
     .populate("userId", "firstName lastName")
     .populate("doctorId", "firstName lastName")
     .populate("parentId", "text")
+    .sort({ createdAt: -1 })
     .lean();
   const serialized = JSON.parse(JSON.stringify(comments));
   return <CommentsPage comments={serialized} />;

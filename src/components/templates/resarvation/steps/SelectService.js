@@ -19,7 +19,7 @@ import { FiCheck, FiClock, FiDollarSign } from "react-icons/fi";
 //   { id: 6, name: "مشاوره بارداری", duration: "۳۰ دقیقه", price: "۳۰۰,۰۰۰" },
 // ];
 
-function SelectService({ setIsLoading, isLoading }) {
+function SelectService({ setIsLoading }) {
   const selectedDoctor = useReservationStore((s) => s.selectedDoctor);
   const selectedServices = useReservationStore((s) => s.selectedServices);
   const setServices = useReservationStore((s) => s.setServices);
@@ -29,7 +29,7 @@ function SelectService({ setIsLoading, isLoading }) {
   useEffect(() => {
     const controler = new AbortController();
     const signal = controler.signal;
-    if (selectedDoctor?.userId?._id) {
+    if (selectedDoctor) {
       getServices(signal);
     }
     return () => controler.abort();
@@ -39,10 +39,7 @@ function SelectService({ setIsLoading, isLoading }) {
     try {
       setError(null);
       setIsLoading(true);
-      const res = await fetch(
-        `/api/services/${selectedDoctor.userId._id}`,
-        signal
-      );
+      const res = await fetch(`/api/services/${selectedDoctor}`, signal);
       if (!res.ok) {
         throw new Error("مشکلی در برقراری ارتباط با سرور رخ داد.");
       }
@@ -102,7 +99,7 @@ function SelectService({ setIsLoading, isLoading }) {
       </div>
 
       {/* لیست سرویس‌ها */}
-      {servicesList.length && !isLoading ? (
+      {servicesList.length ? (
         <div className="grid grid-cols-1 sm:grid-cols-2 gap-2.5 mb-4">
           {servicesList.map((service) => {
             const selected = isSelected(service._id);

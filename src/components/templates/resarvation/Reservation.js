@@ -3,7 +3,7 @@ import useReservationStore from "@/store/reservationStore";
 import SelectDoctor from "./steps/SelectDoctor";
 import SelectService from "./steps/SelectService";
 import SelectDate from "./steps/SelectDate";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import SelectTime from "./steps/SelectTime";
 import Confirm from "./steps/Confirm";
 import { FaChevronLeft, FaChevronRight } from "react-icons/fa";
@@ -26,6 +26,7 @@ function Reservation({ doctors }) {
   const selectedDate = useReservationStore((s) => s.selectedDate);
   const selectedTime = useReservationStore((s) => s.selectedTime);
   const [isLoading, setIsLoading] = useState(false);
+  const setServices = useReservationStore((s) => s.setServices);
 
   const isStepValid = () => {
     if (step === 1) return !!selectedDoctor;

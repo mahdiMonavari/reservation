@@ -1,10 +1,11 @@
 import Image from "next/image";
 import React from "react";
-import { FaUserDoctor, FaClipboardList, FaChevronLeft } from "react-icons/fa6";
+import { FaClipboardList, FaChevronLeft } from "react-icons/fa6";
 import { MdFolderSpecial, MdOutlineDescription } from "react-icons/md";
 import Link from "next/link";
+import ReservationButton from "../doctorPage/ReservationButton";
 
-function Doctor({ photo, userId, fieldOfStudy, about, specialty, _id }) {
+function Doctor({ photo, userId, fieldOfStudy, about, specialty }) {
   // فرض بر این است که photo آدرس تصویر واقعی است، اگر نیست از fallback استفاده می‌کنیم
   const doctorImage = photo || "/img/doctor-hero.jpg";
 
@@ -86,15 +87,12 @@ function Doctor({ photo, userId, fieldOfStudy, about, specialty, _id }) {
         </div>
       </div>
 
-      {/* دکمه عملیاتی - در انتهای کارت */}
       <div className="px-6 pb-7">
-        <button className="relative w-full overflow-hidden group/btn bg-emerald-600 hover:bg-emerald-700 text-white font-Morabba-Bold text-lg py-4 rounded-[1.5rem] transition-all duration-300 shadow-lg shadow-emerald-600/25 active:scale-95">
-          <span className="relative z-10 flex items-center justify-center gap-2">
-            رزرو نوبت آنلاین
-          </span>
-          {/* افکت درخشش هنگام هاور */}
-          <div className="absolute inset-0 w-full h-full bg-gradient-to-r from-transparent via-white/20 to-transparent -translate-x-full group-hover/btn:animate-[shimmer_1.5s_infinite] transition-transform" />
-        </button>
+        <ReservationButton params={userId._id}>
+          <button className="overflow-hidden w-full block text-center group/btn bg-emerald-600 hover:bg-emerald-700 text-white font-Morabba-Bold text-lg py-4 rounded-[1.5rem] transition-all duration-300 shadow-lg shadow-emerald-600/25 active:scale-95">
+            رزرو نوبت
+          </button>
+        </ReservationButton>
       </div>
 
       {/* استایل سفارشی برای انیمیشن shimmer (در فایل CSS اصلی یا اینجا اضافه شود) */}

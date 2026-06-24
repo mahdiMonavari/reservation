@@ -1,7 +1,7 @@
 import Image from "next/image";
 import ReservationButton from "./ReservationButton";
 
-function DoctorCard({
+async function DoctorCard({
   userId,
   photo,
   specialty,
@@ -10,6 +10,7 @@ function DoctorCard({
   avgAppointmentTime,
   baseFee,
   commentCount,
+  params,
 }) {
   return (
     <section className="group relative overflow-hidden rounded-3xl border border-emerald-100/70 bg-white/70 shadow-sm backdrop-blur-xl transition-all duration-500 dark:border-emerald-900/30 dark:bg-slate-900/30 dark:shadow-none">
@@ -114,7 +115,11 @@ function DoctorCard({
 
           {/* CTA Button */}
           <div className="flex flex-col sm:flex-row gap-3 pt-2">
-            <ReservationButton />
+            <ReservationButton params={params}>
+              <button className="rounded-2xl bg-emerald-600 cursor-pointer px-5 py-3 font-semibold text-white shadow-md shadow-emerald-600/20 transition-colors duration-300">
+                رزرو نوبت
+              </button>
+            </ReservationButton>
           </div>
         </div>
       </div>

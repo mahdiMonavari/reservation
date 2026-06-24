@@ -27,6 +27,7 @@ async function page({ params }) {
         doctor={JSON.parse(JSON.stringify(doctor))}
         commentCount={commentCount}
         isUserLogin={JSON.parse(JSON.stringify(user))}
+        params={id}
       />
     </div>
   );

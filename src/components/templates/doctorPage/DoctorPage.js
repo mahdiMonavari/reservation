@@ -4,7 +4,7 @@ import serviceModel from "../../../../model/service";
 import DoctorCard from "./DoctorCard";
 import DoctorComment from "./DoctorComment";
 import DoctorServices from "./DoctorServices";
-async function DoctorPage({ doctor, commentCount, isUserLogin }) {
+async function DoctorPage({ doctor, commentCount, isUserLogin, params }) {
   await connectionToDB();
   const services = await serviceModel.find({ doctorId: doctor.userId._id });
   const comments = await commentModel
@@ -20,7 +20,7 @@ async function DoctorPage({ doctor, commentCount, isUserLogin }) {
     .populate("userId", "firstName lastName");
   return (
     <div className="container my-20">
-      <DoctorCard {...doctor} commentCount={commentCount} />
+      <DoctorCard {...doctor} commentCount={commentCount} params={params} />
       <DoctorServices services={JSON.parse(JSON.stringify(services))} />
       <DoctorComment
         comments={JSON.parse(JSON.stringify(comments))}

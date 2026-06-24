@@ -24,13 +24,12 @@ function SelectDoctor({ doctors }) {
       <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
         {doctors.length ? (
           doctors.map((doctor) => {
-            const isSelected =
-              selectedDoctor?.userId?._id === doctor.userId._id;
+            const isSelected = selectedDoctor === doctor.userId._id;
             return (
               <button
                 key={doctor._id}
                 type="button"
-                onClick={() => setDoctor(doctor)}
+                onClick={() => setDoctor(doctor.userId._id)}
                 className={`relative w-full text-right rounded-2xl p-4
                 flex items-center gap-4
                 border transition-all duration-250 group

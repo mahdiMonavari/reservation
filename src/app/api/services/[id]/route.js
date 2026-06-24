@@ -70,3 +70,16 @@ export async function DELETE(req, { params }) {
     return Response.json({ message: "internal error" }, { status: 500 });
   }
 }
+
+export async function GET(req, { params }) {
+  await connectionToDB();
+  const { id } = await params;
+  if (!id) {
+    return Response.json({ message: "doctor Id not Found" }, { status: 400 });
+  }
+  const services = await serviceModel.find({ doctorId: id });
+  if (!services) {
+    return Response.json({ message: "service Id not Found" }, { status: 404 });
+  }
+  return Response.json(services);
+}

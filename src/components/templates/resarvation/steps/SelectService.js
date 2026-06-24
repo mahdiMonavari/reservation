@@ -1,5 +1,8 @@
 "use client";
+import EmptySection from "@/components/modules/emptyState/EmptySection";
+import LoadingOverlay from "@/components/modules/loading/LoadingOverlay";
 import useReservationStore from "@/store/reservationStore";
+import { useEffect, useState } from "react";
 import { FiCheck, FiClock, FiDollarSign } from "react-icons/fi";
 
 // const SERVICES = [
@@ -16,21 +19,56 @@ import { FiCheck, FiClock, FiDollarSign } from "react-icons/fi";
 //   { id: 6, name: "مشاوره بارداری", duration: "۳۰ دقیقه", price: "۳۰۰,۰۰۰" },
 // ];
 
-function SelectService() {
+function SelectService({ setIsLoading, isLoading }) {
   const selectedDoctor = useReservationStore((s) => s.selectedDoctor);
   const selectedServices = useReservationStore((s) => s.selectedServices);
   const setServices = useReservationStore((s) => s.setServices);
-  console.log(selectedDoctor);
+  const [servicesList, setServicesList] = useState([]);
+  const [error, setError] = useState(null);
+
+  useEffect(() => {
+    const controler = new AbortController();
+    const signal = controler.signal;
+    if (selectedDoctor?.userId?._id) {
+      getServices(signal);
+    }
+    return () => controler.abort();
+  }, [selectedDoctor]);
+
+  const getServices = async (signal) => {
+    try {
+      setError(null);
+      setIsLoading(true);
+      const res = await fetch(
+        `/api/services/${selectedDoctor.userId._id}`,
+        signal
+      );
+      if (!res.ok) {
+        throw new Error("مشکلی در برقراری ارتباط با سرور رخ داد.");
+      }
+      const data = await res.json();
+      setServicesList(data);
+    } catch (err) {
+      if (err.name === "AbortError") {
+        console.log("Fetch aborted");
+        return;
+      }
+      setError(err.message || "خطای ناشناخته");
+    } finally {
+      setIsLoading(false);
+    }
+  };
+
   const toggle = (service) => {
-    const exists = selectedServices.find((s) => s.id === service.id);
+    const exists = selectedServices.find((s) => s._id === service._id);
     if (exists) {
-      setServices(selectedServices.filter((s) => s.id !== service.id));
+      setServices(selectedServices.filter((s) => s._id !== service._id));
     } else {
       setServices([...selectedServices, service]);
     }
   };
 
-  const isSelected = (id) => !!selectedServices.find((s) => s.id === id);
+  const isSelected = (id) => !!selectedServices.find((s) => s._id === id);
 
   const toEnglishDigits = (str) => {
     const persianDigits = ["۰", "۱", "۲", "۳", "۴", "۵", "۶", "۷", "۸", "۹"];
@@ -64,15 +102,16 @@ function SelectService() {
       </div>
 
       {/* لیست سرویس‌ها */}
-      <div className="grid grid-cols-1 sm:grid-cols-2 gap-2.5 mb-4">
-        {SERVICES.map((service) => {
-          const selected = isSelected(service.id);
-          return (
-            <button
-              key={service.id}
-              type="button"
-              onClick={() => toggle(service)}
-              className={`relative w-full text-right rounded-2xl px-4 py-3.5
+      {servicesList.length && !isLoading ? (
+        <div className="grid grid-cols-1 sm:grid-cols-2 gap-2.5 mb-4">
+          {servicesList.map((service) => {
+            const selected = isSelected(service._id);
+            return (
+              <button
+                key={service._id}
+                type="button"
+                onClick={() => toggle(service)}
+                className={`relative w-full text-right rounded-2xl px-4 py-3.5
                 flex items-start gap-3
                 border transition-all duration-200 group
                 ${
@@ -80,55 +119,58 @@ function SelectService() {
                     ? "bg-emerald-50 border-emerald-400 dark:bg-emerald-500/15 dark:border-emerald-400"
                     : "bg-white/60 border-emerald-100 hover:border-emerald-300 hover:bg-emerald-50/50 dark:bg-white/5 dark:border-white/10 dark:hover:border-white/20 dark:hover:bg-white/10"
                 }`}
-            >
-              {/* چک‌باکس */}
-              <div
-                className={`shrink-0 w-5 h-5 rounded-md flex items-center justify-center
+              >
+                {/* چک‌باکس */}
+                <div
+                  className={`shrink-0 w-5 h-5 rounded-md flex items-center justify-center
                 border-2 transition-all duration-200
                 ${
                   selected
                     ? "bg-emerald-500 border-emerald-500"
                     : "border-emerald-200 dark:border-white/20 group-hover:border-emerald-400 dark:group-hover:border-white/40"
                 }`}
-              >
-                {selected && (
-                  <FiCheck size={11} className="text-white" strokeWidth={3} />
-                )}
-              </div>
+                >
+                  {selected && (
+                    <FiCheck size={11} className="text-white" strokeWidth={3} />
+                  )}
+                </div>
 
-              {/* اطلاعات */}
-              <div className="flex-1 min-w-0">
-                <p
-                  className={`text-sm font-Morabba-Bold truncate transition-colors duration-200
+                {/* اطلاعات */}
+                <div className="flex-1 min-w-0">
+                  <p
+                    className={`text-sm font-Morabba-Bold truncate transition-colors duration-200
                   ${
                     selected
                       ? "text-emerald-800 dark:text-emerald-200"
                       : "text-emerald-900 dark:text-white/80"
                   }`}
-                >
-                  {service.name}
-                </p>
-                <div className="flex items-center justify-end gap-3 mt-5">
-                  <span
-                    className="flex items-center gap-1 text-xs
+                  >
+                    {service.title}
+                  </p>
+                  <div className="flex items-center justify-end gap-3 mt-5">
+                    <span
+                      className="flex items-center gap-1 text-xs
                     text-emerald-500 dark:text-emerald-400/60"
-                  >
-                    <FiClock size={10} />
-                    {service.duration}
-                  </span>
-                  <span
-                    className="flex items-center gap-1 text-sm
+                    >
+                      <FiClock size={10} />
+                      {service.duration}
+                    </span>
+                    <span
+                      className="flex items-center gap-1 text-sm
                     text-emerald-600 dark:text-emerald-400 font-Morabba-Bold"
-                  >
-                    <FiDollarSign size={10} />
-                    {service.price} تومان
-                  </span>
+                    >
+                      <FiDollarSign size={10} />
+                      {service.price} تومان
+                    </span>
+                  </div>
                 </div>
-              </div>
-            </button>
-          );
-        })}
-      </div>
+              </button>
+            );
+          })}
+        </div>
+      ) : (
+        <EmptySection title="هنوز خدمتی برای این دکتر ثبت نشده است" />
+      )}
 
       {/* خلاصه انتخاب‌ها */}
       <div

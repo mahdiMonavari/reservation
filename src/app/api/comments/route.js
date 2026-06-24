@@ -10,7 +10,6 @@ export async function POST(req) {
       userId,
       text,
     });
-    console.log(isValidData);
     if (isValidData !== true) {
       return Response.json({ message: "bad request " }, { status: 400 });
     }

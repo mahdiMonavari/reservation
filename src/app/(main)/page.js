@@ -6,7 +6,6 @@ import serviceModel from "../../../model/service";
 import EmptySection from "@/components/modules/emptyState/EmptySection";
 async function page() {
   const services = await serviceModel.find({ isPopular: "true" });
-  console.log(services);
   return (
     <>
       <div className="h-screen overflow-x-hidden bg-hero-phone xl:bg-hero-desctop pt-20 flex items-center">

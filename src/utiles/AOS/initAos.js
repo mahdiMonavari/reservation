@@ -6,7 +6,10 @@ import "aos/dist/aos.css";
 
 function AOSInit() {
   useEffect(() => {
-    Aos.init();
+    const timeOut = setTimeout(() => {
+      Aos.init();
+    }, 500);
+    () => clearTimeout(timeOut);
   }, []);
 
   return null;

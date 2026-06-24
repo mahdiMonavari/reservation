@@ -42,7 +42,6 @@ function Reservation({ doctors }) {
 
   return (
     <>
-      <LoadingOverlay loading={isLoading} />
       <div
         className="relative min-h-screen flex items-start justify-center
        bg-gray-100 dark:bg-zinc-800 px-2 xs-px-4 pt-24 pb-12 overflow-hidden"
@@ -59,6 +58,7 @@ function Reservation({ doctors }) {
           dark:bg-white/5 dark:border-white/10
           shadow-sm dark:shadow-2xl dark:shadow-emerald-950/50"
           >
+            <LoadingOverlay loading={isLoading} />
             <div
               className="h-px w-full bg-gradient-to-r
             from-transparent via-emerald-400/50 to-transparent

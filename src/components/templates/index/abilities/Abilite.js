@@ -6,7 +6,6 @@ import { redirect } from "next/navigation";
 import { FaChevronLeft } from "react-icons/fa";
 
 function Abilite({ title, description, doctorId, service }) {
-  console.log(doctorId);
   const setServices = useReservationStore((s) => s.setServices);
   const setDoctor = useReservationStore((s) => s.setDoctor);
   const setStep = useReservationStore((s) => s.setStep);

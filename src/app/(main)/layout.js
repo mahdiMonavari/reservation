@@ -29,7 +29,6 @@ export default async function RootLayout({ children }) {
             <Footer />
           </div>
           <AOSInit />
-
           <Toaster />
         </AuthProvider>
       </body>

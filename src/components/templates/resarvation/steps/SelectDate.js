@@ -1,30 +1,41 @@
 "use client";
 import Calendar from "@/components/modules/calendar/Calendar";
 import useReservationStore from "@/store/reservationStore";
+import { useEffect, useState } from "react";
 import { FiCalendar } from "react-icons/fi";
 
-function SelectDate() {
+function SelectDate({ setIsLoading }) {
   const selectedDoctor = useReservationStore((s) => s.selectedDoctor);
   const selectedDate = useReservationStore((s) => s.selectedDate);
   const setDate = useReservationStore((s) => s.setDate);
-
-  const jalaliMonths = [
-    "فروردین",
-    "اردیبهشت",
-    "خرداد",
-    "تیر",
-    "مرداد",
-    "شهریور",
-    "مهر",
-    "آبان",
-    "آذر",
-    "دی",
-    "بهمن",
-    "اسفند",
-  ];
-
+  const [dateList, setDateList] = useState([]);
+  const [error, setError] = useState(null);
   const handleSelectDate = (d) => {
     setDate(d.gregorian);
+  };
+  useEffect(() => {
+    const controler = new AbortController();
+    const signal = controler.signal;
+    if (selectedDoctor) {
+      getWorkingDays(signal);
+    }
+    return () => controler.abort();
+  }, [selectedDoctor]);
+
+  const getWorkingDays = async (signal) => {
+    try {
+      setError(null);
+      setIsLoading(true);
+      const res = await fetch(`/api/schedule/${selectedDoctor}`, signal);
+      if (!res.ok) throw new Error("مشکلی در برقراری ارتباط با سرور رخ داد.");
+      const data = await res.json();
+      setDateList(data);
+    } catch (err) {
+      if (err.name === "AbortError") return;
+      setError(err.message || "خطای ناشناخته");
+    } finally {
+      setIsLoading(false);
+    }
   };
 
   return (
@@ -45,6 +56,7 @@ function SelectDate() {
           onSelectDate={handleSelectDate}
           permission={1}
           theme="emerald"
+          workingDateList={dateList}
         />
       </div>
 

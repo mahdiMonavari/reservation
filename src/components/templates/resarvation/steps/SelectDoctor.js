@@ -2,6 +2,7 @@
 import EmptySection from "@/components/modules/emptyState/EmptySection";
 import useReservationStore from "@/store/reservationStore";
 import Image from "next/image";
+import { useEffect } from "react";
 import { FiCheck } from "react-icons/fi";
 
 function SelectDoctor({ doctors }) {

@@ -1,6 +1,6 @@
 import connectionToDB from "@/utiles/DB/connection";
-import workingDayModel from "@/model/workingDay";
 import { NextResponse } from "next/server";
+import workingDayModel from "../../../../../model/workingDay";
 
 export async function GET(req, { params }) {
   try {

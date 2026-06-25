@@ -13,23 +13,14 @@ export async function POST(req) {
     const cookieStore = await cookies();
     const token = cookieStore.get("token")?.value;
     const { phone } = verifyAccessToken(token);
-    const user = await userModel.findOne({ phoneNumber: "09137374644" }, "_id");
+    const user = await userModel.findOne({ phoneNumber: phone }, "_id");
     if (!user) {
       return Response.json({ message: "unauthorized" }, { status: 401 });
     }
 
     const body = await req.json();
-    const {
-      userId,
-      serviceIds,
-      totalTime,
-      timeStart,
-      timeEnd,
-      doctorId,
-      date,
-    } = body;
+    const { serviceIds, totalTime, timeStart, timeEnd, doctorId, date } = body;
     const isValid = appointmentValidator({
-      userId,
       serviceIds,
       doctorId,
       totalTime,
@@ -42,7 +33,7 @@ export async function POST(req) {
     }
 
     const appointment = await appointmentModel.create({
-      userId,
+      userId: user._id,
       doctorId,
       serviceIds: serviceIds ?? [],
       totalTime,

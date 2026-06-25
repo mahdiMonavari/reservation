@@ -189,7 +189,7 @@ function Reservation({ doctors }) {
                 type="button"
                 onClick={nextStep}
                 disabled={!canProceed}
-                className="relative flex items-center gap-2 px-2 xs:px-6 py-2.5 rounded-xl
+                className={`relative flex items-center gap-2 px-2 xs:px-6 py-2.5 rounded-xl
                 text-xs xs:text-sm font-Morabba-Bold text-white overflow-hidden
                 transition-all duration-200 active:scale-[0.97] group
                 bg-emerald-500 hover:bg-emerald-600
@@ -197,18 +197,14 @@ function Reservation({ doctors }) {
                 dark:hover:shadow-lg dark:hover:shadow-emerald-500/25
                 disabled:bg-emerald-200 disabled:dark:bg-emerald-900/40
                 disabled:text-emerald-400/80 disabled:dark:text-emerald-700
-                disabled:shadow-none disabled:cursor-not-allowed disabled:scale-100"
+                disabled:shadow-none disabled:cursor-not-allowed disabled:scale-100 ${
+                  step === 5 ? "invisible" : ""
+                }`}
               >
                 <span className="relative z-10">
-                  {step === STEPS.length ? (
-                    <span className="flex items-center justify-center gap-1 md:gap-2">
-                      ثبت نهایی
-                    </span>
-                  ) : (
-                    <span className="flex items-center justify-center gap-1 md:gap-2">
-                      مرحله بعد <FaChevronLeft />
-                    </span>
-                  )}
+                  <span className="flex items-center justify-center gap-1 md:gap-2">
+                    مرحله بعد <FaChevronLeft />
+                  </span>
                 </span>
                 {canProceed && (
                   <span

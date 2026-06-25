@@ -2,7 +2,7 @@
 import Calendar from "@/components/modules/calendar/Calendar";
 import useReservationStore from "@/store/reservationStore";
 import { useEffect, useState } from "react";
-import { FiCalendar } from "react-icons/fi";
+import { FiCalendar, FiAlertCircle } from "react-icons/fi";
 
 function SelectDate({ setIsLoading }) {
   const selectedDoctor = useReservationStore((s) => s.selectedDoctor);
@@ -10,25 +10,36 @@ function SelectDate({ setIsLoading }) {
   const setDate = useReservationStore((s) => s.setDate);
   const [dateList, setDateList] = useState([]);
   const [error, setError] = useState(null);
+
   const handleSelectDate = (d) => {
-    setDate(d.gregorian);
+    const matched = dateList.find((item) => {
+      const itemDate = new Date(item.date);
+      return (
+        itemDate.getFullYear() === d.gregorian.year &&
+        itemDate.getMonth() === d.gregorian.month &&
+        itemDate.getDate() === d.gregorian.date
+      );
+    });
+    console.log(matched);
+    if (matched) setDate(matched);
   };
+
   useEffect(() => {
-    const controler = new AbortController();
-    const signal = controler.signal;
+    const controller = new AbortController();
     if (selectedDoctor) {
-      getWorkingDays(signal);
+      getWorkingDays(controller.signal);
     }
-    return () => controler.abort();
+    return () => controller.abort();
   }, [selectedDoctor]);
 
   const getWorkingDays = async (signal) => {
     try {
       setError(null);
       setIsLoading(true);
-      const res = await fetch(`/api/schedule/${selectedDoctor}`, signal);
+      const res = await fetch(`/api/schedule/${selectedDoctor}`, { signal });
       if (!res.ok) throw new Error("مشکلی در برقراری ارتباط با سرور رخ داد.");
       const data = await res.json();
+      console.log(data);
       setDateList(data);
     } catch (err) {
       if (err.name === "AbortError") return;
@@ -37,6 +48,14 @@ function SelectDate({ setIsLoading }) {
       setIsLoading(false);
     }
   };
+
+  const displayDate = selectedDate
+    ? new Date(selectedDate.date).toLocaleDateString("fa-IR", {
+        year: "numeric",
+        month: "long",
+        day: "numeric",
+      })
+    : null;
 
   return (
     <div>
@@ -49,13 +68,31 @@ function SelectDate({ setIsLoading }) {
         </p>
       </div>
 
+      {error && (
+        <div className="flex items-center gap-2 text-sm text-rose-500 bg-rose-50 dark:bg-rose-500/10 border border-rose-200 dark:border-rose-500/20 rounded-xl px-4 py-3 mb-4">
+          <FiAlertCircle size={15} />
+          <span className="font-Dana-Regular">{error}</span>
+        </div>
+      )}
+
       <div className="flex justify-center">
         <Calendar
           mode="single"
-          selectedDate={selectedDate}
-          onSelectDate={handleSelectDate}
-          permission={1}
           theme="emerald"
+          permission={1}
+          selectedDate={
+            selectedDate
+              ? (() => {
+                  const d = new Date(selectedDate.date);
+                  return {
+                    year: d.getFullYear(),
+                    month: d.getMonth(),
+                    date: d.getDate(),
+                  };
+                })()
+              : null
+          }
+          onSelectDate={handleSelectDate}
           workingDateList={dateList}
         />
       </div>
@@ -73,17 +110,9 @@ function SelectDate({ setIsLoading }) {
             <span className="text-xs font-Dana-Regular text-emerald-600 dark:text-emerald-400">
               تاریخ انتخاب شده:
             </span>
-            {selectedDate && (
+            {displayDate && (
               <span className="text-xs font-Morabba-Bold text-emerald-700 dark:text-emerald-300">
-                {new Date(
-                  selectedDate.year,
-                  selectedDate.month,
-                  selectedDate.date
-                ).toLocaleDateString("fa-IR", {
-                  year: "numeric",
-                  month: "long",
-                  day: "numeric",
-                })}
+                {displayDate}
               </span>
             )}
           </div>

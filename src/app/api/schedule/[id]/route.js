@@ -1,5 +1,4 @@
 import connectionToDB from "@/utiles/DB/connection";
-import { NextResponse } from "next/server";
 import workingDayModel from "../../../../../model/workingDay";
 
 export async function GET(req, { params }) {
@@ -9,11 +8,8 @@ export async function GET(req, { params }) {
 
     const schedules = await workingDayModel.find({ doctorId: id }).lean();
 
-    return NextResponse.json(schedules);
+    return Response.json(schedules);
   } catch (error) {
-    return NextResponse.json(
-      { message: "خطا در دریافت برنامه کاری" },
-      { status: 500 }
-    );
+    return Response.json({ message: "internal error" }, { status: 500 });
   }
 }

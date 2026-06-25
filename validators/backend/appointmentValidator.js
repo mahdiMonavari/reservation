@@ -6,12 +6,6 @@ const v = new Validator();
 const timePattern = /^([01]\d|2[0-3]):([0-5]\d)$/; // HH:MM
 
 export const appointmentValidator = v.compile({
-  userId: {
-    type: "string",
-    messages: {
-      string: "آیدی کاربر باید متنی باشد",
-    },
-  },
   date: {
     type: "date",
   },

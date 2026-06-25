@@ -16,7 +16,12 @@ const useReservationStore = create((set) => ({
       if (state.selectedDoctor === doctor) {
         return state;
       }
-      return { selectedDoctor: doctor, selectedServices: [] };
+      return {
+        selectedDoctor: doctor,
+        selectedServices: [],
+        selectedDate: null,
+        selectedTime: null,
+      };
     }),
   setServices: (services) => set({ selectedServices: services }),
   setDate: (date) => set({ selectedDate: date }),

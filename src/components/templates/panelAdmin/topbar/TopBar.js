@@ -20,9 +20,7 @@ async function TopBar({ theme, admin }) {
         bg-slate-50/80 dark:bg-slate-950/80 h-20
         backdrop-blur-md border-b border-slate-200 dark:border-slate-800/60"
     >
-      {/* right */}
       <div className="flex items-center gap-3">
-        {/* لوگو — فقط موبایل */}
         <div className="flex md:hidden items-center gap-2">
           <div
             className="w-7 h-7 rounded-lg bg-violet-600 flex items-center justify-center
@@ -35,20 +33,14 @@ async function TopBar({ theme, admin }) {
           </p>
         </div>
 
-        {/* عنوان — فقط دسکتاپ */}
         <h1 className="hidden md:block text-base font-Morabba-Bold text-slate-500 dark:text-slate-400">
           پنل مدیریت
         </h1>
       </div>
 
-      {/* left */}
       <div className="flex items-center gap-2 md:gap-3">
         <ThemeCta prevTheme={theme} style={themeCtaStyle} />
-
-        {/* همبرگر — فقط موبایل */}
         <HamburgerBtn />
-
-        {/* پروفایل — فقط دسکتاپ */}
         <div className="hidden md:flex items-center gap-3">
           <div className="h-6 w-px bg-slate-200 dark:bg-slate-800" />
 
@@ -122,7 +114,8 @@ async function TopBar({ theme, admin }) {
 
                 <div className="h-px bg-slate-100 dark:bg-slate-800 mx-1 my-0.5" />
 
-                <button
+                <Link
+                  href={"/"}
                   className="flex items-center justify-end gap-2.5 px-3 py-2.5 rounded-xl
                     text-sm font-Morabba-Bold text-red-500 dark:text-red-400
                     hover:bg-red-50 dark:hover:bg-red-900/20
@@ -135,7 +128,7 @@ async function TopBar({ theme, admin }) {
                   >
                     <FaChevronDown size={12} className="-rotate-90" />
                   </span>
-                </button>
+                </Link>
               </div>
             </div>
           </div>

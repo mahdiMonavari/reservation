@@ -71,7 +71,6 @@ function Navbar() {
           </div>
         </div>
 
-        {/* menu */}
         <nav className="flex-1 px-3 py-4 flex flex-col gap-1 overflow-y-auto">
           {menu.map(({ label, href, icon }) =>
             (href === "/p-admin/users" || href === "/p-admin/doctors") &&
@@ -100,11 +99,9 @@ function Navbar() {
           )}
         </nav>
 
-        {/* divider */}
         <div className="h-px bg-slate-200 dark:bg-slate-800/60 mx-3" />
 
-        {/* footer */}
-        <div className="px-3 py-4">
+        <Link href={"/"} className="px-3 py-4">
           <button
             className="flex items-center gap-3 px-3 py-2.5 rounded-xl w-full
             text-slate-400 dark:text-slate-500
@@ -115,7 +112,7 @@ function Navbar() {
             <span className="text-red-400 dark:text-red-700 text-lg">↩</span>
             <span className="text-sm font-bold">خروج</span>
           </button>
-        </div>
+        </Link>
       </aside>
     </>
   );

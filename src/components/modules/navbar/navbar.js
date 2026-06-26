@@ -30,7 +30,6 @@ function Navbar({ theme }) {
   };
   return (
     <>
-      {/* ─── Desktop navbar ─── */}
       <nav
         className="fixed top-4 left-1/2 -translate-x-1/2 z-50
           hidden sm:flex items-center justify-between
@@ -43,7 +42,6 @@ function Navbar({ theme }) {
           shadow-lg shadow-green-900/5 dark:shadow-teal-950/30
           transition-colors duration-300"
       >
-        {/* Nav links */}
         <ul className="flex items-center gap-x-1 font-Morabba-Bold text-sm md:text-lg">
           {navLinks.map(({ href, label }) =>
             href !== "/reservation" ? (
@@ -64,8 +62,6 @@ function Navbar({ theme }) {
             )
           )}
         </ul>
-
-        {/* Auth + theme */}
         <div className=" flex items-center gap-3">
           {user ? (
             <div className="relative group">
@@ -90,8 +86,6 @@ function Navbar({ theme }) {
           group-hover:rotate-180"
                 />
               </button>
-
-              {/* dropdown */}
               <div
                 className="absolute left-0 top-[calc(100%+8px)] w-52
         opacity-0 invisible translate-y-2
@@ -103,7 +97,6 @@ function Navbar({ theme }) {
         rounded-2xl shadow-xl shadow-green-900/10 dark:shadow-teal-950/40
         overflow-hidden z-50"
               >
-                {/* header */}
                 <div className="px-4 py-3 border-b border-green-100/60 dark:border-teal-800/50">
                   <p className="text-xs text-green-500/60 dark:text-teal-400/60 font-Morabba-Bold">
                     خوش آمدید
@@ -113,10 +106,9 @@ function Navbar({ theme }) {
                   </p>
                 </div>
 
-                {/* links */}
                 <div className="p-1.5 flex flex-col gap-0.5">
                   <Link
-                    href="/dashboard"
+                    href="/p-dashboard"
                     className="flex items-center gap-2.5 px-3 py-2.5 rounded-xl text-sm font-Morabba-Bold
             text-green-800/80 dark:text-gray-200
             hover:bg-green-100/60 dark:hover:bg-teal-800/40
@@ -130,9 +122,30 @@ function Navbar({ theme }) {
                     </span>
                     پنل کاربری
                   </Link>
-
                   <div className="h-px bg-green-100/80 dark:bg-teal-800/50 mx-1 my-0.5" />
+                  {user.role !== "USER" ? (
+                    <>
+                      <Link
+                        href="/p-admin"
+                        className="flex items-center gap-2.5 px-3 py-2.5 rounded-xl text-sm font-Morabba-Bold
+            text-green-800/80 dark:text-gray-200
+            hover:bg-green-100/60 dark:hover:bg-teal-800/40
+            transition-colors duration-150"
+                      >
+                        <span
+                          className="flex items-center justify-center w-7 h-7 rounded-lg
+            bg-emerald-100 dark:bg-emerald-500/20 text-emerald-600 dark:text-emerald-400"
+                        >
+                          <FaUser size={12} />
+                        </span>
+                        پنل مدریت
+                      </Link>
 
+                      <div className="h-px bg-green-100/80 dark:bg-teal-800/50 mx-1 my-0.5" />
+                    </>
+                  ) : (
+                    ""
+                  )}
                   <button
                     onClick={logoutHandler}
                     className="flex items-center gap-2.5 px-3 py-2.5 rounded-xl text-sm font-Morabba-Bold

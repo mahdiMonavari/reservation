@@ -10,10 +10,9 @@ function HeaderPage({ total, title, onOpen, titlePage, Other }) {
           <h1 className="text-2xl font-Morabba-Bold text-slate-800 dark:text-slate-100">
             {titlePage}
           </h1>
-          <p className="text-sm mt-2 font-Dana-Medium flex items-center gap-1.5 text-slate-400 dark:text-slate-500">
-            <span className="text-violet-500 block dark:text-violet-400 font-Morabba-Bold">
-              {total}
-            </span>
+          <p className="text-sm mt-2 font-Dana-Medium flex items-center gap-1.5 text-violet-500 block dark:text-violet-400 font-Morabba-Bold">
+            {total}
+
             <span>{title} ثبت شده</span>
           </p>
         </div>
@@ -22,18 +21,22 @@ function HeaderPage({ total, title, onOpen, titlePage, Other }) {
       </div>
 
       {/* left — button */}
-      <button
-        onClick={onOpen}
-        className="flex items-center justify-center gap-2 px-4 py-2.5 rounded-xl
+      {onOpen ? (
+        <button
+          onClick={onOpen}
+          className="flex items-center justify-center gap-2 px-4 py-2.5 rounded-xl
           bg-violet-600 hover:bg-violet-700
           text-white text-sm font-Morabba-Bold
           shadow-md shadow-violet-200 dark:shadow-violet-900/30
           transition-all duration-200 active:scale-95
           w-full sm:w-auto"
-      >
-        <FaPlus size={12} />
-        افزودن {title}
-      </button>
+        >
+          <FaPlus size={12} />
+          افزودن {title}
+        </button>
+      ) : (
+        ""
+      )}
     </div>
   );
 }

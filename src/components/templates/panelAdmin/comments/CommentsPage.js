@@ -1,15 +1,20 @@
 "use client";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { FaCheck, FaClock, FaEye, FaRegCircle } from "react-icons/fa";
 import { successToast, errorToast } from "@/components/modules/toast/toast";
 import EmptyState from "@/components/modules/emptyState/EmptyState";
 import TextModal from "./TextModal";
+import SearchInput from "@/components/modules/admin/Search";
+import Pagination from "@/components/modules/pagination/Pagination";
 
-function CommentsPage({ comments: initialComments }) {
-  const [comments, setComments] = useState(initialComments);
+function CommentsPage({ commentsList, totalPage, commentsCount, currentPage }) {
+  const [comments, setComments] = useState(commentsList);
   const [selectedText, setSelectedText] = useState(null);
   const [loadingId, setLoadingId] = useState(null);
   const [answeredIds, setAnsweredIds] = useState(new Set());
+  useEffect(() => {
+    setComments(commentsList);
+  }, [commentsList]);
 
   const handleVerify = async (id, current) => {
     try {
@@ -51,9 +56,19 @@ function CommentsPage({ comments: initialComments }) {
       )}
 
       <div className="p-6">
-        <h1 className="text-2xl font-Morabba-Bold text-slate-800 dark:text-slate-100 mb-6">
-          کامنتها
-        </h1>
+        <div className="flex items-center justify-between mb-6">
+          <div>
+            <h1 className="text-2xl font-Morabba-Bold text-slate-800 dark:text-slate-100">
+              لیست کامنتها
+            </h1>
+            <p className="text-sm font-Dana-Medium text-slate-400 dark:text-slate-500 mt-0.5">
+              <span className="text-violet-500 block mt-2 dark:text-violet-400 font-Morabba-Bold">
+                {commentsCount} کامنت در سایت موجود است
+              </span>
+            </p>
+          </div>
+          <SearchInput />
+        </div>
         <div className="rounded-2xl border border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-900 overflow-hidden">
           <table className="w-full">
             <thead>
@@ -180,6 +195,7 @@ function CommentsPage({ comments: initialComments }) {
           </table>
         </div>
       </div>
+      <Pagination totalPages={totalPage} currentPage={currentPage} />
     </>
   );
 }

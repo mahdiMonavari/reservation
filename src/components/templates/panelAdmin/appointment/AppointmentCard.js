@@ -41,12 +41,12 @@ function AppointmentCard({ appointment, onEdit }) {
 
   return (
     <div
-      className={`bg-white dark:bg-slate-900 rounded-2xl border
+      className={`rounded-2xl border
         shadow-sm hover:shadow-md transition-all duration-200 p-5 flex flex-col gap-4
         ${
           isVisited
-            ? "border-emerald-200 dark:border-emerald-900 hover:shadow-emerald-50 dark:hover:shadow-emerald-950"
-            : "border-slate-200 dark:border-slate-800 hover:shadow-slate-100 dark:hover:shadow-slate-950"
+            ? "border-emerald-200 bg-white dark:bg-slate-900 dark:border-emerald-900 hover:shadow-emerald-50 dark:hover:shadow-emerald-950"
+            : "border-slate-200 bg-white/70 dark:bg-slate-900/70  dark:border-slate-800 hover:shadow-slate-100 dark:hover:shadow-slate-950"
         }`}
     >
       {/* header */}

@@ -1,18 +1,38 @@
 import React from "react";
 import ButtonPage from "./ButtonPage";
 
+const SIBLINGS = 1;
+
 function Pagination({ totalPages, currentPage }) {
+  const pages = [];
+  const start = Math.max(1, currentPage - SIBLINGS);
+  const end = Math.min(totalPages, currentPage + SIBLINGS);
+  if (start > 1) {
+    pages.push(1);
+    if (start > 2) {
+      pages.push("...");
+    }
+  }
+  for (let i = start; i <= end; i++) {
+    pages.push(i);
+  }
+  if (totalPages > end) {
+    if (totalPages - 1 > end) {
+      pages.push("...");
+    }
+    pages.push(totalPages);
+  }
   return (
     <div className="flex items-center justify-center gap-x-2">
-      {Array.from({ length: totalPages }).map((_, index) => {
-        return (
-          <ButtonPage
-            currentPage={currentPage}
-            key={index + 1}
-            value={index + 1}
-          />
-        );
-      })}
+      {pages.map((page, index) =>
+        page === "..." ? (
+          <span key={`dots-${index}`} className="px-2 text-slate-400">
+            ...
+          </span>
+        ) : (
+          <ButtonPage key={page} currentPage={currentPage} value={page} />
+        )
+      )}
     </div>
   );
 }

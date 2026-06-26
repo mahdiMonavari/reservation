@@ -52,8 +52,6 @@ function AppointMentPage({ appointments: initial, totalPages, currentPage }) {
         ) : (
           <EmptyState title="نوبتی ثبت نشده" />
         )}
-
-        {/* پیجینیشن */}
         {totalPages > 1 && (
           <Pagination totalPages={totalPages} currentPage={currentPage} />
         )}

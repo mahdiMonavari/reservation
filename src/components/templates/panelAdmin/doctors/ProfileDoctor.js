@@ -2,17 +2,18 @@
 import { useState, useEffect } from "react";
 import {
   FaUserMd,
+  FaGraduationCap,
+  FaCheckCircle,
+  FaBan,
+  FaTimes,
   FaStar,
   FaBriefcase,
   FaComments,
   FaClock,
   FaMoneyBillWave,
-  FaGraduationCap,
-  FaCheckCircle,
-  FaBan,
-  FaTimes,
 } from "react-icons/fa";
 import { MdInfo } from "react-icons/md";
+import DoctorCard from "./DoctorCard";
 
 function ProfileDoctor({ isProfileOpen, onClose, doctor }) {
   const [visible, setVisible] = useState(false);
@@ -27,16 +28,6 @@ function ProfileDoctor({ isProfileOpen, onClose, doctor }) {
       setTimeout(() => setVisible(false), 300);
     }
   }, [isProfileOpen]);
-
-  const handleClose = () => {
-    setAnimClass("");
-    setTimeout(onClose, 300);
-  };
-
-  if (!visible) return null;
-
-  const user = doctor?.userId || {};
-  const fullName = `${user.firstName || ""} ${user.lastName || ""}`.trim();
 
   const stats = [
     {
@@ -81,6 +72,16 @@ function ProfileDoctor({ isProfileOpen, onClose, doctor }) {
     },
   ];
 
+  const handleClose = () => {
+    setAnimClass("");
+    setTimeout(onClose, 300);
+  };
+
+  if (!visible) return null;
+
+  const user = doctor?.userId || {};
+  const fullName = `${user.firstName || ""} ${user.lastName || ""}`.trim();
+
   return (
     <div
       onClick={handleClose}
@@ -101,7 +102,6 @@ function ProfileDoctor({ isProfileOpen, onClose, doctor }) {
           shadow-xl shadow-slate-200/50 dark:shadow-slate-950/50
           overflow-hidden"
       >
-        {/* header */}
         <div
           className="relative flex items-center gap-4 px-6 py-5
           bg-gradient-to-l from-violet-50 to-slate-50
@@ -159,21 +159,9 @@ function ProfileDoctor({ isProfileOpen, onClose, doctor }) {
           </button>
         </div>
 
-        {/* stats grid */}
         <div className="grid grid-cols-2 sm:grid-cols-3 gap-3 px-6 py-5">
           {stats.map((s, i) => (
-            <div
-              key={i}
-              className={`flex flex-col gap-2 p-3 rounded-xl border ${s.bg} ${s.border}`}
-            >
-              <span className={`text-base ${s.color}`}>{s.icon}</span>
-              <span className="text-xs text-slate-400 dark:text-slate-500">
-                {s.label}
-              </span>
-              <span className="text-sm font-bold text-slate-700 dark:text-slate-200">
-                {s.value}
-              </span>
-            </div>
+            <DoctorCard key={i} s={s} />
           ))}
 
           <div

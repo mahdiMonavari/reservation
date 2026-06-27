@@ -1,23 +1,20 @@
 "use client";
 import { useState } from "react";
 import {
-  FaUserMd,
   FaStar,
   FaBriefcase,
   FaComments,
   FaClock,
   FaMoneyBillWave,
   FaGraduationCap,
-  FaCheckCircle,
-  FaBan,
-  FaEdit,
-  FaSave,
-  FaTimes,
-  FaCamera,
 } from "react-icons/fa";
-import { MdInfo, MdMedicalServices } from "react-icons/md";
+import { MdMedicalServices } from "react-icons/md";
 import { successToast, errorToast } from "@/components/modules/toast/toast";
 import LoadingOverlay from "@/components/modules/loading/LoadingOverlay";
+import ScoreViewCardProfile from "./ScoreViewCardProfile";
+import HeaderCardProfile from "./HeaderCardProfile";
+import ProffessionalCardProfile from "./ProffessionalCardProfile";
+import AboutMeCardProfile from "./AboutMeCardProfile";
 
 function Profile({ doctor: initialDoctor }) {
   const [doctor, setDoctor] = useState(initialDoctor);
@@ -160,165 +157,30 @@ function Profile({ doctor: initialDoctor }) {
     <>
       <LoadingOverlay loading={isLoading} />
       <div className="max-w-3xl mx-auto px-4 py-8 flex flex-col gap-5">
-        {/* ── Hero ── */}
         <div
           className="rounded-2xl bg-white dark:bg-slate-900
   border border-slate-200 dark:border-slate-800 p-5"
         >
           <div className="flex items-center gap-4">
-            {/* avatar */}
-            <label
-              className={`relative shrink-0 ${isEditing ? "cursor-pointer group" : ""}`}
-            >
-              <div
-                className="w-20 h-20 rounded-2xl overflow-hidden
-        bg-violet-100 dark:bg-violet-900/30
-        text-violet-400 flex items-center justify-center"
-              >
-                {photoPreview ? (
-                  <img
-                    src={photoPreview}
-                    alt="avatar"
-                    className="w-full h-full object-cover"
-                  />
-                ) : (
-                  <FaUserMd size={32} />
-                )}
-              </div>
-              {isEditing && (
-                <>
-                  <div
-                    className="absolute inset-0 rounded-2xl bg-black/50
-            flex items-center justify-center
-            opacity-0 group-hover:opacity-100 transition-opacity duration-150"
-                  >
-                    <FaCamera size={14} className="text-white" />
-                  </div>
-                  <input
-                    type="file"
-                    accept="image/*"
-                    className="hidden"
-                    onChange={handlePhotoChange}
-                  />
-                </>
-              )}
-            </label>
-
-            {/* info */}
-            <div className="flex-1 min-w-0 flex flex-col gap-1.5">
-              <div className="flex items-start justify-between gap-2">
-                <h1 className="text-base font-Morabba-Bold text-slate-800 dark:text-slate-100 truncate">
-                  {fullName || "نام نامشخص"}
-                </h1>
-
-                {/* actions */}
-                <div className="flex items-center gap-1.5 shrink-0">
-                  {isEditing ? (
-                    <>
-                      <button
-                        onClick={handleSave}
-                        className="flex items-center gap-1 px-2.5 py-1.5 rounded-lg text-xs font-Dana-Medium
-                  bg-violet-500 hover:bg-violet-600 text-white
-                  transition-all duration-150 active:scale-95"
-                      >
-                        <FaSave size={10} /> ذخیره
-                      </button>
-                      <button
-                        onClick={handleCancel}
-                        className="flex items-center gap-1 px-2.5 py-1.5 rounded-lg text-xs font-Dana-Medium
-                  text-slate-500 bg-slate-100 dark:bg-slate-800
-                  hover:bg-slate-200 dark:hover:bg-slate-700
-                  transition-all duration-150 active:scale-95"
-                      >
-                        <FaTimes size={10} /> انصراف
-                      </button>
-                    </>
-                  ) : (
-                    <button
-                      onClick={() => setIsEditing(true)}
-                      className="flex items-center gap-1 px-2.5 py-1.5 rounded-lg text-xs font-Dana-Medium
-                text-violet-600 dark:text-violet-400
-                bg-violet-50 dark:bg-violet-900/20
-                border border-violet-200 dark:border-violet-800
-                hover:bg-violet-100 transition-all duration-150 active:scale-95"
-                    >
-                      <FaEdit size={10} /> ویرایش
-                    </button>
-                  )}
-                </div>
-              </div>
-
-              {/* badges */}
-              <div className="flex items-center gap-1.5 flex-wrap">
-                {doctor?.specialty && (
-                  <span
-                    className="flex items-center gap-1 text-xs font-Dana-Medium
-            text-violet-600 dark:text-violet-400
-            bg-violet-50 dark:bg-violet-900/20
-            border border-violet-200 dark:border-violet-800
-            px-2 py-0.5 rounded-full"
-                  >
-                    <MdMedicalServices size={10} /> {doctor.specialty}
-                  </span>
-                )}
-                {doctor?.experience && (
-                  <span
-                    className="flex items-center gap-1 text-xs font-Dana-Medium
-            text-slate-500 dark:text-slate-400
-            bg-slate-100 dark:bg-slate-800
-            border border-slate-200 dark:border-slate-700
-            px-2 py-0.5 rounded-full"
-                  >
-                    <FaBriefcase size={10} /> {doctor.experience} سال
-                  </span>
-                )}
-                {doctor?.isActive ? (
-                  <span
-                    className="flex items-center gap-1 text-xs font-Dana-Medium
-            text-emerald-600 dark:text-emerald-400
-            bg-emerald-50 dark:bg-emerald-900/20
-            border border-emerald-200 dark:border-emerald-800
-            px-2 py-0.5 rounded-full"
-                  >
-                    <FaCheckCircle size={10} /> فعال
-                  </span>
-                ) : (
-                  <span
-                    className="flex items-center gap-1 text-xs font-Dana-Medium
-            text-rose-500 dark:text-rose-400
-            bg-rose-50 dark:bg-rose-900/20
-            border border-rose-200 dark:border-rose-800
-            px-2 py-0.5 rounded-full"
-                  >
-                    <FaBan size={10} /> غیرفعال
-                  </span>
-                )}
-              </div>
-            </div>
+            <HeaderCardProfile
+              photoPreview={photoPreview}
+              isEditing={isEditing}
+              handlePhotoChange={handlePhotoChange}
+              handleSave={handleSave}
+              handleCancel={handleCancel}
+              setIsEditing={setIsEditing}
+              fullName={fullName}
+              doctor={doctor}
+            />
           </div>
         </div>
 
-        {/* ── Stats ── */}
         <div className="grid grid-cols-2 gap-3">
-          {stats.map((s, i) => (
-            <div
-              key={i}
-              className={`flex items-center gap-4 p-4 rounded-2xl border ${s.bg} ${s.border}`}
-            >
-              <span className={`text-2xl ${s.color}`}>{s.icon}</span>
-              <div className="flex flex-col">
-                <span className="text-xs text-slate-400 dark:text-slate-500">
-                  {s.label}
-                </span>
-                <span className="text-lg font-Morabba-Bold text-slate-700 dark:text-slate-200">
-                  {s.value}
-                </span>
-              </div>
-            </div>
+          {stats.map((item, index) => (
+            <ScoreViewCardProfile {...item} key={index} />
           ))}
         </div>
 
-        {/* ── Fields ── */}
         <div
           className="rounded-2xl bg-white dark:bg-slate-900
           border border-slate-200 dark:border-slate-800 overflow-hidden"
@@ -329,77 +191,25 @@ function Profile({ doctor: initialDoctor }) {
             </h2>
           </div>
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 p-5">
-            {fields.map((f) => (
-              <div
-                key={f.name}
-                className="flex flex-col gap-2 p-4 rounded-xl
-                bg-slate-50 dark:bg-slate-800/50
-                border border-slate-200 dark:border-slate-700"
-              >
-                <div className="flex items-center gap-2">
-                  <span className={`text-base ${f.color}`}>{f.icon}</span>
-                  <span className="text-xs text-slate-400 dark:text-slate-500 font-Dana-Medium">
-                    {f.label}
-                  </span>
-                </div>
-                {isEditing ? (
-                  <input
-                    name={f.name}
-                    type={f.type}
-                    value={form[f.name]}
-                    onChange={handleChange}
-                    className="bg-white dark:bg-slate-800
-                      border border-slate-200 dark:border-slate-700
-                      rounded-lg px-3 py-2 text-sm font-Dana-Medium
-                      text-slate-700 dark:text-slate-200
-                      focus:outline-none focus:ring-2 focus:ring-violet-400
-                      transition-all duration-150"
-                  />
-                ) : (
-                  <span className="text-sm font-Morabba-Bold text-slate-700 dark:text-slate-200">
-                    {f.name === "baseFee" && doctor?.[f.name]
-                      ? Number(doctor[f.name]).toLocaleString("fa-IR")
-                      : doctor?.[f.name] || "—"}
-                  </span>
-                )}
-              </div>
+            {fields.map((item) => (
+              <ProffessionalCardProfile
+                key={item.name}
+                {...item}
+                isEditing={isEditing}
+                doctor={doctor}
+                form={form}
+                handleChange={handleChange}
+              />
             ))}
           </div>
         </div>
 
-        {/* ── About ── */}
-        <div
-          className="rounded-2xl bg-white dark:bg-slate-900
-          border border-slate-200 dark:border-slate-800 overflow-hidden"
-        >
-          <div className="px-5 py-4 border-b border-slate-100 dark:border-slate-800 flex items-center gap-2">
-            <MdInfo className="text-slate-400" />
-            <h2 className="text-sm font-Morabba-Bold text-slate-700 dark:text-slate-200">
-              درباره من
-            </h2>
-          </div>
-          <div className="p-5">
-            {isEditing ? (
-              <textarea
-                name="about"
-                value={form.about}
-                onChange={handleChange}
-                rows={5}
-                placeholder="درباره خود بنویسید..."
-                className="w-full bg-slate-50 dark:bg-slate-800
-                  border border-slate-200 dark:border-slate-700
-                  rounded-xl px-4 py-3 text-sm font-Dana-Medium
-                  text-slate-700 dark:text-slate-200
-                  focus:outline-none focus:ring-2 focus:ring-violet-400
-                  resize-none transition-all duration-150 leading-relaxed"
-              />
-            ) : (
-              <p className="text-sm font-Dana-Medium text-slate-500 dark:text-slate-400 leading-relaxed">
-                {doctor?.about || "توضیحاتی ثبت نشده است."}
-              </p>
-            )}
-          </div>
-        </div>
+        <AboutMeCardProfile
+          form={form}
+          isEditing={isEditing}
+          handleChange={handleChange}
+          doctor={doctor}
+        />
       </div>
     </>
   );

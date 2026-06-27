@@ -49,7 +49,6 @@ function AppointmentCard({ appointment, onEdit }) {
             : "border-slate-200 bg-white/70 dark:bg-slate-900/70  dark:border-slate-800 hover:shadow-slate-100 dark:hover:shadow-slate-950"
         }`}
     >
-      {/* header */}
       <div className="flex items-start justify-between gap-3">
         <div className="flex flex-col gap-1.5">
           <div className="flex items-center gap-2">
@@ -77,8 +76,6 @@ function AppointmentCard({ appointment, onEdit }) {
             </span>
           </div>
         </div>
-
-        {/* دکمه‌ها */}
         <div className="flex items-center gap-1.5 shrink-0">
           <button
             onClick={handleVisit}
@@ -111,8 +108,6 @@ function AppointmentCard({ appointment, onEdit }) {
       </div>
 
       <div className="h-px bg-slate-100 dark:bg-slate-800" />
-
-      {/* تاریخ + زمان */}
       <div className="flex items-center flex-wrap gap-3">
         {formattedDate && (
           <div className="flex items-center gap-1.5 text-slate-500 dark:text-slate-400">
@@ -130,8 +125,6 @@ function AppointmentCard({ appointment, onEdit }) {
           {appointment.totalTime} دقیقه
         </span>
       </div>
-
-      {/* وضعیت مراجعه */}
       <div
         className={`flex items-center gap-1.5 text-xs font-Morabba-Bold px-2.5 py-1.5 rounded-lg w-fit
           ${
@@ -143,8 +136,6 @@ function AppointmentCard({ appointment, onEdit }) {
         <FaCheck size={10} />
         {isVisited ? "مراجعه کرده" : "مراجعه نکرده"}
       </div>
-
-      {/* سرویس‌ها */}
       {appointment.serviceIds?.length > 0 && (
         <div className="flex flex-wrap gap-1.5">
           {appointment.serviceIds.map((service) => (
@@ -160,8 +151,6 @@ function AppointmentCard({ appointment, onEdit }) {
           ))}
         </div>
       )}
-
-      {/* شرح حال */}
       {appointment.description && (
         <div
           className="bg-slate-50 dark:bg-slate-800/50 rounded-xl p-3

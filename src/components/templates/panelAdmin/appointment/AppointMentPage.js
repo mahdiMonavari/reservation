@@ -30,15 +30,12 @@ function AppointMentPage({ appointments: initial, totalPages, currentPage }) {
       )}
 
       <div className="p-6 flex flex-col gap-6">
-        {/* سرچ */}
-        <div className="flex items-center justify-between">
+        <div className="flex items-center md:flex-row flex-col gap-3 justify-between">
           <h1 className="text-2xl font-Morabba-Bold text-slate-800 dark:text-slate-100">
             نوبت‌ها
           </h1>
           <SearchInput />
         </div>
-
-        {/* کارت‌ها */}
         {appointments.length ? (
           <div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-3 gap-4">
             {appointments.map((appointment) => (

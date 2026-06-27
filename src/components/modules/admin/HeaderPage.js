@@ -4,23 +4,21 @@ import { FaPlus } from "react-icons/fa";
 function HeaderPage({ total, title, onOpen, titlePage, Other }) {
   return (
     <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
-      {/* right — title + search */}
       <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:gap-5">
         <div>
-          <h1 className="text-2xl font-Morabba-Bold text-slate-800 dark:text-slate-100">
+          <h1 className="text-2xl font-Morabba-Bold text-slate-800 dark:text-slate-100 text-center sm:text-start">
             {titlePage}
           </h1>
-          <p className="text-sm mt-2 font-Dana-Medium flex items-center gap-1.5 text-violet-500 block dark:text-violet-400 font-Morabba-Bold">
+          <p className="text-sm mt-2 justify-center md:justify-start flex items-center gap-1.5 text-violet-500 dark:text-violet-400 font-Morabba-Bold">
             {total}
 
-            <span>{title} ثبت شده</span>
+            <span className="">{title} ثبت شده</span>
           </p>
         </div>
 
         {Other && <Other />}
       </div>
 
-      {/* left — button */}
       {onOpen ? (
         <button
           onClick={onOpen}

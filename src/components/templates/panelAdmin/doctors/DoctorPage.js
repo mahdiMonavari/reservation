@@ -105,9 +105,9 @@ function DoctorsPage({ initialDoctors, totalPages, currentPage, total }) {
       />
 
       <div className="p-6 flex flex-col gap-6">
-        <div className="flex items-center justify-between">
+        <div className="flex items-center flex-col md:flex-row gap-3 justify-between">
           <div>
-            <h1 className="text-2xl font-Morabba-Bold text-slate-800 dark:text-slate-100">
+            <h1 className="text-2xl font-Morabba-Bold text-center md:text-start text-slate-800 dark:text-slate-100">
               لیست دکترها
             </h1>
             <p className="text-sm font-Dana-Medium text-slate-400 dark:text-slate-500 mt-0.5">

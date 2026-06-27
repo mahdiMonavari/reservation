@@ -33,7 +33,7 @@ export default async function RootLayout({ children }) {
           <MenuProvider>
             <div className="flex">
               <NavbarPUser />
-              <div className="px-6">
+              <div className="px-6 w-full bg-white/80 dark:bg-slate-900/90 text-slate-800 dark:text-white min-h-screen">
                 <TopbarPUser />
                 {children}
               </div>

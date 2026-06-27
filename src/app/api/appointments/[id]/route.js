@@ -1,7 +1,9 @@
-// app/api/appointments/[id]/route.js
 import appointmentModel from "../../../../../model/appointment";
 import connectionToDB from "@/utiles/DB/connection";
 import Validator from "fastest-validator";
+import userModel from "../../../../../model/user";
+import serviceModel from "../../../../../model/service";
+import doctorModel from "../../../../../model/doctor";
 
 const v = new Validator();
 
@@ -39,6 +41,39 @@ export async function PUT(req, { params }) {
 
     return Response.json({ message: "updated", data: appointment });
   } catch {
+    return Response.json({ message: "internal error" }, { status: 500 });
+  }
+}
+export async function GET(req, { params }) {
+  try {
+    await connectionToDB();
+    const { id } = await params;
+
+    if (!id || id.length !== 24) {
+      return Response.json({ message: "bad request" }, { status: 400 });
+    }
+    const userAppointments = await appointmentModel
+      .find({ userId: id })
+      .populate({
+        path: "doctorId",
+        model: "Doctor",
+        populate: {
+          path: "userId",
+          model: "User",
+          select: "firstName lastName",
+        },
+        select: "userId specialty photo",
+      })
+      .populate("serviceIds", "title duration")
+      .sort({ date: -1 })
+      .lean();
+    console.log(userAppointments);
+    return Response.json(
+      { message: "success", data: userAppointments },
+      { status: 200 }
+    );
+  } catch (err) {
+    console.log(err);
     return Response.json({ message: "internal error" }, { status: 500 });
   }
 }

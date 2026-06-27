@@ -1,6 +1,4 @@
-import { AuthProvider } from "@/context/AuthContext";
 import "@/styles/globals.css";
-import AOSInit from "@/utiles/AOS/initAos";
 import { verifyAccessToken } from "@/utiles/auth/auth";
 import { cookies } from "next/headers";
 import { Toaster } from "react-hot-toast";
@@ -8,8 +6,12 @@ import userModel from "../../../model/user";
 import connectionToDB from "@/utiles/DB/connection";
 import Navbar from "@/components/templates/panelAdmin/navbar/Navbar";
 import TopBar from "@/components/templates/panelAdmin/topbar/TopBar";
-import { MenuProvider } from "@/context/MenuMobile";
+
 import { redirect } from "next/navigation";
+import NavbarPUser from "@/components/templates/panelUser/layout/NavbarPUser";
+import TopbarPUser from "@/components/templates/panelUser/layout/TopbarPUser";
+import { AuthProvider } from "@/context/AuthContext";
+import { MenuProvider } from "@/context/MenuMobile";
 export default async function RootLayout({ children }) {
   connectionToDB();
   const cookiesStore = await cookies();
@@ -21,22 +23,19 @@ export default async function RootLayout({ children }) {
       await userModel.findOne({ phoneNumber: userTokenVerify?.phone })
     )
   );
-  if (user.role === "USER") {
+  if (!user) {
     redirect("/");
   }
-  const admin = verifyAccessToken(userToken);
   return (
     <html lang="fa" dir="rtl" className={theme === "dark" ? "dark" : ""}>
       <body className="transition-colors duration-300">
         <AuthProvider initailUser={user}>
           <MenuProvider>
             <div className="flex">
-              <Navbar />
-              <div className="w-full">
-                <TopBar theme={theme} admin={admin} />
-                <div className="bg-gray-200 relative dark:bg-zinc-800 min-h-screen">
-                  {children}
-                </div>
+              <NavbarPUser />
+              <div className="px-6">
+                <TopbarPUser />
+                {children}
               </div>
             </div>
           </MenuProvider>

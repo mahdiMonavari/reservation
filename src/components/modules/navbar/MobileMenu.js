@@ -108,7 +108,7 @@ export default function MobileMenu({ theme, navLinks }) {
                   ${userMenuOpen ? "max-h-40 opacity-100" : "max-h-0 opacity-0"}`}
                 >
                   <Link
-                    href="/dashboard"
+                    href="/p-user"
                     onClick={() => setOpen(false)}
                     className="flex items-center justify-end gap-2.5 py-2.5 px-3 rounded-lg
                       text-sm text-green-800/80 dark:text-gray-200
@@ -116,6 +116,23 @@ export default function MobileMenu({ theme, navLinks }) {
                       transition-colors duration-150"
                   >
                     پنل کاربری
+                    <span
+                      className="flex items-center justify-center w-7 h-7 rounded-lg
+                      bg-emerald-100 dark:bg-emerald-500/20 text-emerald-600 dark:text-emerald-400"
+                    >
+                      <FaUser size={12} />
+                    </span>
+                  </Link>
+                  {user.role !== "USER"}
+                  <Link
+                    href="/p-admin"
+                    onClick={() => setOpen(false)}
+                    className="flex items-center justify-end gap-2.5 py-2.5 px-3 rounded-lg
+                      text-sm text-green-800/80 dark:text-gray-200
+                      hover:bg-green-100/60 dark:hover:bg-teal-800/40
+                      transition-colors duration-150"
+                  >
+                    پنل مدریت
                     <span
                       className="flex items-center justify-center w-7 h-7 rounded-lg
                       bg-emerald-100 dark:bg-emerald-500/20 text-emerald-600 dark:text-emerald-400"

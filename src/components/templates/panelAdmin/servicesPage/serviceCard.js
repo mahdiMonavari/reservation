@@ -8,7 +8,11 @@ function ServiceCard({ service, onEdit, onDelete }) {
         border border-slate-200 dark:border-slate-800
         shadow-sm shadow-slate-100 dark:shadow-slate-950/50
         hover:shadow-md hover:shadow-slate-200/50 dark:hover:shadow-slate-950
-        transition-all duration-200 ${service.isPopular === "false" ? "bg-white dark:bg-slate-900" : "bg-violet-200"}`}
+        transition-all duration-200 ${
+          service.isPopular === "true"
+            ? "bg-gradient-to-br from-indigo-500 via-purple-500 to-pink-500"
+            : "bg-white dark:bg-slate-800"
+        }`}
     >
       <div className="flex items-center gap-2">
         {service.isPopular === "true" ? (

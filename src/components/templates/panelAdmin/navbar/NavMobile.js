@@ -88,7 +88,8 @@ function NavMobile({ menu, user }) {
 
         {/* footer */}
         <div className="px-3 py-4 shrink-0">
-          <button
+          <Link
+            href={"/"}
             className="flex items-center gap-3 px-3 py-2.5 rounded-xl w-full
               text-slate-400 dark:text-slate-500
               hover:text-red-500 dark:hover:text-red-400
@@ -97,7 +98,7 @@ function NavMobile({ menu, user }) {
           >
             <span className="text-red-400 dark:text-red-700 text-lg">↩</span>
             <span className="text-base font-Morabba-Bold">خروج</span>
-          </button>
+          </Link>
         </div>
       </div>
     </>

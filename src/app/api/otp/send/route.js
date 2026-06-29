@@ -3,9 +3,9 @@ import { sendOtpValidator } from "../../../../../validators/backend/otpValidator
 import otpModel from "../../../../../model/otp";
 
 export async function POST(req) {
-  const API_KEY = "pQG2pGhmXjSpfAH33mBArltQcAS4cT7QSMyE1exDRtbeJvMu52";
-  const PATTERN_CODE = "OsPZ9F2z8l";
-  const FROM_NUMBER = "90008361";
+  const API_KEY = process.env.API_KEY;
+  const PATTERN_CODE = process.env.PATTERN_CODE;
+  const FROM_NUMBER = process.env.FROM_NUMBER;
   try {
     const { phone } = await req.json();
     const isValidPhoneNumber = sendOtpValidator({ phone });

@@ -6,10 +6,10 @@ import { AuthContext } from "@/context/AuthContext";
 import { menuMobile } from "@/context/MenuMobile";
 import { menuPUser } from "./menuPUser";
 import NavbarMobilePUser from "./NavbarMobilePUser";
+import { FiLogOut } from "react-icons/fi";
 
 function NavbarPUser() {
   const { user } = useContext(AuthContext);
-  const { isMenuOpen } = useContext(menuMobile);
   const pathname = usePathname();
 
   return (
@@ -22,7 +22,6 @@ function NavbarPUser() {
         border-l border-teal-100 dark:border-slate-800
         shadow-sm"
       >
-        {/* لوگو */}
         <div className="flex items-center gap-3 px-6 py-5 border-b border-teal-100 dark:border-slate-800">
           <div className="w-9 h-9 rounded-xl bg-teal-500 flex items-center justify-center shrink-0">
             <span className="text-white font-Morabba-Bold text-sm">پ</span>
@@ -37,7 +36,6 @@ function NavbarPUser() {
           </div>
         </div>
 
-        {/* منو */}
         <nav className="flex-1 px-3 py-4 flex flex-col gap-1">
           {menuPUser.map((item) => {
             const isActive = pathname === item.href;
@@ -64,8 +62,7 @@ function NavbarPUser() {
           })}
         </nav>
 
-        {/* فوتر */}
-        <div className="px-4 py-4 border-t border-teal-100 dark:border-slate-800">
+        <div className="px-4 py-4 border-t border-teal-100 dark:border-slate-800 flex flex-col gap-2">
           <div className="flex items-center gap-3 px-3 py-2.5 rounded-xl bg-teal-50 dark:bg-teal-500/10">
             <div className="w-8 h-8 rounded-lg bg-teal-200 dark:bg-teal-500/30 flex items-center justify-center shrink-0">
               <span className="text-teal-700 dark:text-teal-300 font-Morabba-Bold text-xs">
@@ -73,7 +70,7 @@ function NavbarPUser() {
               </span>
             </div>
             <div className="min-w-0">
-              <p className="text-xs font-Morabba-Bold text-slate-700 dark:text-slate-200 truncate">
+              <p className="text-xs mb-1 font-Morabba-Bold text-slate-700 dark:text-slate-200 truncate">
                 {user?.firstName} {user?.lastName}
               </p>
               <p className="text-[10px] font-Dana-Regular text-slate-400 dark:text-slate-500 truncate">
@@ -81,6 +78,18 @@ function NavbarPUser() {
               </p>
             </div>
           </div>
+
+          <Link
+            href="/"
+            className="flex items-center gap-2 px-3 py-2 rounded-xl
+      text-xs font-Dana-Medium
+      text-rose-500 dark:text-rose-400
+      hover:bg-rose-50 dark:hover:bg-rose-500/10
+      transition-all duration-150"
+          >
+            <FiLogOut size={13} />
+            خروج از حساب
+          </Link>
         </div>
       </div>
     </>

@@ -10,7 +10,6 @@ function SelectDate({ setIsLoading }) {
   const setDate = useReservationStore((s) => s.setDate);
   const [dateList, setDateList] = useState([]);
   const [error, setError] = useState(null);
-
   const handleSelectDate = (d) => {
     const matched = dateList.find((item) => {
       const itemDate = new Date(item.date);
@@ -38,6 +37,7 @@ function SelectDate({ setIsLoading }) {
       const res = await fetch(`/api/schedule/${selectedDoctor}`, { signal });
       if (!res.ok) throw new Error("مشکلی در برقراری ارتباط با سرور رخ داد.");
       const data = await res.json();
+      setDateList(data);
     } catch (err) {
       if (err.name === "AbortError") return;
       setError(err.message || "خطای ناشناخته");

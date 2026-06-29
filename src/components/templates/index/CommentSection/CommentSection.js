@@ -7,6 +7,8 @@ async function CommentSection() {
     .find({ isVerified: true, parentId: null })
     .populate("userId")
     .populate("doctorId")
+    .sort({ createdAt: -1 })
+    .limit(5)
     .lean();
 
   return (

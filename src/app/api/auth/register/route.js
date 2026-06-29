@@ -27,8 +27,8 @@ export async function POST(req) {
     const usersCount = await userModel.countDocuments();
     const role = usersCount === 0 ? "ADMIN" : "USER";
     const hashedPassword = await hashePassword(password);
-    const token = generateAccessToken({ phoneNumber, role });
-    const refreshToken = generateRefreshToken({ phoneNumber, role });
+    const token = generateAccessToken({ phone: phoneNumber, role });
+    const refreshToken = generateRefreshToken({ phone: phoneNumber, role });
     const newUser = await userModel.create({
       firstName,
       lastName,
@@ -46,7 +46,7 @@ export async function POST(req) {
           },
           body: JSON.stringify({ userId: newUser._id }),
         });
-        if (res.ok) {
+        if (!res.ok) {
           return Response.json(
             { message: isValidEntry.error },
             { status: 400 }

@@ -21,10 +21,9 @@ function SelectDoctor({ doctors }) {
           با کلیک روی هر کارت، دکتر انتخاب می‌شود
         </p>
       </div>
-
-      <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
-        {doctors.length ? (
-          doctors.map((doctor) => {
+      {doctors.length ? (
+        <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+          {doctors.map((doctor) => {
             const isSelected = selectedDoctor === doctor.userId._id;
             return (
               <button
@@ -40,7 +39,6 @@ function SelectDoctor({ doctors }) {
                     : "bg-white/60 border-emerald-100 hover:border-emerald-300 hover:bg-emerald-50/60 dark:bg-white/5 dark:border-white/10 dark:hover:border-white/20 dark:hover:bg-white/10"
                 }`}
               >
-                {/* عکس */}
                 <div
                   className="relative shrink-0 w-14 h-14 rounded-xl overflow-hidden
                 border-2 transition-colors duration-250
@@ -56,14 +54,12 @@ function SelectDoctor({ doctors }) {
                   />
                 </div>
 
-                {/* اطلاعات */}
                 <div className="flex-1 min-w-0">
                   <p
                     className="text-lg font-Morabba-Bold truncate
                   text-emerald-900 dark:text-white"
                   >
-                    {doctor.userId.firstName}
-                    {doctor.userId.lastName}
+                    {doctor.userId.firstName} {doctor.userId.lastName}
                   </p>
                   <p
                     className="text-sm mt-0.5 truncate
@@ -84,7 +80,6 @@ function SelectDoctor({ doctors }) {
                   </div>
                 </div>
 
-                {/* تیک انتخاب */}
                 <div
                   className={`absolute top-3 left-3 w-5 h-5 rounded-full
                 flex items-center justify-center
@@ -99,11 +94,11 @@ function SelectDoctor({ doctors }) {
                 </div>
               </button>
             );
-          })
-        ) : (
-          <EmptySection title="دکتر اکتیوی برای ارائه خدمات وجود ندارد" />
-        )}
-      </div>
+          })}
+        </div>
+      ) : (
+        <EmptySection title="دکتر اکتیوی برای ارائه خدمات وجود ندارد" />
+      )}
     </div>
   );
 }

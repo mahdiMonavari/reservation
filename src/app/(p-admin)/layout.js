@@ -15,6 +15,7 @@ export default async function RootLayout({ children }) {
   const theme = cookiesStore.get("theme")?.value;
   const userToken = cookiesStore.get("token")?.value;
   const userTokenVerify = verifyAccessToken(userToken) || null;
+  console.log("payload => ", userTokenVerify);
   const user = JSON.parse(
     JSON.stringify(
       await userModel.findOne({ phoneNumber: userTokenVerify?.phone })

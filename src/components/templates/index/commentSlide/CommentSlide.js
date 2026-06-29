@@ -27,11 +27,22 @@ export default function CommentSlide({ comments }) {
         slidesPerView={1}
         className="!pb-6"
       >
-        {comments.map((comment) => (
-          <SwiperSlide>
-            <Comment key={comment._id} {...comment} />
-          </SwiperSlide>
-        ))}
+        {comments.length ? (
+          comments.map((comment) => (
+            <SwiperSlide>
+              <Comment key={comment._id} {...comment} />
+            </SwiperSlide>
+          ))
+        ) : (
+          <div className="flex flex-col items-center justify-center py-10 text-center">
+            <div className="w-16 h-16 bg-gray-100 dark:bg-zinc-700 rounded-full flex items-center justify-center mb-4">
+              <span className="text-2xl text-gray-400">💬</span>
+            </div>
+            <p className="text-gray-500 dar:text-zinc-400 font-medium">
+              هنوز نظری ثبت نشده است
+            </p>
+          </div>
+        )}
       </Swiper>
     </div>
   );

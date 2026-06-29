@@ -40,7 +40,6 @@ function Confirm() {
 
   const totalDuration = getTotalDuration(selectedServices);
   const timeEnd = minutesToTime(timeToMinutes(selectedTime) + totalDuration);
-  console.log(selectedDate.date);
   const displayDate = selectedDate
     ? new Date(selectedDate.date).toLocaleDateString("fa-IR", {
         year: "numeric",

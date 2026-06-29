@@ -13,7 +13,7 @@ export async function POST(req) {
     if (isExp) {
       return Response.json({ message: "otp is expierd" }, { status: 410 });
     }
-    return Response.json(isExp);
+    return Response.json({ message: "otp verified" }, { status: 200 });
   } catch (err) {
     console.log(err);
     return Response.json("enternal error");

@@ -4,6 +4,18 @@ import Hero from "@/components/templates/index/hero/Hero";
 import ReservationRoadMap from "@/components/templates/index/reservationRoadMap/ReservationRoadMap";
 import serviceModel from "../../../model/service";
 import EmptySection from "@/components/modules/emptyState/EmptySection";
+
+export const metadata = {
+  title: "خانه",
+  description: "رزرو آنلاین نوبت پزشکی با بهترین متخصصان کلینیک ما",
+  keywords: ["کلینیک", "رزرو نوبت آنلاین", "پزشک متخصص", "نوبت پزشکی"],
+  openGraph: {
+    title: "کلینیک پزشکی | رزرو آنلاین نوبت",
+    description: "رزرو آنلاین نوبت پزشکی با بهترین متخصصان کلینیک ما",
+    url: "https://your-domain.com",
+  },
+};
+
 async function page() {
   const services = await serviceModel.find({ isPopular: "true" });
   return (

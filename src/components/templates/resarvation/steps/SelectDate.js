@@ -20,7 +20,6 @@ function SelectDate({ setIsLoading }) {
         itemDate.getDate() === d.gregorian.date
       );
     });
-    console.log(matched);
     if (matched) setDate(matched);
   };
 
@@ -39,8 +38,6 @@ function SelectDate({ setIsLoading }) {
       const res = await fetch(`/api/schedule/${selectedDoctor}`, { signal });
       if (!res.ok) throw new Error("مشکلی در برقراری ارتباط با سرور رخ داد.");
       const data = await res.json();
-      console.log(data);
-      setDateList(data);
     } catch (err) {
       if (err.name === "AbortError") return;
       setError(err.message || "خطای ناشناخته");

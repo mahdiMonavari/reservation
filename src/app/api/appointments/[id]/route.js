@@ -54,20 +54,10 @@ export async function GET(req, { params }) {
     }
     const userAppointments = await appointmentModel
       .find({ userId: id })
-      .populate({
-        path: "doctorId",
-        model: "Doctor",
-        populate: {
-          path: "userId",
-          model: "User",
-          select: "firstName lastName",
-        },
-        select: "userId specialty photo",
-      })
+      .populate("doctorId", "firstName lastName")
       .populate("serviceIds", "title duration")
       .sort({ date: -1 })
       .lean();
-    console.log(userAppointments);
     return Response.json(
       { message: "success", data: userAppointments },
       { status: 200 }

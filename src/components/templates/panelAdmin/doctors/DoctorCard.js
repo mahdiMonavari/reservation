@@ -1,6 +1,6 @@
 import React from "react";
 
-function DoctorCard(s, i) {
+function DoctorCard(s) {
   return (
     <div
       className={`flex flex-col gap-2 p-3 rounded-xl border ${s.bg} ${s.border}`}

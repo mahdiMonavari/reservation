@@ -65,7 +65,6 @@ function SelectTime({ setIsLoading }) {
   const selectedServices = useReservationStore((s) => s.selectedServices);
   const selectedTime = useReservationStore((s) => s.selectedTime);
   const setTime = useReservationStore((s) => s.setTime);
-  console.log(selectedTime);
   const [takenSlots, setTakenSlots] = useState([]);
   const [error, setError] = useState(null);
 

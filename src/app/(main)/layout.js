@@ -8,6 +8,28 @@ import { cookies } from "next/headers";
 import { Toaster } from "react-hot-toast";
 import userModel from "../../../model/user";
 import connectionToDB from "@/utiles/DB/connection";
+
+export const metadata = {
+  metadataBase: new URL("https://your-domain.com"),
+  title: {
+    default: "کلینیک پزشکی",
+    template: "%s | کلینیک پزشکی",
+  },
+  description: "رزرو آنلاین نوبت پزشکی با بهترین متخصصان",
+  keywords: ["کلینیک", "رزرو نوبت", "پزشک", "متخصص", "نوبت آنلاین"],
+  authors: [{ name: "کلینیک پزشکی" }],
+  creator: "کلینیک پزشکی",
+  robots: {
+    index: true,
+    follow: true,
+  },
+  openGraph: {
+    type: "website",
+    locale: "fa_IR",
+    siteName: "کلینیک پزشکی",
+  },
+};
+
 export default async function RootLayout({ children }) {
   connectionToDB();
   const cookiesStore = await cookies();

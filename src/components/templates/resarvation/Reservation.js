@@ -26,7 +26,6 @@ function Reservation({ doctors }) {
   const selectedDate = useReservationStore((s) => s.selectedDate);
   const selectedTime = useReservationStore((s) => s.selectedTime);
   const [isLoading, setIsLoading] = useState(false);
-  const setServices = useReservationStore((s) => s.setServices);
 
   const isStepValid = () => {
     if (step === 1) return !!selectedDoctor;
@@ -43,8 +42,8 @@ function Reservation({ doctors }) {
   return (
     <>
       <div
-        className="relative min-h-screen flex items-start justify-center
-       bg-gray-100 dark:bg-zinc-800 px-2 xs-px-4 pt-24 pb-12 overflow-hidden"
+        className="relative flex items-start justify-center
+       bg-gray-100 dark:bg-zinc-800 overflow-hidden"
       >
         <div className="relative w-full max-w-3xl">
           <div

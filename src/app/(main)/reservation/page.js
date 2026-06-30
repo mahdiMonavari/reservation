@@ -19,7 +19,7 @@ export const metadata = {
 async function page() {
   const doctors = await doctorModel.find({ isActive: true }).populate("userId");
   return (
-    <div className="min-h-screen bg-gray-100 dark:bg-zinc-700">
+    <div className="bg-gray-100 dark:bg-zinc-800 min-h-screen pt-24">
       <Reservation doctors={JSON.parse(JSON.stringify(doctors))} />
     </div>
   );

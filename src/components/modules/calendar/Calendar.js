@@ -183,7 +183,7 @@ function Calendar({
   return (
     <div
       dir="rtl"
-      className="w-full max-w-xl bg-white dark:bg-zinc-800 rounded-2xl border
+      className="w-full max-w-xl bg-white dark:bg-slate-800 rounded-2xl border
         border-slate-200 dark:border-slate-800
         shadow-sm hover:shadow-md transition-all duration-200
         p-6 max-[480px]:p-3 flex flex-col gap-5 max-[480px]:gap-3"
@@ -289,7 +289,7 @@ function Calendar({
         {DAYS.map((day, index) => (
           <span
             key={day}
-            className={`flex items-center justify-center py-1 text-sm max-[480px]:text-xs font-Dana-Medium
+            className={`flex items-center justify-center py-1 text-sm max-[480px]:text-[10px] font-Dana-Medium
               ${index === 6 ? "text-rose-500 dark:text-rose-400" : "text-slate-400 dark:text-slate-500"}`}
           >
             {day}

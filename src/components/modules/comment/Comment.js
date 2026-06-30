@@ -1,6 +1,6 @@
-import { FaUserCircle, FaCheckCircle, FaQuoteLeft } from "react-icons/fa";
+import { FaUserCircle, FaQuoteLeft } from "react-icons/fa";
 
-function Comment({ userId, text, isVerified }) {
+function Comment({ userId, text }) {
   const fullName =
     `${userId?.firstName || ""} ${userId?.lastName || ""}`.trim();
 

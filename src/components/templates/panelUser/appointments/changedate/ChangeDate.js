@@ -2,7 +2,6 @@ import Calendar from "@/components/modules/calendar/Calendar";
 import React from "react";
 
 function ChangeDate({ selectedDate, handleSelectDate, dateList }) {
-  //   console.log(selectedDate);
   return (
     <Calendar
       mode="single"

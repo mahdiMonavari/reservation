@@ -1,8 +1,9 @@
 "use client";
 import LoadingOverlay from "@/components/modules/loading/LoadingOverlay";
 import { useEffect, useState } from "react";
-import ChangeDate from "./changeAppointment/ChangeDate";
-import ChangeHour from "./changeAppointment/ChangeHour";
+
+import ChangeDate from "./changedate/ChangeDate";
+import ChangeHour from "./changedate/ChangeHour";
 
 const STEPS = {
   DATE: 1,

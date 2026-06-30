@@ -4,6 +4,7 @@ import { redirect } from "next/navigation";
 import React from "react";
 import userModel from "../../../../../model/user";
 import appointmentModel from "../../../../../model/appointment";
+import serviceModel from "../../../../../model/service";
 import doctorModel from "../../../../../model/doctor";
 import connectionToDB from "@/utiles/DB/connection";
 import AppointmentPageUserPanel from "@/components/templates/panelUser/appointments/AppointmentPageUserPanel";

@@ -22,6 +22,45 @@
 
 }
 
+@layer utilities {
+  ::-webkit-scrollbar {
+    @apply w-2 h-2;
+  }
+
+  ::-webkit-scrollbar-track {
+    @apply bg-transparent;
+  }
+
+  ::-webkit-scrollbar-thumb {
+    @apply bg-emerald-500 rounded-full border-2 border-transparent;
+    background-clip: content-box;
+  }
+
+  ::-webkit-scrollbar-thumb:hover {
+    @apply bg-emerald-600;
+    background-clip: content-box;
+  }
+
+  .dark ::-webkit-scrollbar-thumb {
+    @apply bg-emerald-400;
+    background-clip: content-box;
+  }
+
+  .dark ::-webkit-scrollbar-thumb:hover {
+    @apply bg-emerald-500;
+    background-clip: content-box;
+  }
+
+  * {
+    scrollbar-width: thin;
+    scrollbar-color: #10b981 transparent;
+  }
+
+  .dark * {
+    scrollbar-color: #34d399 transparent;
+  }
+}
+
 @layer components {
   .container {
     width: 100%;

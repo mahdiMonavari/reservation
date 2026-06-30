@@ -60,7 +60,7 @@ const isSlotInsufficient = (
 
 function ChangeHour({
   doctorId,
-  date,
+  selectedDate,
   serviceIds,
   selectedTime,
   setSelectedTime,
@@ -88,10 +88,11 @@ function ChangeHour({
     try {
       setLoading(true);
       setError(null);
+
       const res = await fetch(`/api/appointments/slot`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ doctorId, date }),
+        body: JSON.stringify({ doctorId, date: selectedDate.date }),
         signal,
       });
       if (!res.ok) throw new Error("مشکلی در برقراری ارتباط با سرور رخ داد.");

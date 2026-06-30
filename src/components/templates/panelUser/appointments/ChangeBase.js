@@ -78,7 +78,7 @@ function ChangeBase({
     [STEPS.HOUR]: (
       <ChangeHour
         doctorId={doctorId}
-        date={resevatedDate}
+        selectedDate={selectedDate}
         serviceIds={serviceIds}
         selectedTime={selectedTime}
         setSelectedTime={setSelectedTime}

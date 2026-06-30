@@ -8,7 +8,7 @@ function AOSInit() {
   useEffect(() => {
     const timeOut = setTimeout(() => {
       Aos.init();
-    }, 500);
+    }, 1000);
     () => clearTimeout(timeOut);
   }, []);
 

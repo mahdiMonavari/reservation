@@ -4,7 +4,6 @@ import ButtonPage from "./ButtonPage";
 const SIBLINGS = 1;
 
 function Pagination({ totalPages, currentPage }) {
-  console.log(currentPage);
   const pages = [];
   const start = Math.max(1, currentPage - SIBLINGS);
   const end = Math.min(totalPages, currentPage + SIBLINGS);
@@ -25,7 +24,6 @@ function Pagination({ totalPages, currentPage }) {
   }
   return (
     <div className="flex items-center justify-center gap-x-2">
-      {console.log(pages)}
       {pages.map((page, index) =>
         page === "..." ? (
           <span key={`dots-${index}`} className="px-2 text-slate-400">

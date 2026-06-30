@@ -1,8 +1,9 @@
+"use client";
 import { useSearchParams } from "next/navigation";
 import { useRouter } from "next/navigation";
 
 function ButtonPage({ currentPage, value }) {
-  const isActive = currentPage === value;
+  const isActive = Number(currentPage) === value;
   const router = useRouter();
   const searchParams = useSearchParams();
   const handleGoPage = () => {

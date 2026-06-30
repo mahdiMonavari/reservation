@@ -15,6 +15,7 @@ async function page({ searchParams }) {
   const token = cookiesStore.get("token")?.value;
   const { phone } = verifyAccessToken(token);
   const params = await searchParams;
+  const limit = 10;
   const page = params.page || 1;
   const search = params.search || "";
   const query =
@@ -35,15 +36,25 @@ async function page({ searchParams }) {
     redirect("/");
   }
   const doctorsId = doctors.map((doctor) => doctor._id);
-  const appointments = await appointmentModel
-    .find({ userId: user._id, doctorId: { $in: doctorsId } })
-    .populate("userId", "firstName lastName")
-    .populate("doctorId", "firstName lastName")
-    .populate("serviceIds");
-
+  const [appointments, appointmentsCount] = await Promise.all([
+    appointmentModel
+      .find({ userId: user._id, doctorId: { $in: doctorsId } })
+      .populate("userId", "firstName lastName")
+      .populate("doctorId", "firstName lastName")
+      .populate("serviceIds")
+      .skip((page - 1) * limit)
+      .limit(limit),
+    appointmentModel.countDocuments({
+      userId: user._id,
+      doctorId: { $in: doctorsId },
+    }),
+  ]);
+  const totalPages = Math.ceil(appointmentsCount / limit);
   return (
     <AppointmentPageUserPanel
       appointments={JSON.parse(JSON.stringify(appointments))}
+      totalPages={totalPages}
+      currentPage={page}
     />
   );
 }

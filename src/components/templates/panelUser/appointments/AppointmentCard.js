@@ -45,10 +45,16 @@ function AppointmentCard({
         />
       }
       <div
-        className="bg-slate-50 relative dark:bg-slate-900
+        className={` relative 
         border border-teal-100 dark:border-slate-800
         rounded-2xl p-5 flex flex-col gap-4
-        hover:shadow-md transition-all duration-200"
+        hover:shadow-md transition-all duration-200 ${
+          canReschedule
+            ? "bg-slate-50 dark:bg-slate-900 border-teal-100 dark:border-slate-800"
+            : isVisited
+              ? "bg-teal-50/60 dark:bg-slate-800/60 border-teal-100 dark:border-teal-800"
+              : "bg-red-50/60 dark:bg-slate-800/60 border-yellow-100 dark:border-yellow-800"
+        }`}
       >
         <div className="flex items-center justify-between">
           <div

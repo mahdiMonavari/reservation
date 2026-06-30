@@ -13,7 +13,7 @@ async function Appointment({ searchParams }) {
   const params = await searchParams;
   const search = params?.search || "";
   const page = Number(params?.page) || 1;
-  const inPage = 6;
+  const inPage = 10;
 
   const cookiesStore = await cookies();
   const token = cookiesStore.get("token")?.value;

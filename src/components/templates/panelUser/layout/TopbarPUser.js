@@ -6,7 +6,7 @@ import { menuPUser } from "./menuPUser";
 import ThemeCta from "@/components/modules/navbar/ThemeCta";
 import { FaBars } from "react-icons/fa";
 
-function TopbarPUser() {
+function TopbarPUser({ theme }) {
   const { toggleMenu } = useContext(menuMobile);
   const pathname = usePathname();
 
@@ -41,7 +41,7 @@ function TopbarPUser() {
         >
           <FaBars size={15} />
         </button>
-        <ThemeCta />
+        <ThemeCta prevTheme={theme} />
       </div>
     </div>
   );

@@ -20,6 +20,7 @@ function AppointmentCard({
   totalTime,
   serviceIds,
   isVisited,
+  _id,
 }) {
   const [isShowReschedule, setIsShowReschedule] = useState(false);
   const userName = `${userId?.firstName || ""} ${userId?.lastName || ""}`;
@@ -42,6 +43,7 @@ function AppointmentCard({
           onToggleShow={onToggleShow}
           resevatedDate={date}
           serviceIds={serviceIds}
+          _id={_id}
         />
       }
       <div

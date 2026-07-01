@@ -10,6 +10,10 @@ const v = new Validator();
 const updateSchema = v.compile({
   description: { type: "string", min: 1, max: 2000, optional: true },
   isVisited: { type: "boolean", optional: true },
+  timeStart: { type: "string", optional: true },
+  timeEnd: { type: "string", optional: true },
+  totalTime: { type: "string", optional: true },
+  date: { type: "string", optional: true },
   $$strict: true,
 });
 
@@ -23,7 +27,6 @@ export async function PUT(req, { params }) {
     }
 
     const body = await req.json();
-
     const isValid = updateSchema(body);
     if (isValid !== true) {
       return Response.json({ message: "bad request" }, { status: 400 });

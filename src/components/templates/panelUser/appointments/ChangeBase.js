@@ -4,6 +4,7 @@ import { useEffect, useState } from "react";
 
 import ChangeDate from "./changedate/ChangeDate";
 import ChangeHour from "./changedate/ChangeHour";
+import { errorToast, successToast } from "@/components/modules/toast/toast";
 
 const STEPS = {
   DATE: 1,
@@ -11,6 +12,7 @@ const STEPS = {
 };
 
 function ChangeBase({
+  _id,
   timeStart,
   timeEnd,
   totalTime,
@@ -25,7 +27,6 @@ function ChangeBase({
   const [selectedTime, setSelectedTime] = useState(null);
   const [loading, setLoading] = useState(false);
   const [step, setStep] = useState(STEPS.DATE);
-
   useEffect(() => {
     const controller = new AbortController();
     if (isShowReschedule) {
@@ -51,8 +52,47 @@ function ChangeBase({
     }
   };
 
-  const handleConfirm = () => {
-    console.log("Confirming step:", step);
+  const calculateTimeEnd = (timeStart, total) => {
+    const [h, m] = timeStart.split(":");
+    const totalMinuts = Number(h) * 60 + Number(m) + Number(total);
+    const [endTimeH, endTimeM] = [
+      Math.trunc(totalMinuts / 60),
+      totalMinuts % 60,
+    ];
+    return `${endTimeH.toString().padStart(2, "0")}:${endTimeM.toString().padStart(2, "0")}`;
+  };
+
+  const handleConfirm = async () => {
+    const timeEnd = calculateTimeEnd(selectedTime, totalTime);
+    console.log(timeEnd);
+    try {
+      setLoading(true);
+      const res = await fetch(`/api/appointments/${_id}`, {
+        method: "PUT",
+        headers: {
+          "Content-type": "application/json",
+        },
+        body: JSON.stringify({
+          timeStart: selectedTime,
+          timeEnd,
+          totalTime,
+          date: selectedDate.date,
+        }),
+      });
+      if (res.ok) {
+        successToast("تاریخ مراجعه با موفقیت عوض شد");
+        location.reload();
+      } else {
+        errorToast("عملیات با خطا مواجه شد");
+      }
+    } catch (err) {
+    } finally {
+      setLoading(false);
+      onToggleShow();
+      setSelectedDate(null);
+      setSelectedTime(null);
+      setStep(1);
+    }
   };
 
   const handleSelectDate = (d) => {

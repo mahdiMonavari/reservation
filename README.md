@@ -1,36 +1,272 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
+<div dir="rtl">
 
-## Getting Started
+<div align="center">
 
-First, run the development server:
+<img src="https://readme-typing-svg.herokuapp.com?font=Vazirmatn&size=30&duration=3000&pause=1000&color=10B981&center=true&vCenter=true&width=600&lines=سیستم+رزرو+آنلاین+نوبت+کلینیک;Online+Medical+Clinic+Booking+System" alt="Typing SVG" />
+
+<br/>
+
+![Next.js](https://img.shields.io/badge/Next.js_15-000000?style=for-the-badge&logo=nextdotjs&logoColor=white)
+![React](https://img.shields.io/badge/React_19-20232A?style=for-the-badge&logo=react&logoColor=61DAFB)
+![MongoDB](https://img.shields.io/badge/MongoDB-4EA94B?style=for-the-badge&logo=mongodb&logoColor=white)
+![TailwindCSS](https://img.shields.io/badge/Tailwind_CSS-38B2AC?style=for-the-badge&logo=tailwind-css&logoColor=white)
+![JavaScript](https://img.shields.io/badge/JavaScript-F7DF1E?style=for-the-badge&logo=javascript&logoColor=black)
+
+<br/>
+
+[![GitHub repo](https://img.shields.io/badge/GitHub-mahdiMonavari%2Freservation-181717?style=flat-square&logo=github)](https://github.com/mahdiMonavari/reservation)
+![License](https://img.shields.io/badge/License-MIT-emerald?style=flat-square)
+![Status](https://img.shields.io/badge/Status-In_Development-orange?style=flat-square)
+
+</div>
+
+---
+
+## 📋 فهرست مطالب | Table of Contents
+
+- [درباره پروژه](#-درباره-پروژه)
+- [About Project](#-about-project)
+- [اسکرین‌شات‌ها](#-اسکرین‌شات‌ها)
+- [ویژگی‌ها](#-ویژگی‌ها)
+- [تکنولوژی‌ها](#-تکنولوژی‌ها)
+- [نصب و راه‌اندازی](#-نصب-و-راه‌اندازی)
+- [ساختار پروژه](#-ساختار-پروژه)
+
+---
+
+## 🏥 درباره پروژه
+
+یک سیستم کامل رزرو آنلاین نوبت برای کلینیک تخصصی زنان، زایمان و طب مکمل.  
+این پروژه با هدف دیجیتال کردن فرآیند نوبت‌دهی و مدیریت بیماران طراحی و توسعه یافته است.
+
+کاربران می‌توانند بدون نیاز به تماس تلفنی، در هر ساعتی از شبانه‌روز نوبت خود را آنلاین رزرو کنند.  
+سیستم سه پنل مجزا برای **ادمین**، **پزشک** و **بیمار** دارد.
+
+---
+
+## 🌐 About Project
+
+A full-stack online appointment booking system for a specialized Women's Health & Complementary Medicine clinic.
+
+Patients can book appointments 24/7 without phone calls. The system features three separate panels for **Admin**, **Doctor**, and **Patient** with role-based access control.
+
+---
+
+## 📸 اسکرین‌شات‌ها | Screenshots
+
+<table>
+  <tr>
+    <td align="center"><b>🏠 صفحه اصلی | Home</b></td>
+    <td align="center"><b>🔐 ورود | Login</b></td>
+  </tr>
+  <tr>
+    <td><img src="https://github.com/mahdiMonavari/reservation/raw/main/screenshots/home.png" alt="Home"/></td>
+    <td><img src="https://github.com/mahdiMonavari/reservation/raw/main/screenshots/login.png" alt="Login"/></td>
+  </tr>
+  <tr>
+    <td align="center"><b>🛡️ پنل ادمین | Admin Panel</b></td>
+    <td align="center"><b>👤 پنل کاربری | User Panel</b></td>
+  </tr>
+  <tr>
+    <td><img src="https://github.com/mahdiMonavari/reservation/raw/main/screenshots/admin.png" alt="Admin"/></td>
+    <td><img src="https://github.com/mahdiMonavari/reservation/raw/main/screenshots/user.png" alt="User"/></td>
+  </tr>
+  <tr>
+    <td align="center"><b>📅 تقویم جلالی | Jalali Calendar</b></td>
+    <td align="center"><b>⏰ انتخاب ساعت | Time Slots</b></td>
+  </tr>
+  <tr>
+    <td><img src="https://github.com/mahdiMonavari/reservation/raw/main/screenshots/calendar.png" alt="Calendar"/></td>
+    <td><img src="https://github.com/mahdiMonavari/reservation/raw/main/screenshots/timeslots.png" alt="Time Slots"/></td>
+  </tr>
+</table>
+
+---
+
+## ✨ ویژگی‌ها | Features
+
+### 👤 پنل کاربری | User Panel
+- ✅ ثبت‌نام و ورود با OTP (بدون رمز عبور)
+- ✅ رزرو نوبت گام‌به‌گام (انتخاب دکتر ← خدمات ← تاریخ ← ساعت ← تأیید)
+- ✅ تقویم جلالی سفارشی با پشتیبانی از تاریخ‌های کاری
+- ✅ انتخاب slot‌های ۱۵ دقیقه‌ای با بررسی تداخل زمانی
+- ✅ مشاهده و مدیریت همه نوبت‌ها
+- ✅ تغییر زمان مراجعه (قبل از تاریخ نوبت)
+- ✅ دریافت پیامک تأیید نوبت
+- ✅ ویرایش پروفایل با احراز هویت OTP برای تغییر شماره
+
+### 🛡️ پنل ادمین | Admin Panel
+- ✅ داشبورد با آمار کلی و نمودار درآمد ماهانه
+- ✅ مدیریت کاربران، دکترها و خدمات
+- ✅ تقویم حضور پزشکان با امکان تنظیم ساعت کاری
+- ✅ مدیریت و تأیید کامنت‌ها
+- ✅ مدیریت نوبت‌ها
+
+### 🔧 فنی | Technical
+- ✅ JWT Authentication با Access/Refresh Token rotation
+- ✅ Dark/Light Mode با SSR (بدون flash)
+- ✅ سیستم Role-Based Access Control
+- ✅ واکنش‌گرا (Responsive) برای موبایل و دسکتاپ
+- ✅ SEO بهینه با متاتگ‌های پویا و Schema.org
+- ✅ محافظت از مسیرها با Middleware
+- ✅ اعتبارسنجی سمت سرور با `fastest-validator`
+
+---
+
+## 🛠️ تکنولوژی‌ها | Tech Stack
+
+| بخش | ابزارها |
+|-----|---------|
+| **Frontend** | Next.js 15 (App Router), React 19, Tailwind CSS |
+| **State Management** | Zustand |
+| **Backend** | Next.js API Routes (Route Handlers) |
+| **Database** | MongoDB, Mongoose |
+| **Auth** | JWT, bcryptjs, OTP via SMS |
+| **UI** | React Icons, React Hot Toast, Recharts |
+| **Calendar** | Custom Jalali Calendar + date-fns-jalali |
+| **Validation** | fastest-validator |
+
+---
+
+## 🚀 نصب و راه‌اندازی | Installation
+
+### پیش‌نیازها | Prerequisites
 
 ```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
+Node.js >= 18
+MongoDB (local or Atlas)
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+### مراحل نصب | Steps
 
-You can start editing the page by modifying `app/page.js`. The page auto-updates as you edit the file.
+```bash
+# کلون کردن پروژه
+git clone https://github.com/mahdiMonavari/reservation.git
+cd reservation
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+# نصب وابستگی‌ها
+npm install
 
-## Learn More
+# ساخت فایل متغیرهای محیطی
+cp .env.example .env.local
+```
 
-To learn more about Next.js, take a look at the following resources:
+### متغیرهای محیطی | Environment Variables
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+```env
+MONGODB_URI=mongodb+srv://...
+ACCESS_TOKEN_SECRET=your_access_secret
+REFRESH_TOKEN_SECRET=your_refresh_secret
+SMS_API_KEY=your_sms_provider_key
+NEXT_PUBLIC_BASE_URL=http://localhost:3000
+```
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+```bash
+# اجرا در حالت توسعه
+npm run dev
 
-## Deploy on Vercel
+# بیلد برای پروداکشن
+npm run build
+npm start
+```
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+---
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+## 📁 ساختار پروژه | Project Structure
+
+```
+reservation/
+├── app/
+│   ├── (main)/          # سایت اصلی
+│   │   ├── page.js      # صفحه اصلی
+│   │   ├── doctors/     # لیست و پروفایل دکترها
+│   │   ├── reservation/ # فرایند رزرو نوبت
+│   │   ├── login/
+│   │   └── register/
+│   ├── (p-admin)/       # پنل ادمین
+│   │   └── p-admin/
+│   │       ├── page.js  # داشبورد
+│   │       ├── users/
+│   │       ├── doctors/
+│   │       ├── appointments/
+│   │       ├── comments/
+│   │       ├── services/
+│   │       └── schedule/
+│   ├── (p-user)/        # پنل کاربری
+│   │   └── p-user/
+│   │       ├── page.js  # داشبورد
+│   │       ├── appointments/
+│   │       └── profile/
+│   └── api/             # Route Handlers
+│       ├── auth/
+│       ├── appointments/
+│       ├── doctors/
+│       ├── services/
+│       ├── schedule/
+│       ├── comments/
+│       ├── otp/
+│       └── user/
+├── components/
+│   ├── modules/         # کامپوننت‌های مشترک
+│   │   ├── calendar/    # تقویم جلالی سفارشی
+│   │   ├── navbar/
+│   │   ├── footer/
+│   │   └── ...
+│   └── templates/       # کامپوننت‌های صفحات
+├── model/               # Mongoose Models
+├── store/               # Zustand Stores
+├── context/             # React Contexts
+├── utiles/              # توابع کمکی
+│   ├── auth/
+│   ├── DB/
+│   └── jalali/
+└── validators/          # اعتبارسنجی
+```
+
+---
+
+## 🔄 فلوی رزرو نوبت | Booking Flow
+
+```
+ثبت‌نام/ورود با OTP
+        ↓
+  انتخاب متخصص
+        ↓
+   انتخاب خدمات
+        ↓
+  انتخاب تاریخ (تقویم جلالی)
+        ↓
+  انتخاب ساعت (slot 15 دقیقه‌ای)
+        ↓
+    تأیید و ثبت
+        ↓
+  دریافت پیامک تأیید
+```
+
+---
+
+## 👨‍💻 توسعه‌دهنده | Developer
+
+<div align="center">
+
+**Mahdi Monavari**
+
+[![GitHub](https://img.shields.io/badge/GitHub-mahdiMonavari-181717?style=flat-square&logo=github)](https://github.com/mahdiMonavari)
+
+*این پروژه اولین پروژه پورتفولیو من است و با هدف یادگیری عمیق Next.js و توسعه full-stack ساخته شده.*
+
+*This is my first major portfolio project, built to deeply learn Next.js and full-stack development.*
+
+</div>
+
+---
+
+<div align="center">
+
+⭐ اگه این پروژه برات جالب بود، یه ستاره بهش بده!
+
+⭐ If you found this project interesting, give it a star!
+
+</div>
+
+</div>

@@ -78,7 +78,7 @@ async function page({ params }) {
   const { phone } = verifyAccessToken(token);
   const user = await userModel.findOne({ phoneNumber: phone }, "_id");
   return (
-    <div className="min-h-screen pt-21 bg-gray-100 dark:bg-zinc-800">
+    <div className="min-h-screen pt-21 bg-gray-100 dark:bg-slate-950">
       <DoctorPage
         doctor={JSON.parse(JSON.stringify(doctor))}
         commentCount={commentCount}

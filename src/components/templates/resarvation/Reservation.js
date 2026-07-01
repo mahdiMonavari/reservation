@@ -43,7 +43,7 @@ function Reservation({ doctors }) {
     <>
       <div
         className="relative flex items-start justify-center
-       bg-gray-100 dark:bg-zinc-800 overflow-hidden"
+       bg-gray-100 dark:bg-slate-950 overflow-hidden"
       >
         <div className="relative w-full max-w-3xl">
           <div

@@ -7,7 +7,7 @@ function LoginCard() {
   return (
     <div
       className="relative min-h-screen flex items-center justify-center
-      bg-gray-100 p-4 overflow-hidden dark:bg-zinc-800"
+      bg-gray-100 p-4 overflow-hidden dark:bg-slate-950"
     >
       {/* rings — فقط dark */}
       <div

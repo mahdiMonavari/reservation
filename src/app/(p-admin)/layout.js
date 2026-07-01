@@ -34,7 +34,7 @@ export default async function RootLayout({ children }) {
               <Navbar />
               <div className="w-full">
                 <TopBar theme={theme} admin={admin} />
-                <div className="bg-gray-200 relative dark:bg-zinc-800 min-h-screen">
+                <div className="bg-gray-200 relative dark:bg-slate-950 min-h-screen">
                   {children}
                 </div>
               </div>

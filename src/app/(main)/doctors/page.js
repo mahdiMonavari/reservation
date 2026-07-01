@@ -20,7 +20,7 @@ async function page() {
     })
     .populate("userId", "firstName lastName");
   return (
-    <div className="min-h-screen pt-21 bg-gray-100 dark:bg-zinc-800">
+    <div className="min-h-screen pt-21 bg-gray-100 dark:bg-slate-950">
       <Doctors doctors={JSON.parse(JSON.stringify(doctors))} />
     </div>
   );

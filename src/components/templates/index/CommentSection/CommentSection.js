@@ -40,7 +40,7 @@ async function CommentSection() {
 
             {/* main card */}
             <div
-              className="relative z-10 bg-gray-100 dark:bg-zinc-800 rounded-xl
+              className="relative z-10 bg-gray-100 dark:bg-slate-950 rounded-xl
               border border-emerald-100 dark:border-emerald-900/50
               shadow-xl shadow-emerald-900/10 dark:shadow-emerald-400/5
               hover:shadow-2xl hover:shadow-emerald-500/10

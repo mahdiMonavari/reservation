@@ -15,7 +15,7 @@ function RegisterCard() {
   return (
     <div
       className="relative min-h-screen flex items-center justify-center p-4 overflow-hidden
-    bg-gray-100 dark:bg-zinc-800"
+    bg-gray-100 dark:bg-slate-950"
     >
       <div
         className="pointer-events-none absolute w-[600px] h-[600px] rounded-full

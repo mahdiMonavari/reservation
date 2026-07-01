@@ -53,7 +53,7 @@ async function page() {
           <Hero />
         </div>
       </div>
-      <div className="space-y-20 overflow-x-hidden bg-zinc-100 dark:bg-zinc-800 dark:text-white pt-20">
+      <div className="space-y-20 overflow-x-hidden bg-zinc-100 dark:bg-slate-950 dark:text-white pt-20">
         <div className="container">
           {services.length ? (
             <Abilities services={JSON.parse(JSON.stringify(services))} />

@@ -6,13 +6,41 @@ import serviceModel from "../../../model/service";
 import EmptySection from "@/components/modules/emptyState/EmptySection";
 
 export const metadata = {
-  title: "خانه",
-  description: "رزرو آنلاین نوبت پزشکی با بهترین متخصصان کلینیک ما",
-  keywords: ["کلینیک", "رزرو نوبت آنلاین", "پزشک متخصص", "نوبت پزشکی"],
+  title: "کلینیک تخصصی زنان و زایمان | هوموپاتی و طب مکمل",
+  description:
+    "کلینیک تخصصی زنان، زایمان، نازایی و جراحی‌های درمانی با بیش از ۳۵ سال سابقه. ارائه خدمات هوموپاتی، الوکولوتراپی، لیزر درمانی و زیبایی، فشیال و زایمان فیزیولوژیک.",
+  keywords: [
+    "کلینیک زنان",
+    "زایمان فیزیولوژیک",
+    "نازایی",
+    "هوموپاتی",
+    "الوکولوتراپی",
+    "لیزر زیبایی",
+    "جراحی زیبایی",
+    "طب مکمل",
+    "IUD",
+    "تعیین جنسیت",
+    "فشیال",
+    "رزرو نوبت آنلاین",
+  ],
   openGraph: {
-    title: "کلینیک پزشکی | رزرو آنلاین نوبت",
-    description: "رزرو آنلاین نوبت پزشکی با بهترین متخصصان کلینیک ما",
+    title: "کلینیک تخصصی زنان و زایمان",
+    description:
+      "بیش از ۳۵ سال تجربه در حوزه زنان، زایمان، نازایی و طب مکمل. رزرو آنلاین نوبت در کمترین زمان.",
     url: "https://your-domain.com",
+    type: "website",
+    locale: "fa_IR",
+    siteName: "کلینیک تخصصی زنان",
+  },
+  other: {
+    "application/ld+json": JSON.stringify({
+      "@context": "https://schema.org",
+      "@type": "MedicalClinic",
+      name: "کلینیک تخصصی زنان و زایمان",
+      description: "کلینیک تخصصی زنان، زایمان و طب مکمل با بیش از ۳۵ سال سابقه",
+      medicalSpecialty: ["Obstetrics", "Gynecology", "ReproductiveMedicine"],
+      url: "https://your-domain.com",
+    }),
   },
 };
 

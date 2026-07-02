@@ -1,5 +1,5 @@
 "use client";
-import { useContext, useEffect, useState } from "react";
+import { useContext, useEffect, useMemo, useState } from "react";
 import { AuthContext } from "@/context/AuthContext";
 import {
   FiCalendar,
@@ -13,7 +13,15 @@ import PastsAppointments from "./details/PastsAppointments";
 import NextAppointment from "./details/NextAppointment";
 import UserPanelCard from "./details/UserPanelCard";
 
-const isUpcoming = (date) => new Date(date) >= new Date();
+const toDateTime = (date, timeStart) => {
+  const [hours, minutes] = timeStart.split(":").map(Number);
+  const d = new Date(date);
+  d.setHours(hours, minutes, 0, 0);
+  return d;
+};
+
+const isUpcoming = (date, timeStart) =>
+  toDateTime(date, timeStart) >= new Date();
 
 export default function DashboardPage() {
   const { user } = useContext(AuthContext);
@@ -43,19 +51,33 @@ export default function DashboardPage() {
     }
   };
 
-  const upcoming = appointments
-    .filter((a) => isUpcoming(a.date))
-    .sort((a, b) => new Date(a.date) - new Date(b.date));
+  const upcoming = useMemo(
+    () =>
+      appointments
+        .filter((a) => isUpcoming(a.date, a.timeStart))
+        .sort(
+          (a, b) =>
+            toDateTime(a.date, a.timeStart) - toDateTime(b.date, b.timeStart),
+        ),
+    [appointments],
+  );
 
-  const past = appointments
-    .filter((a) => !isUpcoming(a.date))
-    .sort((a, b) => new Date(b.date) - new Date(a.date));
+  const past = useMemo(
+    () =>
+      appointments
+        .filter((a) => !isUpcoming(a.date, a.timeStart))
+        .sort(
+          (a, b) =>
+            toDateTime(b.date, b.timeStart) - toDateTime(a.date, a.timeStart),
+        ),
+    [appointments],
+  );
 
   const nextAppointment = upcoming[0] || null;
 
   const stats = [
     {
-      id: crypto.randomUUID(),
+      id: "total",
       label: "کل نوبت‌ها",
       value: appointments.length,
       icon: FiCalendar,
@@ -63,7 +85,7 @@ export default function DashboardPage() {
       border: "border-teal-100 dark:border-teal-500/20",
     },
     {
-      id: crypto.randomUUID(),
+      id: "upcoming",
       label: "نوبت‌های آینده",
       value: upcoming.length,
       icon: FiClock,
@@ -71,7 +93,7 @@ export default function DashboardPage() {
       border: "border-sky-100 dark:border-sky-500/20",
     },
     {
-      id: crypto.randomUUID(),
+      id: "past",
       label: "نوبت‌های گذشته",
       value: past.length,
       icon: FiCheckCircle,
@@ -109,9 +131,9 @@ export default function DashboardPage() {
       </div>
 
       <div className="grid grid-cols-3 gap-3 mb-6">
-        {stats.map((stat) => {
-          return <UserPanelCard key={stat.id} {...stat} />;
-        })}
+        {stats.map((stat) => (
+          <UserPanelCard key={stat.id} {...stat} />
+        ))}
       </div>
 
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-4">

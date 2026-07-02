@@ -1,10 +1,12 @@
 "use client";
+import { errorToast } from "@/components/modules/toast/toast";
 import useReservationStore from "@/store/reservationStore";
+import { useRouter } from "next/navigation";
+
 import { useState } from "react";
 import {
   FiCalendar,
   FiClock,
-  FiUser,
   FiList,
   FiCheckCircle,
   FiAlertCircle,
@@ -33,6 +35,7 @@ function Confirm() {
   const selectedServices = useReservationStore((s) => s.selectedServices);
   const selectedDate = useReservationStore((s) => s.selectedDate);
   const selectedTime = useReservationStore((s) => s.selectedTime);
+  const router = useRouter();
 
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
@@ -67,7 +70,30 @@ function Confirm() {
       });
 
       if (!res.ok) throw new Error("مشکلی در ثبت نوبت رخ داد.");
+
+      const dateShamsi = new Date(selectedDate.date).toLocaleDateString(
+        "fa-IR",
+      );
+
+      const resSms = await fetch("/api/sms/confirm", {
+        method: "POST",
+        headers: { "Content-type": "application/json" },
+        body: JSON.stringify({ dateShamsi, timeStart: selectedTime }),
+      });
       setSuccess(true);
+
+      if (!resSms.ok) {
+        errorToast(
+          "پیام رزرو با موفقیت ارسال نشد، تاریخ حضور خود را یادداشت کنید",
+        );
+      }
+
+      setTimeout(
+        () => {
+          router.replace("/p-user");
+        },
+        resSms.ok ? 1500 : 4000,
+      );
     } catch (err) {
       setError(err.message || "خطای ناشناخته");
     } finally {

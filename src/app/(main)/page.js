@@ -6,7 +6,7 @@ import serviceModel from "../../../model/service";
 import EmptySection from "@/components/modules/emptyState/EmptySection";
 
 export const metadata = {
-  title: "کلینیک تخصصی زنان و زایمان | هوموپاتی و طب مکمل",
+  title: "کلینیک تخصصی زنان و زایمان | هوموپاتی و طب مکمل | مینا شبانی",
   description:
     "کلینیک تخصصی زنان، زایمان، نازایی و جراحی‌های درمانی با بیش از ۳۵ سال سابقه. ارائه خدمات هوموپاتی، الوکولوتراپی، لیزر درمانی و زیبایی، فشیال و زایمان فیزیولوژیک.",
   keywords: [
@@ -22,6 +22,7 @@ export const metadata = {
     "تعیین جنسیت",
     "فشیال",
     "رزرو نوبت آنلاین",
+    "مینا شبانی",
   ],
   openGraph: {
     title: "کلینیک تخصصی زنان و زایمان",

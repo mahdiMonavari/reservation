@@ -5,12 +5,13 @@ export async function POST(req) {
   try {
     await connectionToDB();
     const body = await req.json();
+
     const { doctorId, date } = body;
     if (!doctorId && !date)
       return Response.json({ message: "bad request" }, { status: 400 });
     const appointments = await appointmentModel.find(
       { doctorId, date },
-      "timeStart timeEnd"
+      "timeStart timeEnd",
     );
     if (appointments) {
       return Response.json(appointments);

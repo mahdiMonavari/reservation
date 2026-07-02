@@ -56,7 +56,7 @@ function RegisterForm({ phoneNumber }) {
         }),
       });
       if (res.status === 201) {
-        router.push("/reservation");
+        router.replace("/reservation");
         const { data } = await res.json();
         setUser({ ...data });
       } else if (res.status === 409) {

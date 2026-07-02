@@ -1,4 +1,3 @@
-// validators/service.validator.js
 import Validator from "fastest-validator";
 
 const v = new Validator();

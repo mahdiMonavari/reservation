@@ -110,7 +110,7 @@ function LoginForm() {
         body: JSON.stringify({ phone, password }),
       });
       if (res.status === 200) {
-        router.push("/reservation");
+        router.replace("/reservation");
         successToast("ورود موفق");
         const { data } = await res.json();
         setUser({ ...data });
@@ -137,7 +137,7 @@ function LoginForm() {
         body: JSON.stringify({ phone, otp }),
       });
       if (res.status === 200) {
-        router.push("/reservation");
+        router.replace("/reservation");
         const { data } = await res.json();
         setUser({ ...data });
       } else if (res.status === 400) {
@@ -176,7 +176,7 @@ function LoginForm() {
                   "flex-1 py-2 rounded-lg text-sm font-Morabba-Bold transition-all duration-250",
                   loginWithPass === val
                     ? "bg-emerald-500 text-white shadow-sm shadow-emerald-500/30"
-                    : "text-emerald-500/60 dark:text-white/40 hover:text-emerald-600 dark:hover:text-white/60"
+                    : "text-emerald-500/60 dark:text-white/40 hover:text-emerald-600 dark:hover:text-white/60",
                 )}
               >
                 {label}
@@ -203,7 +203,7 @@ function LoginForm() {
             placeholder="شماره تماس"
             className={clsx(
               inputBase,
-              codeSent && "opacity-60 cursor-not-allowed"
+              codeSent && "opacity-60 cursor-not-allowed",
             )}
             dir="rtl"
           />

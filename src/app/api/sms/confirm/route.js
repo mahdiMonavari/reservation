@@ -48,7 +48,6 @@ export async function POST(req) {
       line_number: FROM_NUMBER,
       number_format: "english",
     };
-    console.log("send sms");
 
     try {
       const res = await fetch("https://api.iranpayamak.com/ws/v1/sms/pattern", {
@@ -69,8 +68,6 @@ export async function POST(req) {
           { status: 200 },
         );
       } else {
-        console.log(data.message);
-
         return Response.json(
           { message: data.message || "Failed to send SMS" },
           { status: res.status },

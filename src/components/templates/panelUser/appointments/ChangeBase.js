@@ -64,7 +64,6 @@ function ChangeBase({
 
   const handleConfirm = async () => {
     const timeEnd = calculateTimeEnd(selectedTime, totalTime);
-    console.log(timeEnd);
     try {
       setLoading(true);
       const res = await fetch(`/api/appointments/${_id}`, {

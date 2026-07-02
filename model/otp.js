@@ -16,8 +16,13 @@ const schema = new mongoose.Schema(
       type: Date,
       required: true,
     },
+    attempt: {
+      type: Number,
+      required: true,
+      default: 3,
+    },
   },
-  { timestamps: true }
+  { timestamps: true },
 );
 
 const otpModel = mongoose.models.Otp || mongoose.model("Otp", schema);

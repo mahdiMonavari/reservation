@@ -39,13 +39,17 @@ export const registerValidator = v.compile({
     type: "string",
     min: 8,
     max: 100,
+    pattern: /^[a-zA-Z0-9]+$/,
     messages: {
       string: "رمز عبور باید متنی باشد",
       stringMin: "رمز عبور باید حداقل ۸ کاراکتر باشد",
       stringMax: "رمز عبور نباید بیشتر از ۱۰۰ کاراکتر باشد",
       required: "رمز عبور الزامی است",
+      pattern:
+        "رمز عبور فقط می‌تواند شامل حروف انگلیسی و اعداد باشد (بدون فاصله یا کاراکتر خاص)",
     },
   },
+
   $$strict: true,
 });
 export const editValidator = v.compile({

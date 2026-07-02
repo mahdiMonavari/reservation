@@ -42,8 +42,8 @@ async function page({ searchParams }) {
       .populate("userId", "firstName lastName")
       .populate("doctorId", "firstName lastName")
       .populate("serviceIds")
+      .sort({ date: -1, timeStart: -1 })
       .skip((page - 1) * limit)
-      .sort({ createdAt: -1 })
       .limit(limit),
     appointmentModel.countDocuments({
       userId: user._id,

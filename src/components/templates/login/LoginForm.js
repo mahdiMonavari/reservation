@@ -5,13 +5,12 @@ import { FiEdit2 } from "react-icons/fi";
 import { useState, useEffect, useRef, useContext } from "react";
 import { errorToast, successToast } from "@/components/modules/toast/toast";
 import LoadingOverlay from "@/components/modules/loading/LoadingOverlay";
-import { useRouter } from "next/navigation";
 import { AuthContext } from "@/context/AuthContext";
-
+const LIMIT = 2;
 const RESEND_SECONDS = 90;
 
 const inputBase = `w-full rounded-xl py-3 pr-10 pl-4 text-base
-  bg-emerald-50 dark:bg-white/5
+  bg-emerald-50 dark:bg-white/5 font-Morabba-Bold
   border border-emerald-200 dark:border-white/10
   text-emerald-900 dark:text-white
   placeholder:text-emerald-400/60 dark:placeholder:text-white/25
@@ -28,8 +27,8 @@ function LoginForm() {
   const [countdown, setCountdown] = useState(RESEND_SECONDS);
   const timerRef = useRef(null);
   const [loading, setLoading] = useState(false);
-  const router = useRouter();
   const { setUser } = useContext(AuthContext);
+  const [limiteTry, setLimiteTry] = useState(LIMIT);
 
   const startTimer = () => {
     setCountdown(RESEND_SECONDS);
@@ -66,6 +65,10 @@ function LoginForm() {
       if (res.status === 200) {
         setCodeSent(true);
         startTimer();
+      } else if (res.status === 409) {
+        startTimer();
+        setCodeSent(true);
+        successToast("پیام ارسال شده اطفا کمی منتظر بمانید");
       } else if (res.status === 422) {
         errorToast("شماره تلفن معتبر نمیباشد");
       } else if (res.status === 404) {
@@ -79,9 +82,13 @@ function LoginForm() {
   };
 
   const handleEdit = () => {
-    setCodeSent(false);
-    setOtp("");
-    clearInterval(timerRef.current);
+    if (countdown !== 0) {
+      return errorToast("زمان شمارنده به پایان نرسیده است");
+    } else {
+      setCodeSent(false);
+      setOtp("");
+      clearInterval(timerRef.current);
+    }
   };
 
   const handleResend = () => {
@@ -110,7 +117,7 @@ function LoginForm() {
         body: JSON.stringify({ phone, password }),
       });
       if (res.status === 200) {
-        router.replace("/reservation");
+        location.reload();
         successToast("ورود موفق");
         const { data } = await res.json();
         setUser({ ...data });
@@ -124,6 +131,9 @@ function LoginForm() {
     }
   };
   const verifyUser = async () => {
+    if (limiteTry < 0) {
+      return errorToast("بیش از حد مجاز تلاش کردید");
+    }
     if (otp < 5) {
       return errorToast("کد وارد شده صحیح نمیباشد");
     }
@@ -137,11 +147,12 @@ function LoginForm() {
         body: JSON.stringify({ phone, otp }),
       });
       if (res.status === 200) {
-        router.replace("/reservation");
+        location.reload();
         const { data } = await res.json();
         setUser({ ...data });
       } else if (res.status === 400) {
-        errorToast("رمز وارد شده صحیح نمیباشد");
+        errorToast(`کد معتبر نمیباشد ${limiteTry} تلاش دیگر باقیست`);
+        setLimiteTry(limiteTry - 1);
       } else if (res.status === 409) {
         errorToast("کد منقضی است");
       }
@@ -158,7 +169,6 @@ function LoginForm() {
     <>
       <LoadingOverlay loading={loading} />
       <div className="space-y-4">
-        {/* toggle — فقط وقتی کد ارسال نشده */}
         {!codeSent && (
           <div
             className="flex rounded-xl bg-emerald-50 dark:bg-white/5
@@ -185,7 +195,6 @@ function LoginForm() {
           </div>
         )}
 
-        {/* شماره تلفن */}
         <div className="relative">
           <span
             className="absolute right-3 top-1/2 -translate-y-1/2
@@ -207,7 +216,6 @@ function LoginForm() {
             )}
             dir="rtl"
           />
-          {/* دکمه ویرایش وقتی کد ارسال شده */}
           {codeSent && (
             <button
               type="button"
@@ -225,8 +233,6 @@ function LoginForm() {
             </button>
           )}
         </div>
-
-        {/* رمز عبور — فقط حالت پسورد و قبل از ارسال کد */}
         {loginWithPass && !codeSent && (
           <div className="relative">
             <span
@@ -245,8 +251,6 @@ function LoginForm() {
             />
           </div>
         )}
-
-        {/* OTP input */}
         {codeSent && !loginWithPass && (
           <div className="relative">
             <span
@@ -268,11 +272,10 @@ function LoginForm() {
           </div>
         )}
 
-        {/* تایمر */}
         {codeSent && !loginWithPass && (
           <div className="text-center text-sm">
             {countdown > 0 ? (
-              <span className="text-emerald-500/60 dark:text-emerald-300/50">
+              <span className="text-emerald-500/60 dark:text-emerald-300/50 font-Dana-Medium">
                 ارسال مجدد تا{" "}
                 <span className="text-emerald-600 dark:text-emerald-300 font-Morabba-Bold tabular-nums">
                   {fmt(countdown)}
@@ -292,7 +295,6 @@ function LoginForm() {
           </div>
         )}
 
-        {/* دکمه اصلی */}
         <button
           type="button"
           onClick={

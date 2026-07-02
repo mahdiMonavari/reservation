@@ -9,7 +9,6 @@ function LoginCard() {
       className="relative min-h-screen flex items-center justify-center
       bg-gray-100 p-4 overflow-hidden dark:bg-slate-950"
     >
-      {/* rings — فقط dark */}
       <div
         className="pointer-events-none absolute w-150 h-150 rounded-full
         border border-emerald-900/10 dark:border-emerald-500/10
@@ -22,18 +21,15 @@ function LoginCard() {
       />
 
       <div className="relative w-full max-w-sm">
-        {/* card */}
         <div
           className="relative bg-white/80 dark:bg-white/5
           backdrop-blur-xl rounded-3xl
           border border-emerald-200/80 dark:border-white/10
           shadow-xl shadow-emerald-900/10 dark:shadow-emerald-950/50 overflow-hidden"
         >
-          {/* top accent */}
           <div className="h-px w-full bg-gradient-to-r from-transparent via-emerald-400/70 to-transparent" />
 
           <div className="px-8 pt-8 pb-10">
-            {/* logo */}
             <div className="flex justify-center mb-5">
               <div
                 className="w-12 h-12 rounded-2xl
@@ -53,7 +49,7 @@ function LoginCard() {
               خوش آمدید
             </h1>
             <p
-              className="text-center text-sm
+              className="text-center text-sm font-Dana-Medium
               text-emerald-600/70 dark:text-emerald-300/60 mb-7"
             >
               وارد حساب کاربری خود شوید
@@ -64,7 +60,7 @@ function LoginCard() {
             <div className="mt-5 text-center">
               <Link
                 href="/register"
-                className="inline-flex items-center gap-2 text-sm
+                className="inline-flex items-center gap-2 text-sm font-Dana-Medium
                   text-emerald-600/60 dark:text-emerald-300/50
                   hover:text-emerald-700 dark:hover:text-emerald-300
                   transition-colors duration-200 group"

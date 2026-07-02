@@ -13,14 +13,32 @@ export async function POST(req) {
   }
   try {
     await connectionToDB();
-    const optFounded = await otpModel.findOne({ code: otp, phone });
-    if (!optFounded) {
+    const otpFounded = await otpModel.findOne({ phone });
+    if (!otpFounded) {
+      return Response.json({ message: "code id not valid" }, { status: 400 });
+    }
+    if (otpFounded.attempt === 0) {
+      await otpModel.deleteOne({ phone });
+      return Response.json(
+        {
+          message:
+            "تعداد تلاش‌های شما به پایان رسیده است. لطفا دوباره درخواست دهید.",
+        },
+        { status: 429 },
+      );
+    }
+    if (otpFounded.code !== otp) {
+      await otpModel.findOneAndUpdate(
+        { phone },
+        { $inc: { attempt: -1 } },
+        { new: true },
+      );
       return Response.json({ message: "code id not valid" }, { status: 400 });
     }
     const newDate = new Date();
 
-    const isExpired = newDate - optFounded.expTime > 90000 ? true : false;
-    await otpModel.deleteOne({ _id: optFounded._id });
+    const isExpired = otpFounded.expTime - newDate > 90000 ? true : false;
+    await otpModel.deleteOne({ _id: otpFounded._id });
     if (isExpired) {
       return Response.json({ message: "code is expired" }, { status: 409 });
     }
@@ -38,7 +56,7 @@ export async function POST(req) {
             `refreshToken=${refreshToken}; path=/; httpOnly; Secure; SameSite=Strict`,
           ],
         },
-      }
+      },
     );
   } catch (err) {
     console.log(err);

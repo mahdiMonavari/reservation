@@ -6,7 +6,7 @@ const v = new Validator();
 export const sendOtpValidator = v.compile({
   phone: {
     type: "string",
-    pattern: /^09[0-9]{9}$/,
+    pattern: /^09[0-9\u0660-\u0669]{9}$/,
     messages: {
       string: "شماره تلفن باید متنی باشد",
       stringPattern: "شماره تلفن معتبر نیست — مثال: 09123456789",
@@ -19,7 +19,7 @@ export const sendOtpValidator = v.compile({
 export const verifyOtpValidator = v.compile({
   phone: {
     type: "string",
-    pattern: /^09[0-9]{9}$/,
+    pattern: /^09[0-9\u0660-\u0669]{9}$/,
     messages: {
       string: "شماره تلفن باید متنی باشد",
       stringPattern: "شماره تلفن معتبر نیست — مثال: 09123456789",

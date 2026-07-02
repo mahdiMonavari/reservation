@@ -30,7 +30,7 @@ async function Appointment({ searchParams }) {
           { phoneNumber: { $regex: search } },
         ],
       },
-      "_id"
+      "_id",
     );
     matchedUserIds = matchedUsers.map((u) => u._id);
   }
@@ -43,7 +43,7 @@ async function Appointment({ searchParams }) {
   const [appointments, totalCount] = await Promise.all([
     appointmentModel
       .find(filter)
-      .sort({ createdAt: -1 })
+      .sort({ createdAt: -1, timeStart: -1 })
       .skip((page - 1) * inPage)
       .limit(inPage)
       .populate("userId", "firstName lastName phoneNumber")

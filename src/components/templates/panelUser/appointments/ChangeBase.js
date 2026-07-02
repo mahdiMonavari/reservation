@@ -80,7 +80,28 @@ function ChangeBase({
       });
       if (res.ok) {
         successToast("تاریخ مراجعه با موفقیت عوض شد");
-        location.reload();
+        const dateShamsi = new Date(selectedDate.date).toLocaleDateString(
+          "fa-IR",
+        );
+
+        const resSms = await fetch("/api/sms/changedate", {
+          method: "POST",
+          headers: { "Content-type": "application/json" },
+          body: JSON.stringify({ dateShamsi, timeStart: selectedTime }),
+        });
+
+        if (!resSms.ok) {
+          errorToast(
+            "پیام تغییر  با موفقیت ارسال نشد، تاریخ حضور خود را یادداشت کنید",
+          );
+          setTimeout(() => {
+            console.log("sssssssssssssss");
+            location.reload();
+          }, 4000);
+        } else {
+          console.log("ddddddddddd");
+          location.reload();
+        }
       } else {
         errorToast("عملیات با خطا مواجه شد");
       }

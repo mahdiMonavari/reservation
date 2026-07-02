@@ -38,7 +38,6 @@ function RegisterCard() {
           <div className="h-px w-full bg-gradient-to-r from-transparent via-emerald-400/70 to-transparent" />
 
           <div className="px-8 pt-8 pb-10">
-            {/* logo */}
             <div className="flex justify-center mb-5">
               <div
                 className="w-12 h-12 rounded-2xl
@@ -51,7 +50,6 @@ function RegisterCard() {
               </div>
             </div>
 
-            {/* step indicator */}
             <div className="flex items-center justify-center gap-2 mb-5">
               {STEPS.map((_, i) => (
                 <div
@@ -73,7 +71,7 @@ function RegisterCard() {
               {STEPS[isPhoneVerified ? 1 : 0]}
             </h1>
             <p
-              className="text-center text-sm
+              className="text-center text-sm font-Dana-Medium
               text-emerald-600/70 dark:text-emerald-300/60 mb-7"
             >
               {SUBS[isPhoneVerified ? 1 : 0]}
@@ -92,7 +90,7 @@ function RegisterCard() {
             <div className="mt-5 text-center">
               <Link
                 href="/login"
-                className="inline-flex items-center gap-2 text-sm
+                className="inline-flex items-center gap-2 text-sm font-Dana-Medium
                   text-emerald-600/60 dark:text-emerald-300/50
                   hover:text-emerald-700 dark:hover:text-emerald-300
                   transition-colors duration-200 group"

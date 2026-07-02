@@ -8,7 +8,7 @@ import { useRouter } from "next/navigation";
 import { AuthContext } from "@/context/AuthContext";
 
 const inputBase = `w-full rounded-xl py-3 pr-10 pl-4 text-base
-  bg-emerald-50 dark:bg-white/5
+  bg-emerald-50 dark:bg-white/5 font-Morabba-Bold
   border border-emerald-200 dark:border-white/10
   text-emerald-900 dark:text-white
   placeholder:text-emerald-400 dark:placeholder:text-white/25
@@ -24,7 +24,6 @@ const fields = [
 
 function RegisterForm({ phoneNumber }) {
   const [loading, setLoading] = useState(false);
-  const router = useRouter();
   const { setUser } = useContext(AuthContext);
   const [form, setForm] = useState({
     firstName: "",
@@ -56,7 +55,7 @@ function RegisterForm({ phoneNumber }) {
         }),
       });
       if (res.status === 201) {
-        router.replace("/reservation");
+        location.reload();
         const { data } = await res.json();
         setUser({ ...data });
       } else if (res.status === 409) {
@@ -76,7 +75,7 @@ function RegisterForm({ phoneNumber }) {
       <div className="space-y-4">
         <div className="relative">
           <span
-            className="absolute right-3 top-1/2 -translate-y-1/2
+            className="absolute right-3 top-1/2 -translate-y-1/2 font-Morabba-Bold
           text-emerald-400/50 dark:text-emerald-400/40 pointer-events-none"
           >
             <FiPhone size={17} />
@@ -91,7 +90,6 @@ function RegisterForm({ phoneNumber }) {
           />
         </div>
 
-        {/* فیلدهای دیگر */}
         {fields.map(({ name, placeholder, icon: Icon, type }) => (
           <div key={name} className="relative">
             <span
@@ -122,7 +120,7 @@ function RegisterForm({ phoneNumber }) {
           hover:shadow-md hover:shadow-emerald-500/20
           active:scale-[0.98] group"
         >
-          <span className="relative z-10">ثبت نام</span>
+          <span className="relative z-10 font-Morabba-Bold">ثبت نام</span>
           <span
             className="absolute inset-0 bg-gradient-to-l
           from-white/0 via-white/10 to-white/0

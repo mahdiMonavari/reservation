@@ -3,12 +3,13 @@ import { useState, useEffect, useRef } from "react";
 import { FiPhone, FiLock, FiEdit2 } from "react-icons/fi";
 import clsx from "clsx";
 import LoadingOverlay from "@/components/modules/loading/LoadingOverlay";
-import { errorToast } from "@/components/modules/toast/toast";
+import { errorToast, successToast } from "@/components/modules/toast/toast";
 
 const RESEND_SECONDS = 90;
+const LIMIT = 2;
 
 const inputBase = `w-full rounded-xl py-3 pr-10 pl-4 text-base
-  bg-emerald-50 dark:bg-white/5
+  bg-emerald-50 dark:bg-white/5 font-Morabba-Bold
   border border-emerald-200 dark:border-white/10
   text-emerald-900 dark:text-white
   placeholder:text-emerald-950/60 dark:placeholder:text-white/25
@@ -21,6 +22,7 @@ function VerifyNumber({ phoneNumber, setPhoneNumber, setIsPhoneVerified }) {
   const [codeSent, setCodeSent] = useState(false);
   const [otp, setOtp] = useState("");
   const [countdown, setCountdown] = useState(RESEND_SECONDS);
+  const [limiteTry, setLimiteTry] = useState(LIMIT);
   const timerRef = useRef(null);
 
   const startTimer = () => {
@@ -53,8 +55,13 @@ function VerifyNumber({ phoneNumber, setPhoneNumber, setIsPhoneVerified }) {
         body: JSON.stringify({ phone: phoneNumber }),
       });
       if (res.status === 200) {
+        successToast("کد با موفقیت ارسال شد");
         setCodeSent(true);
         startTimer();
+      } else if (res.status === 409) {
+        successToast("پیام ارسال شده اطفا کمی منتظر بمانید");
+        startTimer();
+        setCodeSent(true);
       } else {
         errorToast("خطا در ارسال کد، دوباره تلاش کنید");
       }
@@ -66,13 +73,21 @@ function VerifyNumber({ phoneNumber, setPhoneNumber, setIsPhoneVerified }) {
   };
 
   const handleEdit = () => {
-    setCodeSent(false);
-    setOtp("");
-    clearInterval(timerRef.current);
+    if (countdown !== 0) {
+      return errorToast("زمان شمارنده به پایان نرسیده است");
+    } else {
+      setCodeSent(false);
+      setOtp("");
+      clearInterval(timerRef.current);
+    }
   };
 
   const handleVrifyUserEnterCode = async () => {
+    if (limiteTry < 0) {
+      return errorToast("بیش از حد مجاز تلاش کردید");
+    }
     if (otp.length < 5) {
+      return errorToast("طول کد کافی نیست");
     }
     setLoading(true);
     try {
@@ -84,7 +99,8 @@ function VerifyNumber({ phoneNumber, setPhoneNumber, setIsPhoneVerified }) {
       if (res.status === 200) {
         setIsPhoneVerified(true);
       } else if (res.status === 400) {
-        errorToast("کد معتبر نمی‌باشد");
+        errorToast(`کد معتبر نمیباشد ${limiteTry} تلاش دیگر باقیست`);
+        setLimiteTry(limiteTry - 1);
       } else {
         errorToast("کد منقضی شده است");
       }
@@ -124,7 +140,7 @@ function VerifyNumber({ phoneNumber, setPhoneNumber, setIsPhoneVerified }) {
             placeholder="شماره تماس"
             className={clsx(
               inputBase,
-              codeSent && "opacity-60 cursor-not-allowed"
+              codeSent && "opacity-60 cursor-not-allowed",
             )}
             dir="rtl"
           />
@@ -149,7 +165,7 @@ function VerifyNumber({ phoneNumber, setPhoneNumber, setIsPhoneVerified }) {
         <div
           className={clsx(
             "transition-all duration-400 overflow-hidden",
-            codeSent ? "max-h-24 opacity-100" : "max-h-0 opacity-0"
+            codeSent ? "max-h-24 opacity-100" : "max-h-0 opacity-0",
           )}
         >
           <div className="relative">
@@ -175,7 +191,7 @@ function VerifyNumber({ phoneNumber, setPhoneNumber, setIsPhoneVerified }) {
         {codeSent && (
           <div className="text-center text-sm">
             {countdown > 0 ? (
-              <span className="text-emerald-500/60 dark:text-emerald-300/50">
+              <span className="text-emerald-500/60 dark:text-emerald-300/50 font-Morabba-Bold">
                 ارسال مجدد تا{" "}
                 <span className="text-emerald-600 dark:text-emerald-300 font-Morabba-Bold tabular-nums">
                   {fmt(countdown)}
@@ -185,7 +201,7 @@ function VerifyNumber({ phoneNumber, setPhoneNumber, setIsPhoneVerified }) {
               <button
                 type="button"
                 onClick={handleResend}
-                className="text-emerald-600 dark:text-emerald-400
+                className="text-emerald-600 dark:text-emerald-400 font-Dana-Medium
                 hover:text-emerald-700 dark:hover:text-emerald-300
                 underline underline-offset-2 transition-colors"
               >

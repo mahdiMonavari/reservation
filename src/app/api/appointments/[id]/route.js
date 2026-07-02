@@ -35,7 +35,7 @@ export async function PUT(req, { params }) {
     const appointment = await appointmentModel.findByIdAndUpdate(
       id,
       { ...body },
-      { new: true }
+      { new: true },
     );
 
     if (!appointment) {
@@ -63,7 +63,7 @@ export async function GET(req, { params }) {
       .lean();
     return Response.json(
       { message: "success", data: userAppointments },
-      { status: 200 }
+      { status: 200 },
     );
   } catch (err) {
     console.log(err);

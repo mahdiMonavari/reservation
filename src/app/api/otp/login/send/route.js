@@ -24,10 +24,15 @@ export async function POST(req) {
     });
     if (res.status === 200) {
       return Response.json({ message: "code sent" }, { status: 200 });
-    } else {
+    } else if (res.status === 409) {
+      return Response.json(
+        { message: "لطفاً کمی صبر کنید، کد قبلی هنوز معتبر است" },
+        { status: 409 },
+      );
+    } else if (res.status === 500) {
       return Response.json(
         { message: "please try again later" },
-        { status: 500 }
+        { status: 500 },
       );
     }
   } catch (err) {

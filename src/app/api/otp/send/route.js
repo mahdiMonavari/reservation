@@ -1,6 +1,7 @@
 import connectionToDB from "@/utiles/DB/connection";
 import { sendOtpValidator } from "../../../../../validators/backend/otpValidator";
 import otpModel from "../../../../../model/otp";
+import limitRateModel from "../../../../../model/liimitRate";
 
 export async function POST(req) {
   await connectionToDB();
@@ -11,13 +12,37 @@ export async function POST(req) {
 
   try {
     const { phone } = await req.json();
-
     const isValidPhoneNumber = sendOtpValidator({ phone });
     if (!isValidPhoneNumber) {
       return Response.json(
         { message: "شماره موبایل معتبر نیست" },
         { status: 400 },
       );
+    }
+    const limiRatetModelIsExist = await limitRateModel.findOne({
+      phone,
+      type: "otp",
+    });
+    if (limiRatetModelIsExist) {
+      if (limiRatetModelIsExist.count === 0) {
+        return Response.json(
+          {
+            message: "limited per day",
+          },
+          { status: 430 },
+        );
+      } else {
+        await limitRateModel.findOneAndUpdate(
+          { phone },
+          { $inc: { count: -1 } },
+        );
+      }
+    } else {
+      await limitRateModel.create({
+        phone,
+        type: "otp",
+        expiresAt: new Date(Date.now() + 1000 * 60 * 60 * 24),
+      });
     }
     const existCodeAlready = await otpModel.findOne({ phone });
 

@@ -42,10 +42,15 @@ const schema = new mongoose.Schema(
       type: String,
       default: "",
     },
+    isRescheduled: {
+      type: Boolean,
+      default: false,
+      required: true,
+    },
   },
   {
     timestamps: true,
-  }
+  },
 );
 
 const appointmentModel =

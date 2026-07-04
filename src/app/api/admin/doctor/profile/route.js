@@ -19,13 +19,9 @@ const schema = {
 };
 const check = v.compile(schema);
 
-// آپلود عکس - تابع جداگانه برای خوانایی بیشتر
 async function handlePhotoUpload(photoFile, userId) {
   if (!photoFile || photoFile.size === 0) return undefined;
-
   const uploadsDir = path.join(process.cwd(), "public", "uploads");
-
-  // این خط مشکل اصلی رو حل میکنه - اگه پوشه نباشه میسازه
   await mkdir(uploadsDir, { recursive: true });
 
   const bytes = await photoFile.arrayBuffer();
@@ -42,7 +38,10 @@ export async function PUT(req) {
     await connectionToDB();
 
     const cookieStore = await cookies();
-    const { phone } = verifyAccessToken(cookieStore.get("token")?.value);
+    const { phone, role } = verifyAccessToken(cookieStore.get("token")?.value);
+    if (role === "USER") {
+      return Response.json({ message: "not Unauthorized" }, { status: 401 });
+    }
     const user = await userModel.findOne({ phoneNumber: phone }, "_id");
 
     if (!user) {
@@ -66,7 +65,7 @@ export async function PUT(req) {
     const allValid = validationResult === true;
     const existingDoctor = await doctorModel.findOne(
       { userId: user._id },
-      "photo"
+      "photo",
     );
     const hasPhoto = photoPath || !!existingDoctor?.photo;
 

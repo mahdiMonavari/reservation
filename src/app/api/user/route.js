@@ -8,6 +8,7 @@ import { cookies } from "next/headers";
 import userModel from "../../../../model/user";
 import connectionToDB from "@/utiles/DB/connection";
 import { editValidator } from "../../../../validators/backend/userValidator";
+import { toEnglishDigits } from "@/utiles/auth/convertNumber";
 
 export async function PUT(req) {
   try {
@@ -19,44 +20,57 @@ export async function PUT(req) {
     }
 
     const { phone } = verifyAccessToken(token);
+    console.log(phone);
+
     const user = await userModel.findOne({ phoneNumber: phone });
     if (!user) {
       return Response.json({ message: "user not found" }, { status: 404 });
     }
 
     const body = await req.json();
-    const { firstName, lastName, phoneNumber, password } = body;
+    const dataToValidate = { ...body };
+    console.log(dataToValidate);
+
+    if (dataToValidate.phoneNumber) {
+      dataToValidate.phoneNumber = toEnglishDigits(dataToValidate.phoneNumber);
+    }
+    if (dataToValidate.password) {
+      dataToValidate.password = toEnglishDigits(dataToValidate.password);
+    }
     const isValid = editValidator({
-      firstName,
-      lastName,
-      phoneNumber,
-      password,
+      firstName: dataToValidate.firstName,
+      lastName: dataToValidate.lastName,
+      phoneNumber: dataToValidate.phoneNumber,
+      password: dataToValidate.password,
     });
+    console.log(isValid);
+
     if (isValid !== true) {
       return Response.json(
         { message: "data not valid", errors: isValid },
-        { status: 400 }
+        { status: 400 },
       );
     }
 
-    if (body.phoneNumber && body.phoneNumber !== phone) {
+    if (dataToValidate.phoneNumber && dataToValidate.phoneNumber !== phone) {
       const existingUser = await userModel.findOne({
-        phoneNumber: body.phoneNumber,
+        phoneNumber: dataToValidate.phoneNumber,
       });
       if (existingUser) {
         return Response.json(
           { message: "این شماره تلفن قبلاً ثبت شده است" },
-          { status: 409 }
+          { status: 409 },
         );
       }
     }
 
-    const updateData = { ...body };
-    if (body.password) {
-      updateData.password = await hashePassword(body.password);
+    const updateData = { ...dataToValidate };
+
+    if (updateData.password) {
+      updateData.password = await hashePassword(updateData.password);
     }
 
-    const newPhone = body.phoneNumber || phone;
+    const newPhone = dataToValidate.phoneNumber || phone;
     const accessToken = generateAccessToken({
       phone: newPhone,
       role: user.role,
@@ -65,33 +79,32 @@ export async function PUT(req) {
       phone: newPhone,
       role: user.role,
     });
+
     updateData.refreshToken = refreshToken;
 
     const userInfo = await userModel.findOneAndUpdate(
       { phoneNumber: phone },
       { ...updateData },
-      { new: true, select: "-password -refreshToken" }
+      { new: true, select: "-password -refreshToken" },
     );
 
     const response = Response.json(
       { message: "user updated", data: userInfo },
-      { status: 200 }
+      { status: 200 },
     );
-
     const cookieOptions = "HttpOnly; Path=/; SameSite=Lax; Max-Age=";
-
     response.headers.append(
       "Set-Cookie",
-      `token=${accessToken}; ${cookieOptions}${15 * 60}`
+      `token=${accessToken}; ${cookieOptions}${15 * 60}`,
     );
     response.headers.append(
       "Set-Cookie",
-      `refreshToken=${refreshToken}; ${cookieOptions}${7 * 24 * 60 * 60}`
+      `refreshToken=${refreshToken}; ${cookieOptions}${15 * 24 * 60 * 60}`,
     );
 
     return response;
   } catch (err) {
-    console.log(err);
+    console.error(err);
     return Response.json({ message: "internal error" }, { status: 500 });
   }
 }

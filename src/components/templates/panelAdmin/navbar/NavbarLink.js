@@ -7,6 +7,7 @@ function NavbarLink({ label, href, icon, role, onToggle }) {
   const onClickHandler = () => {
     onToggle ? onToggle() : "";
   };
+
   return (href === "/p-admin/users" || href === "/p-admin/doctors") &&
     role === "DOCTOR" ? (
     ""

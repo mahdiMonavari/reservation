@@ -25,12 +25,12 @@ const schema = new mongoose.Schema(
     },
     description: {
       type: String,
-      required: true,
+      required: false,
     },
   },
   {
     timestamps: true,
-  }
+  },
 );
 
 const serviceModel =

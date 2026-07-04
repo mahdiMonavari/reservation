@@ -45,7 +45,7 @@ const isSlotInsufficient = (
   slot,
   takenAppointments,
   endTime,
-  totalDuration
+  totalDuration,
 ) => {
   const slotMin = timeToMinutes(slot);
   const slotEndMin = slotMin + totalDuration;
@@ -113,7 +113,7 @@ function SelectTime({ setIsLoading }) {
         <h2 className="text-xl mt-3 md:text-2xl font-Morabba-Bold text-emerald-900 dark:text-white">
           ساعت مراجعه را انتخاب کنید
         </h2>
-        <p className="text-sm mt-1 text-emerald-600 dark:text-emerald-400">
+        <p className="text-sm mt-1 text-emerald-600 dark:text-emerald-400 font-Dana-Medium">
           هر slot معادل ۱۵ دقیقه می‌باشد
         </p>
       </div>
@@ -143,7 +143,7 @@ function SelectTime({ setIsLoading }) {
                 slot,
                 takenSlots,
                 selectedDate.timeEnd,
-                totalDuration
+                totalDuration,
               );
             const isDisabled = isTaken || isInsufficient;
 

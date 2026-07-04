@@ -3,7 +3,7 @@ import Validator from "fastest-validator";
 
 const v = new Validator();
 
-const timePattern = /^([01]\d|2[0-3]):([0-5]\d)$/; // HH:MM
+const timePattern = /^([01]\d|2[0-3]):([0-5]\d)$/;
 
 export const appointmentValidator = v.compile({
   date: {

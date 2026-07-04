@@ -15,6 +15,7 @@ const schema = new mongoose.Schema(
     expTime: {
       type: Date,
       required: true,
+      expires: 0,
     },
     attempt: {
       type: Number,

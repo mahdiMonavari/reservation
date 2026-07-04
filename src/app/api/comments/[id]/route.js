@@ -1,11 +1,18 @@
 import connectionToDB from "@/utiles/DB/connection";
 import commentModel from "../../../../../model/comment";
+import { cookies } from "next/headers";
+import { verifyAccessToken } from "@/utiles/auth/auth";
 
 export async function PUT(req, { params }) {
   try {
     await connectionToDB();
     const { id } = await params;
-
+    const cookiesStore = await cookies();
+    const token = cookiesStore.get("token")?.value;
+    const { role } = verifyAccessToken(token);
+    if (role === "USER") {
+      return Response.json({ message: "not Unauthorized" }, { status: 401 });
+    }
     if (!id || id.length !== 24) {
       return Response.json({ message: "bad request" }, { status: 400 });
     }
@@ -15,7 +22,7 @@ export async function PUT(req, { params }) {
       const comment = await commentModel.findByIdAndUpdate(
         { _id: id },
         { isVerified },
-        { new: true }
+        { new: true },
       );
       if (!comment) {
         return Response.json({ message: "comment not found" }, { status: 404 });

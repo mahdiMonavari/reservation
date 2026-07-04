@@ -6,6 +6,7 @@ import { useState, useEffect, useRef, useContext } from "react";
 import { errorToast, successToast } from "@/components/modules/toast/toast";
 import LoadingOverlay from "@/components/modules/loading/LoadingOverlay";
 import { AuthContext } from "@/context/AuthContext";
+import { toEnglishDigits } from "@/utiles/auth/convertNumber";
 const LIMIT = 2;
 const RESEND_SECONDS = 90;
 
@@ -47,10 +48,11 @@ function LoginForm() {
   useEffect(() => () => clearInterval(timerRef.current), []);
 
   const handleSend = async () => {
-    if (phone.length < 11) {
+    const normalPhone = toEnglishDigits(phone);
+    if (normalPhone.length < 11) {
       return errorToast("شماره تلفن صحیح نمیباشد");
     }
-    if (!phone.startsWith("09")) {
+    if (!normalPhone.startsWith("09")) {
       return errorToast("فرمت شماره تلفن صحیح نمیباشد");
     }
     setLoading(true);
@@ -60,11 +62,13 @@ function LoginForm() {
         headers: {
           "Content-type": "application/json",
         },
-        body: JSON.stringify({ phone }),
+        body: JSON.stringify({ phone: normalPhone }),
       });
       if (res.status === 200) {
         setCodeSent(true);
         startTimer();
+      } else if (res.status === 429) {
+        errorToast("به سقف درخاست روزانه رسیدید");
       } else if (res.status === 409) {
         startTimer();
         setCodeSent(true);
@@ -98,30 +102,32 @@ function LoginForm() {
   };
 
   const loginWithPassHanler = async () => {
-    if (phone.length < 11) {
+    const normalPhone = toEnglishDigits(phone);
+    const noramlPassword = toEnglishDigits(password);
+    if (normalPhone.length < 11) {
       return errorToast("شماره تلفن صحیح نمیباشد");
     }
-    if (!phone.startsWith("09")) {
+    if (!normalPhone.startsWith("09")) {
       return errorToast("فرمت شماره تلفن صحیح نمیباشد");
     }
-    if (password.length < 8) {
+    if (noramlPassword.length < 8) {
       return errorToast("پسورد باید حداقل 8 حرف باشد");
     }
     try {
       setLoading(true);
-      const res = await fetch("api/auth/login/password", {
+      const res = await fetch("/api/auth/login/password", {
         method: "POST",
         headers: {
           "Content-type": "application/json",
         },
-        body: JSON.stringify({ phone, password }),
+        body: JSON.stringify({ phone: normalPhone, password: noramlPassword }),
       });
       if (res.status === 200) {
         location.reload();
         successToast("ورود موفق");
         const { data } = await res.json();
         setUser({ ...data });
-      } else if (res.status === 400 || 404) {
+      } else if (res.status === 400 || res.status === 404) {
         errorToast("کاربری با این شماره و رمز عبور پیدا نشد");
       }
     } catch (err) {
@@ -131,20 +137,22 @@ function LoginForm() {
     }
   };
   const verifyUser = async () => {
+    const normalOtp = toEnglishDigits(otp);
+    const normalPhone = toEnglishDigits(phone);
     if (limiteTry < 0) {
       return errorToast("بیش از حد مجاز تلاش کردید");
     }
-    if (otp < 5) {
+    if (normalOtp.length < 5) {
       return errorToast("کد وارد شده صحیح نمیباشد");
     }
     setLoading(true);
     try {
-      const res = await fetch("api/auth/login/sms", {
+      const res = await fetch("/api/auth/login/sms", {
         method: "POST",
         headers: {
           "Content-type": "application/json",
         },
-        body: JSON.stringify({ phone, otp }),
+        body: JSON.stringify({ phone: normalPhone, otp: normalOtp }),
       });
       if (res.status === 200) {
         location.reload();

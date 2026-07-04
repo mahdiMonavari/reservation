@@ -29,6 +29,8 @@ export async function POST(req) {
         { message: "لطفاً کمی صبر کنید، کد قبلی هنوز معتبر است" },
         { status: 409 },
       );
+    } else if (res.status === 429) {
+      return Response.json({ message: "limited per day" }, { status: 429 });
     } else if (res.status === 500) {
       return Response.json(
         { message: "please try again later" },

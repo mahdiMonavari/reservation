@@ -6,7 +6,7 @@ const schema = mongoose.Schema({
     required: true,
   },
   count: {
-    trpe: Number,
+    type: Number,
     required: true,
     default: 5,
   },

@@ -1,12 +1,14 @@
-// validators/otp.validator.js
 import Validator from "fastest-validator";
 
 const v = new Validator();
 
+const PHONE_PATTERN = /^09[0-9]{9}$/;
+const CODE_PATTERN = /^[0-9]{6}$/;
+
 export const sendOtpValidator = v.compile({
   phone: {
     type: "string",
-    pattern: /^09[0-9\u0660-\u0669]{9}$/,
+    pattern: PHONE_PATTERN,
     messages: {
       string: "شماره تلفن باید متنی باشد",
       stringPattern: "شماره تلفن معتبر نیست — مثال: 09123456789",
@@ -19,7 +21,7 @@ export const sendOtpValidator = v.compile({
 export const verifyOtpValidator = v.compile({
   phone: {
     type: "string",
-    pattern: /^09[0-9\u0660-\u0669]{9}$/,
+    pattern: PHONE_PATTERN,
     messages: {
       string: "شماره تلفن باید متنی باشد",
       stringPattern: "شماره تلفن معتبر نیست — مثال: 09123456789",
@@ -29,11 +31,11 @@ export const verifyOtpValidator = v.compile({
   code: {
     type: "string",
     length: 6,
-    pattern: /^[0-9]{6}$/,
+    pattern: CODE_PATTERN,
     messages: {
       string: "کد تأیید باید متنی باشد",
       stringLength: "کد تأیید باید ۶ رقم باشد",
-      stringPattern: "کد تأیید فقط باید شامل اعداد باشد",
+      stringPattern: "کد تأیید فقط باید شامل ۶ رقم انگلیسی باشد",
       required: "کد تأیید الزامی است",
     },
   },

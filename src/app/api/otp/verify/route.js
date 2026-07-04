@@ -36,7 +36,7 @@ export async function POST(req) {
       );
     }
     const now = new Date();
-    if (otpRecord.expTime > now) {
+    if (otpRecord.expTime < now) {
       await otpModel.deleteOne({ phone });
       return Response.json(
         { message: "زمان کد تایید به پایان رسیده است" },

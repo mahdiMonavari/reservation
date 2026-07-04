@@ -17,7 +17,7 @@ function SelectDoctor({ doctors }) {
         >
           دکتر مورد نظر خود را انتخاب کنید
         </h2>
-        <p className="text-sm mt-1 text-emerald-600 dark:text-emerald-300/50">
+        <p className="text-sm mt-1 text-emerald-600 dark:text-emerald-300/50 font-Dana-Medium">
           با کلیک روی هر کارت، دکتر انتخاب می‌شود
         </p>
       </div>
@@ -62,12 +62,12 @@ function SelectDoctor({ doctors }) {
                     {doctor.userId.firstName} {doctor.userId.lastName}
                   </p>
                   <p
-                    className="text-sm mt-0.5 truncate
+                    className="text-sm mt-0.5 truncate font-Dana-Medium
                   text-emerald-600 dark:text-emerald-300/60"
                   >
                     {doctor.specialty}
                   </p>
-                  <div className="flex items-center justify-between mt-5 gap-3">
+                  <div className="flex items-center justify-between mt-5 gap-3 font-Dana-Medium">
                     <span className="text-sm text-emerald-500 dark:text-emerald-400/50">
                       {doctor.experience} سال
                     </span>

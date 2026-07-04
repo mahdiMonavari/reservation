@@ -4,13 +4,13 @@ import otpModel from "../../../../../model/otp";
 import limitRateModel from "../../../../../model/liimitRate";
 
 export async function POST(req) {
-  await connectionToDB();
-
-  const API_KEY = process.env.API_KEY;
-  const PATTERN_CODE = process.env.PATTERN_CODE;
-  const FROM_NUMBER = process.env.FROM_NUMBER;
-
   try {
+    await connectionToDB();
+
+    const API_KEY = process.env.API_KEY;
+    const PATTERN_CODE = process.env.PATTERN_CODE;
+    const FROM_NUMBER = process.env.FROM_NUMBER;
+
     const { phone } = await req.json();
     const isValidPhoneNumber = sendOtpValidator({ phone });
     if (!isValidPhoneNumber) {
@@ -19,21 +19,18 @@ export async function POST(req) {
         { status: 400 },
       );
     }
+
     const limiRatetModelIsExist = await limitRateModel.findOne({
       phone,
       type: "otp",
     });
+
     if (limiRatetModelIsExist) {
       if (limiRatetModelIsExist.count === 0) {
-        return Response.json(
-          {
-            message: "limited per day",
-          },
-          { status: 430 },
-        );
+        return Response.json({ message: "limited per day" }, { status: 429 });
       } else {
         await limitRateModel.findOneAndUpdate(
-          { phone },
+          { phone, type: "otp" },
           { $inc: { count: -1 } },
         );
       }
@@ -44,6 +41,7 @@ export async function POST(req) {
         expiresAt: new Date(Date.now() + 1000 * 60 * 60 * 24),
       });
     }
+
     const existCodeAlready = await otpModel.findOne({ phone });
 
     if (existCodeAlready && existCodeAlready?.expTime > new Date()) {
@@ -52,10 +50,8 @@ export async function POST(req) {
         { status: 409 },
       );
     }
-    console.log("existCodeAlready", existCodeAlready);
 
     if (existCodeAlready?.expTime < new Date()) {
-      console.log("expierd");
       await otpModel.deleteOne({ phone });
     }
 
@@ -70,42 +66,32 @@ export async function POST(req) {
       number_format: "english",
     };
 
-    try {
-      const res = await fetch("https://api.iranpayamak.com/ws/v1/sms/pattern", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-          "Api-Key": API_KEY,
-          Accept: "application/json",
-        },
-        body: JSON.stringify(requestBody),
+    const res = await fetch("https://api.iranpayamak.com/ws/v1/sms/pattern", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        "Api-Key": API_KEY,
+        Accept: "application/json",
+      },
+      body: JSON.stringify(requestBody),
+    });
+
+    const result = await res.json();
+
+    if (res.ok) {
+      await otpModel.create({
+        phone,
+        code: verificationCode,
+        expTime: expiryDate,
       });
 
-      const result = await res.json();
-
-      if (res.ok) {
-        console.log("send success");
-
-        await otpModel.create({
-          phone,
-          code: verificationCode,
-          expTime: expiryDate,
-        });
-
-        return Response.json(
-          { message: "کد تایید با موفقیت ارسال شد" },
-          { status: 200 },
-        );
-      } else {
-        return Response.json(
-          { message: result.message || "خطا در ارسال پیامک" },
-          { status: 500 },
-        );
-      }
-    } catch (err) {
-      console.error("SMS API Error:", err);
       return Response.json(
-        { message: "خطا در ارتباط با سرویس پیامک" },
+        { message: "کد تایید با موفقیت ارسال شد" },
+        { status: 200 },
+      );
+    } else {
+      return Response.json(
+        { message: result.message || "خطا در ارسال پیامک" },
         { status: 500 },
       );
     }

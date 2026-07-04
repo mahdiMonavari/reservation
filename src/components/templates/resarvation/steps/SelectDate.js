@@ -60,7 +60,7 @@ function SelectDate({ setIsLoading }) {
         <h2 className="text-xl mt-3 md:text-2xl font-Morabba-Bold text-emerald-900 dark:text-white">
           تاریخ مراجعه را انتخاب کنید
         </h2>
-        <p className="text-sm mt-1 text-emerald-600 dark:text-emerald-400">
+        <p className="text-sm mt-1 text-emerald-600 dark:text-emerald-400 font-Dana-Medium">
           روزهای گذشته قابل انتخاب نیستند
         </p>
       </div>

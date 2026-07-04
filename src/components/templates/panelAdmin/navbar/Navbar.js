@@ -42,7 +42,7 @@ function Navbar() {
               label={label}
               href={href}
               icon={icon}
-              role={user.rle}
+              role={user.role}
               key={href}
             />
           ))}

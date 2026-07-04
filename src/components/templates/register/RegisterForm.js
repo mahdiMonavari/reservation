@@ -4,8 +4,8 @@ import { FiPhone, FiUser, FiLock } from "react-icons/fi";
 import registerSchema from "../../../../validators/frontend/register.validator";
 import { errorToast } from "@/components/modules/toast/toast";
 import LoadingOverlay from "@/components/modules/loading/LoadingOverlay";
-import { useRouter } from "next/navigation";
 import { AuthContext } from "@/context/AuthContext";
+import { toEnglishDigits } from "@/utiles/auth/convertNumber";
 
 const inputBase = `w-full rounded-xl py-3 pr-10 pl-4 text-base
   bg-emerald-50 dark:bg-white/5 font-Morabba-Bold
@@ -31,27 +31,29 @@ function RegisterForm({ phoneNumber }) {
     password: "",
   });
   const createUserHandler = async () => {
+    const normalPhone = toEnglishDigits(phoneNumber);
+    const normalPassword = toEnglishDigits(form.password);
     const result = registerSchema.safeParse({
-      phoneNumber,
+      phoneNumber: normalPhone,
       firstName: form.firstName,
       lastName: form.lastName,
-      password: form.password,
+      password: normalPassword,
     });
     if (!result.success) {
       return errorToast(result.error.issues[0].message);
     }
     setLoading(true);
     try {
-      const res = await fetch("api/auth/register", {
+      const res = await fetch("/api/auth/register", {
         method: "POST",
         headers: {
           "Content-type": "application/json",
         },
         body: JSON.stringify({
-          phoneNumber,
+          phoneNumber: normalPhone,
           firstName: form.firstName,
           lastName: form.lastName,
-          password: form.password,
+          password: normalPassword,
         }),
       });
       if (res.status === 201) {

@@ -4,6 +4,7 @@ import { FiPhone, FiLock, FiEdit2 } from "react-icons/fi";
 import clsx from "clsx";
 import LoadingOverlay from "@/components/modules/loading/LoadingOverlay";
 import { errorToast, successToast } from "@/components/modules/toast/toast";
+import { toEnglishDigits } from "@/utiles/auth/convertNumber";
 
 const RESEND_SECONDS = 90;
 const LIMIT = 2;
@@ -41,10 +42,11 @@ function VerifyNumber({ phoneNumber, setPhoneNumber, setIsPhoneVerified }) {
 
   useEffect(() => () => clearInterval(timerRef.current), []);
   const handleSend = async () => {
-    if (phoneNumber.length < 11) {
+    const normalPhone = toEnglishDigits(phoneNumber);
+    if (normalPhone.length < 11) {
       return errorToast("شماره تلفن صحیح نمیباشد");
     }
-    if (!phoneNumber.startsWith("09")) {
+    if (!normalPhone.startsWith("09")) {
       return errorToast("فرمت شماره تلفن صحیح نمیباشد");
     }
     setLoading(true);
@@ -52,7 +54,7 @@ function VerifyNumber({ phoneNumber, setPhoneNumber, setIsPhoneVerified }) {
       const res = await fetch("/api/otp/send", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ phone: phoneNumber }),
+        body: JSON.stringify({ phone: normalPhone }),
       });
       if (res.status === 200) {
         successToast("کد با موفقیت ارسال شد");
@@ -62,6 +64,8 @@ function VerifyNumber({ phoneNumber, setPhoneNumber, setIsPhoneVerified }) {
         successToast("پیام ارسال شده اطفا کمی منتظر بمانید");
         startTimer();
         setCodeSent(true);
+      } else if (res.status === 429) {
+        errorToast("به سقف درخاست روزانه رسیدید");
       } else {
         errorToast("خطا در ارسال کد، دوباره تلاش کنید");
       }
@@ -83,6 +87,8 @@ function VerifyNumber({ phoneNumber, setPhoneNumber, setIsPhoneVerified }) {
   };
 
   const handleVrifyUserEnterCode = async () => {
+    const normalPhone = toEnglishDigits(phoneNumber);
+    const normalOtp = toEnglishDigits(otp);
     if (limiteTry < 0) {
       return errorToast("بیش از حد مجاز تلاش کردید");
     }
@@ -94,7 +100,7 @@ function VerifyNumber({ phoneNumber, setPhoneNumber, setIsPhoneVerified }) {
       const res = await fetch("/api/otp/verify", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ phone: phoneNumber, otp }),
+        body: JSON.stringify({ phone: normalPhone, otp: normalOtp }),
       });
       if (res.status === 200) {
         setIsPhoneVerified(true);

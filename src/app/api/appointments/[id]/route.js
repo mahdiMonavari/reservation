@@ -4,7 +4,10 @@ import Validator from "fastest-validator";
 import userModel from "../../../../../model/user";
 import serviceModel from "../../../../../model/service";
 import doctorModel from "../../../../../model/doctor";
+import { cookies } from "next/headers";
+import { verifyAccessToken } from "@/utiles/auth/auth";
 
+const USER_ALLOWED_FIELDS = ["timeStart", "timeEnd", "totalTime", "date"];
 const v = new Validator();
 
 const updateSchema = v.compile({
@@ -20,6 +23,9 @@ const updateSchema = v.compile({
 export async function PUT(req, { params }) {
   try {
     await connectionToDB();
+    const cookiesStore = await cookies();
+    const token = cookiesStore.get("token")?.value;
+    const { role } = verifyAccessToken(token);
     const { id } = await params;
 
     if (!id || id.length !== 24) {
@@ -31,18 +37,47 @@ export async function PUT(req, { params }) {
     if (isValid !== true) {
       return Response.json({ message: "bad request" }, { status: 400 });
     }
+    if (role === "USER") {
+      const requestedFields = Object.keys(body);
+      const forbiddenFields = requestedFields.filter(
+        (field) => !USER_ALLOWED_FIELDS.includes(field),
+      );
 
-    const appointment = await appointmentModel.findByIdAndUpdate(
-      id,
-      { ...body },
-      { new: true },
-    );
-
-    if (!appointment) {
-      return Response.json({ message: "not found" }, { status: 404 });
+      if (forbiddenFields.length > 0) {
+        return Response.json(
+          {
+            message: `شما اجازه‌ی تغییر این فیلدها را ندارید: ${forbiddenFields.join(", ")}`,
+          },
+          { status: 403 },
+        );
+      }
+      const appointment = await appointmentModel.findByIdAndUpdate(
+        id,
+        {
+          timeStart: body.timeStart,
+          timeEnd: body.timeEnd,
+          totalTime: body.totalTime,
+          date: body.date,
+        },
+        { new: true },
+      );
+      if (appointment) {
+        return Response.json({ message: "updated", data: appointment });
+      } else {
+        return Response.json({ message: "not found" }, { status: 404 });
+      }
+    } else {
+      const appointment = await appointmentModel.findByIdAndUpdate(
+        id,
+        { ...body },
+        { new: true },
+      );
+      if (appointment) {
+        return Response.json({ message: "updated", data: appointment });
+      } else {
+        return Response.json({ message: "not found" }, { status: 404 });
+      }
     }
-
-    return Response.json({ message: "updated", data: appointment });
   } catch {
     return Response.json({ message: "internal error" }, { status: 500 });
   }

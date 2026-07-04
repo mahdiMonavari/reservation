@@ -2,6 +2,7 @@
 import { useEffect, useRef, useState } from "react";
 import { FiPhone, FiEdit2, FiX } from "react-icons/fi";
 import { successToast, errorToast } from "@/components/modules/toast/toast";
+import { toEnglishDigits } from "@/utiles/auth/convertNumber";
 
 const LIMIT_TIMER = 60;
 
@@ -61,9 +62,10 @@ function PhoneSection({ phoneNumber, onSuccess, userInfo }) {
   };
 
   const sendOtp = async () => {
-    if (!newPhoneNumber || newPhoneNumber.length < 11)
+    const normalPhone = toEnglishDigits(newPhoneNumber);
+    if (!normalPhone || normalPhone.length < 11)
       return errorToast("شماره تلفن صحیح نمیباشد");
-    if (!/^09\d{9}$/.test(newPhoneNumber))
+    if (!normalPhone.startsWith("09"))
       return errorToast("فرمت شماره تلفن صحیح نمیباشد");
 
     try {
@@ -71,7 +73,7 @@ function PhoneSection({ phoneNumber, onSuccess, userInfo }) {
       const res = await fetch("/api/otp/send", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ phone: newPhoneNumber }),
+        body: JSON.stringify({ phone: normalPhone }),
       });
       if (res.status === 200) {
         setIsCodeSend(true);
@@ -88,7 +90,10 @@ function PhoneSection({ phoneNumber, onSuccess, userInfo }) {
   };
 
   const verifyOtp = async () => {
-    if (!otp || otp.length < 5) return errorToast("کد وارد شده صحیح نمیباشد");
+    const normalPhone = toEnglishDigits(newPhoneNumber);
+    const normalOtp = toEnglishDigits(otp);
+    if (!normalOtp || normalOtp.length < 5)
+      return errorToast("کد وارد شده صحیح نمیباشد");
 
     try {
       setIsVerifying(true);
@@ -96,7 +101,7 @@ function PhoneSection({ phoneNumber, onSuccess, userInfo }) {
       const verifyRes = await fetch("/api/otp/verify", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ otp, phone: newPhoneNumber }),
+        body: JSON.stringify({ otp: normalOtp, phone: normalPhone }),
       });
 
       if (verifyRes.status === 400) return errorToast("کد مغایرت دارد");
@@ -106,15 +111,22 @@ function PhoneSection({ phoneNumber, onSuccess, userInfo }) {
       const updateRes = await fetch("/api/user", {
         method: "PUT",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ ...userInfo, phoneNumber: newPhoneNumber }),
+        body: JSON.stringify({ ...userInfo, phoneNumber: normalPhone }),
       });
+      console.log(updateRes.status);
 
-      if (updateRes.status === 409)
-        return errorToast("این شماره قبلاً ثبت شده است");
-      if (!updateRes.ok) return errorToast("خطا در بروزرسانی اطلاعات");
-
-      successToast("شماره تلفن با موفقیت تغییر کرد");
-      onSuccess(newPhoneNumber);
+      if (updateRes.status === 200) {
+        return successToast("اطلاعات آپدیت شد");
+      } else if (updateRes.status === 401) {
+        return errorToast("هویت یافت نشد");
+      } else if (updateRes.status === 404) {
+        return errorToast("کاربری با این شماره پیدا نشد");
+      } else if (updateRes.status === 400) {
+        return errorToast("رمز عبور معتبر نبود");
+      } else if (updateRes.status === 409) {
+        return errorToast("این شماره از قبل در سایت موجود میباشد");
+      }
+      onSuccess(normalPhone);
       resetState();
     } catch {
       errorToast("خطا در ارتباط با سرور");
@@ -237,6 +249,7 @@ function PhoneSection({ phoneNumber, onSuccess, userInfo }) {
 
           <input
             value={otp}
+            type="number"
             onChange={handleOtpChange}
             readOnly={!isCodeSend}
             placeholder="کد دریافتی را وارد نمایید"

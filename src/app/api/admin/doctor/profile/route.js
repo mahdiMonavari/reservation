@@ -15,6 +15,8 @@ const schema = {
   experience: { type: "number", positive: true },
   avgAppointmentTime: { type: "number", positive: true },
   baseFee: { type: "number", positive: true },
+  defaultStartHour: { type: "string", empty: false },
+  defaultEndHour: { type: "string", empty: false },
   $$strict: false,
 };
 const check = v.compile(schema);
@@ -57,6 +59,8 @@ export async function PUT(req) {
       experience: Number(formData.get("experience")) || 0,
       avgAppointmentTime: Number(formData.get("avgAppointmentTime")) || 0,
       baseFee: Number(formData.get("baseFee")) || 0,
+      defaultStartHour: formData.get("defaultStartHour") || "",
+      defaultEndHour: formData.get("defaultEndHour") || "",
     };
 
     const photoPath = await handlePhotoUpload(formData.get("photo"), user._id);

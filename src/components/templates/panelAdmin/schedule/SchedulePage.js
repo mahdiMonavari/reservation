@@ -4,10 +4,16 @@ import React, { useState } from "react";
 import WorkingDayCards from "./WorkingDayCards";
 import SubmitSchedule from "./SubmitSchedule";
 
-function SchedulePage({ schedules, doctorId }) {
+function SchedulePage({
+  schedules,
+  doctorId,
+  startTimeDefaulte,
+  endTimeDefaulte,
+}) {
   const [schedulesDate, setSchedulesDate] = useState(schedules || []);
-  const [defaultStartTime, setDefaultStartTime] = useState("09:00");
-  const [defaultEndTime, setDefaultEndTime] = useState("17:00");
+  const [defaultStartTime, setDefaultStartTime] = useState(startTimeDefaulte);
+  const [defaultEndTime, setDefaultEndTime] = useState(endTimeDefaulte);
+
   return (
     <div className="flex flex-col items-center justify-center gap-6">
       <Calendar

@@ -4,6 +4,7 @@ import React from "react";
 import userModel from "../../../../../model/user";
 import SchedulePage from "@/components/templates/panelAdmin/schedule/SchedulePage";
 import workingDayModel from "../../../../../model/workingDay";
+import doctorModel from "../../../../../model/doctor";
 
 async function page() {
   const cookieStore = await cookies();
@@ -11,6 +12,10 @@ async function page() {
   const { phone } = verifyAccessToken(token);
   const user = await userModel.findOne({ phoneNumber: phone }, "_id").lean();
   const date = new Date();
+  const defaultTimeWorking = await doctorModel.findOne(
+    { userId: user._id },
+    "defaultEndHour defaultStartHour",
+  );
   const schedules = await workingDayModel
     .find({ doctorId: user._id, date: { $gte: date } })
     .lean();
@@ -23,6 +28,8 @@ async function page() {
       <SchedulePage
         schedules={JSON.parse(JSON.stringify(schedules))}
         doctorId={user._id.toString()}
+        startTimeDefaulte={defaultTimeWorking.defaultStartHour}
+        endTimeDefaulte={defaultTimeWorking.defaultEndHour}
       />
     </div>
   );

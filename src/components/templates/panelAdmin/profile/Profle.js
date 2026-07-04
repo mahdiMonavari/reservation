@@ -22,7 +22,7 @@ function Profile({ doctor: initialDoctor }) {
   const [isLoading, setIsLoading] = useState(false);
   const [photoFile, setPhotoFile] = useState(null);
   const [photoPreview, setPhotoPreview] = useState(
-    initialDoctor?.photo || null
+    initialDoctor?.photo || null,
   );
   const [form, setForm] = useState({
     specialty: initialDoctor?.specialty ?? "",
@@ -31,6 +31,8 @@ function Profile({ doctor: initialDoctor }) {
     experience: initialDoctor?.experience ?? "",
     avgAppointmentTime: initialDoctor?.avgAppointmentTime ?? "",
     baseFee: initialDoctor?.baseFee ?? "",
+    defaultStartHour: doctor?.defaultStartHour ?? "",
+    defaultEndHour: doctor?.defaultEndHour ?? "",
   });
 
   const user = doctor?.userId || {};
@@ -56,14 +58,24 @@ function Profile({ doctor: initialDoctor }) {
       experience: doctor?.experience ?? "",
       avgAppointmentTime: doctor?.avgAppointmentTime ?? "",
       baseFee: doctor?.baseFee ?? "",
+      defaultStartHour: doctor?.defaultStartHour ?? "",
+      defaultEndHour: doctor?.defaultEndHour ?? "",
     });
     setPhotoFile(null);
     setPhotoPreview(doctor?.photo || null);
     setIsEditing(false);
   };
-
+  const handlePadStart = (value) => {
+    if (!value) {
+      return null;
+    }
+    const [h, m] = value.split(":");
+    return `${h.padStart(2, "0")}:${m.padStart(2, "0")}`;
+  };
   const handleSave = async () => {
     try {
+      form.defaultStartHour = handlePadStart(form.defaultStartHour);
+      form.defaultEndHour = handlePadStart(form.defaultEndHour);
       setIsLoading(true);
       const formData = new FormData();
       Object.entries(form).forEach(([k, v]) => formData.append(k, v));
@@ -151,6 +163,20 @@ function Profile({ doctor: initialDoctor }) {
       color: "text-rose-500",
       type: "number",
     },
+    {
+      name: "defaultStartHour",
+      label: "زمان شروع کار",
+      icon: <FaMoneyBillWave />,
+      color: "text-teal-500",
+      type: "number",
+    },
+    {
+      name: "defaultEndHour",
+      label: "زمان پایان کار",
+      icon: <FaMoneyBillWave />,
+      color: "text-yellow-500",
+      type: "number",
+    },
   ];
 
   return (
@@ -195,6 +221,7 @@ function Profile({ doctor: initialDoctor }) {
               <ProffessionalCardProfile
                 key={item.name}
                 {...item}
+                setForm={setForm}
                 isEditing={isEditing}
                 doctor={doctor}
                 form={form}

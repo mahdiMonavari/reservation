@@ -2,12 +2,12 @@
 import EmptySection from "@/components/modules/emptyState/EmptySection";
 import useReservationStore from "@/store/reservationStore";
 import Image from "next/image";
-import { useEffect } from "react";
 import { FiCheck } from "react-icons/fi";
 
 function SelectDoctor({ doctors }) {
   const selectedDoctor = useReservationStore((s) => s.selectedDoctor);
   const setDoctor = useReservationStore((s) => s.setDoctor);
+  const setSlotsTime = useReservationStore((s) => s.setSlotsTime);
   return (
     <div>
       <div className="text-right mb-5">
@@ -29,7 +29,10 @@ function SelectDoctor({ doctors }) {
               <button
                 key={doctor._id}
                 type="button"
-                onClick={() => setDoctor(doctor.userId._id)}
+                onClick={() => {
+                  setDoctor(doctor.userId._id);
+                  setSlotsTime(doctor.avgAppointmentTime);
+                }}
                 className={`relative w-full text-right rounded-2xl p-4
                 flex items-center gap-4
                 border transition-all duration-250 group

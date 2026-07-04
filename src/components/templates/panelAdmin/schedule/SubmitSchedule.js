@@ -3,12 +3,10 @@ import React from "react";
 
 function SubmitSchedule({ schedules }) {
   const submitHandler = async () => {
-    console.log(schedules);
     let hasConflict = false;
     schedules.find((schedule) => {
       const [timeStartH, timeStartM] = schedule.timeStart.split(":");
       const [timeEndH, timeEndM] = schedule.timeEnd.split(":");
-      console.log(timeStartH, timeEndH);
 
       const timeStatrMinutes = +timeStartH * 60 + +timeStartM;
       const timeEndMinutes = +timeEndH * 60 + +timeEndM;

@@ -7,7 +7,12 @@ function AppointmentPageUserPanel({ appointments, totalPages, currentPage }) {
   return (
     <div>
       <header className="flex items-center justify-between text-2xl font-Morabba-Bold mb-6">
-        <span> تمامی نوبتها</span>
+        <div>
+          <span> تمامی نوبتها</span>
+          <span className=" font-Morabba-Bold text-base text-amber-400 block mt-2">
+            هر نوبت یک بار قابل تغییر است
+          </span>
+        </div>
         <div className="flex items-center gap-4">
           <span className="text-sm">اسم دکتر</span>
           <SearchInput />

@@ -10,6 +10,7 @@ const useReservationStore = create((set) => ({
   selectedServices: [],
   selectedDate: null,
   selectedTime: null,
+  selectedSlotsTime: null,
 
   setDoctor: (doctor) =>
     set((state) => {
@@ -21,12 +22,14 @@ const useReservationStore = create((set) => ({
         selectedServices: [],
         selectedDate: null,
         selectedTime: null,
+        selectedSlotsTime: null,
       };
     }),
   setServices: (services) => set({ selectedServices: services }),
   setDate: (date) => set({ selectedDate: date }),
   setTime: (time) => set({ selectedTime: time }),
   setStep: (step) => set({ step }),
+  setSlotsTime: (slotsTime) => set({ selectedSlotsTime: slotsTime }),
 
   reset: () =>
     set({

@@ -95,11 +95,9 @@ function ChangeBase({
             "پیام تغییر  با موفقیت ارسال نشد، تاریخ حضور خود را یادداشت کنید",
           );
           setTimeout(() => {
-            console.log("sssssssssssssss");
             location.reload();
           }, 4000);
         } else {
-          console.log("ddddddddddd");
           location.reload();
         }
       } else {

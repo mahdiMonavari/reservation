@@ -20,6 +20,7 @@ function AppointmentCard({
   totalTime,
   serviceIds,
   isVisited,
+  isRescheduled,
   _id,
 }) {
   const [isShowReschedule, setIsShowReschedule] = useState(false);
@@ -33,7 +34,7 @@ function AppointmentCard({
 
   return (
     <>
-      {
+      {!isRescheduled ? (
         <ChangeBase
           timeStart={timeStart}
           timeEnd={timeEnd}
@@ -45,7 +46,9 @@ function AppointmentCard({
           serviceIds={serviceIds}
           _id={_id}
         />
-      }
+      ) : (
+        ""
+      )}
       <div
         className={` relative 
         border border-teal-100 dark:border-slate-800
@@ -71,28 +74,33 @@ function AppointmentCard({
             {isVisited ? "ویزیت شده" : "ویزیت نشده"}
           </div>
 
-          {canReschedule && (
-            <div
-              className="flex items-center gap-1 cursor-pointer"
-              onClick={onToggleShow}
-            >
-              {" "}
-              <button
-                title="تغییر زمان مراجعه"
-                className="w-8 h-8 rounded-lg flex items-center justify-center
+          {canReschedule &&
+            (!isRescheduled ? (
+              <div
+                className="flex items-center gap-1 cursor-pointer"
+                onClick={onToggleShow}
+              >
+                {" "}
+                <button
+                  title="تغییر زمان مراجعه"
+                  className="w-8 h-8 rounded-lg flex items-center justify-center
               text-teal-500 dark:text-teal-400
               bg-teal-50 dark:bg-teal-500/10
               hover:bg-teal-100 dark:hover:bg-teal-500/20
               border border-teal-200 dark:border-teal-500/20
               transition-all duration-150"
-              >
-                <MdOutlineUpdate size={16} />
-              </button>{" "}
+                >
+                  <MdOutlineUpdate size={16} />
+                </button>{" "}
+                <span className="text-xs font-medium text-slate-600 dark:text-slate-300 font-Morabba-Bold">
+                  تغییر زمان
+                </span>
+              </div>
+            ) : (
               <span className="text-xs font-medium text-slate-600 dark:text-slate-300 font-Morabba-Bold">
-                تغییر زمان
+                زمان تعویض شده
               </span>
-            </div>
-          )}
+            ))}
         </div>
 
         <div className="flex flex-col gap-2.5">

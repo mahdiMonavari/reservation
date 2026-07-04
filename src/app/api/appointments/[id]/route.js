@@ -58,6 +58,7 @@ export async function PUT(req, { params }) {
           timeEnd: body.timeEnd,
           totalTime: body.totalTime,
           date: body.date,
+          isRescheduled: true,
         },
         { new: true },
       );

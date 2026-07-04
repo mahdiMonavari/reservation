@@ -17,8 +17,10 @@ const doctorSchema = new mongoose.Schema(
     rating: { type: Number, default: 5 },
     reviewsCount: { type: Number, min: 0, default: 0 },
     isActive: { type: Boolean, default: false },
+    defaultStartHour: { type: String, default: "09:00" },
+    defaultEndHour: { type: String, default: "13:00" },
   },
-  { timestamps: true }
+  { timestamps: true },
 );
 
 const doctorModel =

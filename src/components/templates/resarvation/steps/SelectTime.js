@@ -3,8 +3,6 @@ import useReservationStore from "@/store/reservationStore";
 import { useEffect, useState } from "react";
 import { FiClock, FiAlertCircle } from "react-icons/fi";
 
-const STEP_MINUTES = 15;
-
 const timeToMinutes = (time) => {
   const [h, m] = time.split(":").map(Number);
   return h * 60 + m;
@@ -16,11 +14,11 @@ const minutesToTime = (totalMinutes) => {
   return `${String(h).padStart(2, "0")}:${String(m).padStart(2, "0")}`;
 };
 
-const generateSlots = (start, end) => {
+const generateSlots = (start, end, slotsTime) => {
   const startMin = timeToMinutes(start);
   const endMin = timeToMinutes(end);
   const slots = [];
-  for (let m = startMin; m < endMin; m += STEP_MINUTES) {
+  for (let m = startMin; m < endMin; m += slotsTime) {
     slots.push(minutesToTime(m));
   }
   return slots;
@@ -65,12 +63,13 @@ function SelectTime({ setIsLoading }) {
   const selectedServices = useReservationStore((s) => s.selectedServices);
   const selectedTime = useReservationStore((s) => s.selectedTime);
   const setTime = useReservationStore((s) => s.setTime);
+  const slotsTime = useReservationStore((s) => s.selectedSlotsTime);
   const [takenSlots, setTakenSlots] = useState([]);
   const [error, setError] = useState(null);
 
   const slots =
     selectedDate?.timeStart && selectedDate?.timeEnd
-      ? generateSlots(selectedDate.timeStart, selectedDate.timeEnd)
+      ? generateSlots(selectedDate.timeStart, selectedDate.timeEnd, slotsTime)
       : [];
 
   const totalDuration = getTotalDuration(selectedServices);
@@ -114,7 +113,7 @@ function SelectTime({ setIsLoading }) {
           ساعت مراجعه را انتخاب کنید
         </h2>
         <p className="text-sm mt-1 text-emerald-600 dark:text-emerald-400 font-Dana-Medium">
-          هر slot معادل ۱۵ دقیقه می‌باشد
+          {`هر خانه معادل ${slotsTime} دقیقه میباشد`}
         </p>
       </div>
 

@@ -20,7 +20,6 @@ export async function PUT(req) {
     }
 
     const { phone } = verifyAccessToken(token);
-    console.log(phone);
 
     const user = await userModel.findOne({ phoneNumber: phone });
     if (!user) {
@@ -29,7 +28,6 @@ export async function PUT(req) {
 
     const body = await req.json();
     const dataToValidate = { ...body };
-    console.log(dataToValidate);
 
     if (dataToValidate.phoneNumber) {
       dataToValidate.phoneNumber = toEnglishDigits(dataToValidate.phoneNumber);
@@ -43,7 +41,6 @@ export async function PUT(req) {
       phoneNumber: dataToValidate.phoneNumber,
       password: dataToValidate.password,
     });
-    console.log(isValid);
 
     if (isValid !== true) {
       return Response.json(

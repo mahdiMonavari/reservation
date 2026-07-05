@@ -11,6 +11,7 @@ export default function MobileMenu({ theme, navLinks }) {
   const [open, setOpen] = useState(false);
   const [userMenuOpen, setUserMenuOpen] = useState(false);
   const { user, setUser } = useContext(AuthContext);
+
   const router = useRouter();
 
   const handleLogout = async () => {
@@ -123,23 +124,26 @@ export default function MobileMenu({ theme, navLinks }) {
                       <FaUser size={12} />
                     </span>
                   </Link>
-                  {user.role !== "USER"}
-                  <Link
-                    href="/p-admin"
-                    onClick={() => setOpen(false)}
-                    className="flex items-center justify-end gap-2.5 py-2.5 px-3 rounded-lg
+                  {user.role !== "USER" ? (
+                    <Link
+                      href="/p-admin"
+                      onClick={() => setOpen(false)}
+                      className="flex items-center justify-end gap-2.5 py-2.5 px-3 rounded-lg
                       text-sm text-green-800/80 dark:text-gray-200
                       hover:bg-green-100/60 dark:hover:bg-teal-800/40
                       transition-colors duration-150"
-                  >
-                    پنل مدریت
-                    <span
-                      className="flex items-center justify-center w-7 h-7 rounded-lg
-                      bg-emerald-100 dark:bg-emerald-500/20 text-emerald-600 dark:text-emerald-400"
                     >
-                      <FaUser size={12} />
-                    </span>
-                  </Link>
+                      پنل مدریت
+                      <span
+                        className="flex items-center justify-center w-7 h-7 rounded-lg
+                      bg-emerald-100 dark:bg-emerald-500/20 text-emerald-600 dark:text-emerald-400"
+                      >
+                        <FaUser size={12} />
+                      </span>
+                    </Link>
+                  ) : (
+                    ""
+                  )}
 
                   <button
                     onClick={handleLogout}

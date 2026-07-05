@@ -15,6 +15,7 @@
     "clsx": "^2.1.1",
     "date-fns-jalali": "^4.4.0-0",
     "fastest-validator": "^1.19.1",
+    "framer-motion": "^12.42.2",
     "jsonwebtoken": "^9.0.3",
     "lucide-react": "^1.21.0",
     "mongoose": "^9.6.3",

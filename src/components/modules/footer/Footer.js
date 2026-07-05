@@ -52,10 +52,11 @@ function Footer() {
               </div>
               <div>
                 <p className="text-xs font-Dana-Medium text-slate-400 dark:text-slate-500 mb-1">
-                  آدرس دفتر
+                  آدرس مطب
                 </p>
                 <p className="text-sm font-Dana-Regular text-slate-600 dark:text-slate-300 leading-relaxed">
-                  دولت آباد، خیابان طالقانی، ساختمان پزشکان، پلاک ۱۲
+                  اصفهان، دولت آباد، بلوار طالقانی، ایستگاه دبیرستان، پشت اداره
+                  پست
                 </p>
               </div>
             </div>
@@ -77,17 +78,6 @@ function Footer() {
               </div>
             </div>
           </div>
-        </div>
-
-        {/* خبرنامه */}
-        <div>
-          <h3 className="font-Morabba-Bold text-emerald-900 dark:text-white text-lg mb-2">
-            عضویت در خبرنامه
-          </h3>
-          <p className="text-xs font-Dana-Regular text-slate-400 dark:text-slate-500 mb-5">
-            از آخرین اخبار و تخفیف‌های کلینیک مطلع شوید
-          </p>
-          <MembershipNewsletter />
         </div>
       </div>
 

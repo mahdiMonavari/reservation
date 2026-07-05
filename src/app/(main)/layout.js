@@ -7,7 +7,7 @@ import { verifyAccessToken } from "@/utiles/auth/auth";
 import { cookies } from "next/headers";
 import { Toaster } from "react-hot-toast";
 import userModel from "../../../model/user";
-import connectionToDB from "@/utiles/DB/connection";  
+import connectionToDB from "@/utiles/DB/connection";
 
 export default async function RootLayout({ children }) {
   connectionToDB();
@@ -17,8 +17,11 @@ export default async function RootLayout({ children }) {
   const userTokenVerify = verifyAccessToken(userToken) || null;
   const user = JSON.parse(
     JSON.stringify(
-      await userModel.findOne({ phoneNumber: userTokenVerify?.phone })
-    )
+      await userModel.findOne(
+        { phoneNumber: userTokenVerify?.phone },
+        "firstName lastName role phoneNumber",
+      ),
+    ),
   );
   return (
     <html lang="fa" dir="rtl" className={theme === "dark" ? "dark" : ""}>

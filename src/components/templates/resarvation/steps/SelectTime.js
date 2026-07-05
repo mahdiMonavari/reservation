@@ -14,12 +14,27 @@ const minutesToTime = (totalMinutes) => {
   return `${String(h).padStart(2, "0")}:${String(m).padStart(2, "0")}`;
 };
 
-const generateSlots = (start, end, slotsTime) => {
+const generateSlots = (start, end, slotsTime, date) => {
+  const newDate = new Date();
+  const today = new Date(
+    newDate.getFullYear(),
+    newDate.getMonth(),
+    newDate.getDate(),
+  );
+
   const startMin = timeToMinutes(start);
   const endMin = timeToMinutes(end);
   const slots = [];
+
   for (let m = startMin; m < endMin; m += slotsTime) {
-    slots.push(minutesToTime(m));
+    if (today.toISOString() === date) {
+      const minutes = (newDate.getHours() + 1) * 60;
+      if (m > minutes) {
+        slots.push(minutesToTime(m));
+      }
+    } else {
+      slots.push(minutesToTime(m));
+    }
   }
   return slots;
 };
@@ -69,7 +84,12 @@ function SelectTime({ setIsLoading }) {
 
   const slots =
     selectedDate?.timeStart && selectedDate?.timeEnd
-      ? generateSlots(selectedDate.timeStart, selectedDate.timeEnd, slotsTime)
+      ? generateSlots(
+          selectedDate.timeStart,
+          selectedDate.timeEnd,
+          slotsTime,
+          selectedDate.date,
+        )
       : [];
 
   const totalDuration = getTotalDuration(selectedServices);

@@ -11,7 +11,7 @@ export function AuthProvider({ children, initailUser }) {
     if (initailUser) {
       setUser(initailUser);
     }
-  }, [inita]);
+  }, [initailUser]);
   return (
     <AuthContext.Provider value={{ user, setUser }}>
       {children}

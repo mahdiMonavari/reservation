@@ -53,9 +53,8 @@ function Reservation({ doctors }) {
 
           <div
             className="relative backdrop-blur-xl rounded-3xl overflow-hidden
-          bg-white/70 border border-emerald-200/60
-          dark:bg-white/5 dark:border-white/10
-          shadow-sm dark:shadow-2xl dark:shadow-emerald-950/50"
+          bg-white/70 border border-emerald-200/60 mb-10
+          dark:bg-white/5 dark:border-white/10"
           >
             <LoadingOverlay loading={isLoading} />
             <div
